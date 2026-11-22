@@ -30,7 +30,7 @@
 | **M1** | Foundation, Architecture & Design System | Architecture blueprint, SRS, database schema, NestJS + Next.js init, Local Postgres, design tokens | 🟢 **COMPLETED & VERIFIED** | Local DB running, Prisma migrated, Swagger online at `/api/docs`, Next.js build passes |
 | **M2** | Authentication, RBAC, Profiles & Vehicles | JWT auth, refresh token rotation, role guards, profile management, customer vehicle garage CRUD | 🟢 **COMPLETED & AUDITED** | 52/52 Backend Tests + 4 Frontend E2E suites pass; Audit in `docs/MILESTONE_2_VERIFICATION.md` |
 | **M3** | Breakdown Reporting & Location Capture | Breakdown wizard, Leaflet map with GPS & pin fallback, multi-image upload with validation | 🟢 **COMPLETED & AUDITED** | 77 Backend Tests + 5 Frontend E2E suites pass; Audit in `docs/MILESTONE_3_VERIFICATION.md` |
-| **M4** | Mechanic Portal & Geospatial Discovery | Mechanic profile, verification docs, availability toggle, Haversine proximity query engine | 🟢 **COMPLETED & AUDITED** | 94 Backend Tests + 6 Frontend E2E suites pass; Audit in `docs/MILESTONE_4_VERIFICATION.md` |
+| **M4** | Mechanic Portal & Geospatial Discovery | Mechanic profile, verification docs, availability toggle, Haversine proximity query engine | 🟢 **COMPLETED & AUDITED** | 94 Backend Tests + 7 Frontend E2E suites pass; Audit in `docs/MILESTONE_4_VERIFICATION.md` |
 | **M5** | Service Lifecycle, WebSockets & Tracking | State machine engine, Socket.IO rooms, live status progression, en-route driver map tracking | 🟡 **Ready for Next Milestone** | Bidirectional events verified, state transitions strictly validated |
 | **M6** | Admin Center, Moderation & Analytics | Admin dashboard, mechanic verification desk, dispute manager, SQL analytics, audit log viewer | ⚪ Pending | Verification workflow verified, analytics charts rendering live data |
 | **M7** | Rule-Based Diagnosis & Review System | Expert failure diagnosis engine, customer review submission, mechanic reputation scoring | ⚪ Pending | Diagnostic rules tested against test vectors, rating recalculation verified |
@@ -100,6 +100,13 @@ PASS frontend/test/mechanic-portal.e2e.mjs
     √ Inbound dispatches queue within operational boundary verified
     √ Atomic dispatch claim and transition to Active On-Job Assignment verified
 
+PASS frontend/test/mechanic-conflict-rollback.e2e.mjs
+  Concurrency & Optimistic Rollback Suite (Playwright Chrome E2E)
+    √ Real browser simulation of 409 Conflict on dispatch acceptance
+    √ Conflict notification banner detected and displayed
+    √ Queue state accurately restored to prior state after failure
+    √ Active on-job assignment state prevented on conflict
+
 HTTP 200 Route Verification:
   [200 OK] /
   [200 OK] /login
@@ -116,5 +123,5 @@ HTTP 200 Route Verification:
   [200 OK] /images/vehicle-rear.jpg
   [200 OK] /images/hero-fallback.jpg
 
-Total Tests: 94 Backend + 6 Frontend E2E Suites Passed (100% Green)
+Total Tests: 94 Backend + 7 Frontend E2E Suites Passed (100% Green)
 ```
