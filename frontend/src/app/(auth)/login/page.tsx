@@ -1,23 +1,25 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/context/auth-context';
 import { 
   ArrowRight, 
   AlertCircle, 
   Loader2, 
-  Eye, 
-  EyeOff,
-  Car,
-  Wrench,
-  ShieldCheck
+  Car, 
+  Wrench, 
+  ShieldCheck 
 } from 'lucide-react';
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { login } = useAuth();
+
+  const redirectParam = searchParams.get('redirect');
+  const roleParam = searchParams.get('role');
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,12 +34,33 @@ export default function LoginPage() {
 
     try {
       const user = await login(email, password);
+
+      // Secure role-based redirection
       if (user.role === 'ADMIN') {
-        router.push('/admin/dashboard');
+        const target = redirectParam && redirectParam.startsWith('/admin')
+          ? redirectParam
+          : '/admin/dashboard';
+        router.push(target);
       } else if (user.role === 'MECHANIC') {
-        router.push('/mechanic/portal');
+        // Enforce that a mechanic never gets redirected to customer pages
+        const isCustomerTarget = redirectParam && (
+          redirectParam.startsWith('/customer') || 
+          redirectParam.startsWith('/report-breakdown')
+        );
+        const target = redirectParam && !isCustomerTarget
+          ? redirectParam
+          : '/mechanic/home';
+        router.push(target);
       } else {
-        router.push('/customer/vehicles');
+        // CUSTOMER: Enforce that customer never gets redirected to mechanic or admin pages
+        const isRestrictedTarget = redirectParam && (
+          redirectParam.startsWith('/mechanic') || 
+          redirectParam.startsWith('/admin')
+        );
+        const target = redirectParam && !isRestrictedTarget
+          ? redirectParam
+          : '/customer/home';
+        router.push(target);
       }
     } catch (err: any) {
       setError(err.message || 'Authentication failed. Please verify credentials.');
@@ -69,7 +92,11 @@ export default function LoginPage() {
             Sign In to Protocol
           </h1>
           <p className="text-xs text-stone-muted font-normal">
-            Enter your credentials to access vehicle assistance services
+            {roleParam === 'MECHANIC'
+              ? 'Authorized Field Technician & Workshop Console'
+              : roleParam === 'CUSTOMER'
+              ? 'Registered Motorist Emergency Dispatch System'
+              : 'Enter your credentials to access vehicle assistance services'}
           </p>
         </div>
 
@@ -148,7 +175,11 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => handleQuickFill('customer.john@vbrs.local')}
-                className="p-2 border border-divider hover:border-divider-strong bg-carbon text-stone-muted hover:text-porcelain text-[10px] font-mono uppercase tracking-wider transition-colors flex flex-col items-center gap-1.5"
+                className={`p-2 border transition-colors flex flex-col items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider ${
+                  roleParam === 'CUSTOMER'
+                    ? 'border-crimson bg-crimson/10 text-porcelain'
+                    : 'border-divider hover:border-divider-strong bg-carbon text-stone-muted hover:text-porcelain'
+                }`}
               >
                 <Car className="w-3.5 h-3.5 text-stone-dim" />
                 <span>Driver</span>
@@ -156,7 +187,11 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => handleQuickFill('mechanic.alex@vbrs.local')}
-                className="p-2 border border-divider hover:border-divider-strong bg-carbon text-stone-muted hover:text-porcelain text-[10px] font-mono uppercase tracking-wider transition-colors flex flex-col items-center gap-1.5"
+                className={`p-2 border transition-colors flex flex-col items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider ${
+                  roleParam === 'MECHANIC'
+                    ? 'border-cyan-500 bg-cyan-950/30 text-porcelain'
+                    : 'border-divider hover:border-divider-strong bg-carbon text-stone-muted hover:text-porcelain'
+                }`}
               >
                 <Wrench className="w-3.5 h-3.5 text-stone-dim" />
                 <span>Technician</span>
@@ -182,5 +217,20 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-carbon flex flex-col items-center justify-center text-stone-muted">
+        <Loader2 className="w-7 h-7 animate-spin text-porcelain mb-3" />
+        <span className="text-xs font-mono uppercase tracking-widest">
+          Loading Authentication Gateway...
+        </span>
+      </div>
+    }>
+      <LoginForm />
+    </Suspense>
   );
 }

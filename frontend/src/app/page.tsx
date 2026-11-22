@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useAuth } from '@/context/auth-context';
 import { Navbar } from '@/components/shared/navbar';
 import { 
   ArrowRight, 
@@ -10,12 +11,20 @@ import {
   Radio, 
   ShieldCheck, 
   Clock, 
-  ArrowUpRight 
+  ArrowUpRight,
+  Car,
+  Wrench,
+  ShieldAlert,
+  Layers,
+  Box,
+  CheckCircle2
 } from 'lucide-react';
 import { InspectionTerminal } from '@/components/hologram/inspection-terminal';
 import { RobustImage } from '@/components/shared/robust-image';
 
 export default function EditorialLandingPage() {
+  const { user } = useAuth();
+
   return (
     <div className="min-h-screen bg-carbon text-porcelain flex flex-col selection:bg-porcelain selection:text-carbon">
       <Navbar />
@@ -50,22 +59,62 @@ export default function EditorialLandingPage() {
                   </p>
                 </div>
 
-                {/* Primary Restrained Call-to-Actions */}
+                {/* Role-Aware Call-to-Actions */}
                 <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-                  <Link
-                    href="/login?redirect=/report-breakdown"
-                    className="inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-sm bg-crimson hover:bg-crimson-hover active:bg-crimson text-porcelain font-medium text-xs font-mono uppercase tracking-wider transition-colors"
-                  >
-                    <span>Request Emergency Assistance</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
+                  {user?.role === 'CUSTOMER' ? (
+                    <>
+                      <Link
+                        href="/customer/home"
+                        className="inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-sm bg-porcelain text-carbon hover:bg-porcelain-dim font-medium text-xs font-mono uppercase tracking-wider transition-colors"
+                      >
+                        <span>Open Driver Workspace</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
 
-                  <Link
-                    href="/login?role=MECHANIC"
-                    className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-sm bg-graphite hover:bg-elevated text-stone-muted hover:text-porcelain border border-divider text-xs font-mono uppercase tracking-wider transition-colors"
-                  >
-                    <span>Mechanic Terminal</span>
-                  </Link>
+                      <Link
+                        href="/report-breakdown"
+                        className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-sm bg-crimson hover:bg-crimson-hover text-porcelain text-xs font-mono uppercase tracking-wider transition-colors"
+                      >
+                        <ShieldAlert className="w-3.5 h-3.5" />
+                        <span>Request Rescue</span>
+                      </Link>
+                    </>
+                  ) : user?.role === 'MECHANIC' ? (
+                    <>
+                      <Link
+                        href="/mechanic/home"
+                        className="inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-sm bg-porcelain text-carbon hover:bg-porcelain-dim font-medium text-xs font-mono uppercase tracking-wider transition-colors"
+                      >
+                        <span>Open Mechanic Workshop</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+
+                      <Link
+                        href="/mechanic/portal"
+                        className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-sm bg-graphite hover:bg-elevated text-stone-muted hover:text-porcelain border border-divider text-xs font-mono uppercase tracking-wider transition-colors"
+                      >
+                        <Radio className="w-3.5 h-3.5 text-cyan-400" />
+                        <span>Dispatch Radar</span>
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        href="/login?role=CUSTOMER&redirect=/customer/home"
+                        className="inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-sm bg-crimson hover:bg-crimson-hover active:bg-crimson text-porcelain font-medium text-xs font-mono uppercase tracking-wider transition-colors"
+                      >
+                        <span>Request Emergency Assistance</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+
+                      <Link
+                        href="/login?role=MECHANIC&redirect=/mechanic/home"
+                        className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-sm bg-graphite hover:bg-elevated text-stone-muted hover:text-porcelain border border-divider text-xs font-mono uppercase tracking-wider transition-colors"
+                      >
+                        <span>Mechanic Terminal</span>
+                      </Link>
+                    </>
+                  )}
                 </div>
 
                 {/* Editorial Telemetry Bar */}
@@ -97,14 +146,197 @@ export default function EditorialLandingPage() {
         </section>
 
         {/* ================================================================= */}
-        {/* 2. ARCHITECTURAL PROTOCOL: HOW IT WORKS (WIDE 3-COLUMN LAYOUT)    */}
+        {/* 2. DEDICATED ARCHITECTURAL EXPERIENCES: CUSTOMER VS MECHANIC      */}
+        {/* ================================================================= */}
+        <section id="portal-gateways" className="py-20 lg:py-24 border-b border-divider/60 bg-carbon">
+          <div className="layout-container">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-12 border-b border-divider/40">
+              <div className="space-y-2">
+                <span className="text-[11px] font-mono tracking-widest uppercase text-stone-dim">
+                  01 // Dedicated Architectural Experiences
+                </span>
+                <h2 className="text-3xl lg:text-4xl font-medium tracking-tight text-porcelain">
+                  Two Specialized Automotive Portals
+                </h2>
+              </div>
+              <p className="text-sm font-normal text-stone-muted max-w-lg leading-relaxed">
+                Separated user journeys engineered for respective operational demands. Stranded drivers access rapid GPS intake; certified mechanics command diagnostic telemetry.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8 pt-10">
+              
+              {/* Customer Gateway Card */}
+              <div id="customer-gateway" className="border border-divider/80 bg-graphite/40 p-8 sm:p-10 rounded-sm flex flex-col justify-between space-y-8 relative overflow-hidden group hover:border-divider-strong transition-colors">
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div className="w-10 h-10 rounded-sm bg-crimson/10 border border-crimson/30 flex items-center justify-center text-crimson">
+                      <Car className="w-5 h-5" />
+                    </div>
+                    <span className="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-sm bg-elevated border border-divider text-stone-muted">
+                      ROUTE: /customer/home
+                    </span>
+                  </div>
+
+                  <div className="space-y-2">
+                    <h3 className="text-2xl font-medium text-porcelain tracking-tight">
+                      Customer & Driver Experience
+                    </h3>
+                    <p className="text-sm text-stone-muted leading-relaxed font-normal">
+                      Designed for individual motorists and fleet managers requiring frictionless emergency breakdown intake, real-time live map tracking, and comprehensive vehicle service history.
+                    </p>
+                  </div>
+
+                  <div className="space-y-2.5 pt-2 border-t border-divider/40 text-xs font-mono text-stone-muted">
+                    <div className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-crimson" />
+                      <span>One-Click GPS Pinpoint & Emergency Breakdown Intake</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-stone-muted" />
+                      <span>Registered Automobile Garage (ICE, Hybrid, 800V EV)</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-stone-muted" />
+                      <span>Real-Time Leaflet Map Tracking with ETA Stepper</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-stone-muted" />
+                      <span>Saved Dispatch Location Bookmarks (Home, Hub, Fleet)</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-stone-muted" />
+                      <span>Itemized Cost Invoices & 5-Star Technician Reviews</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-divider/40 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                  {user?.role === 'CUSTOMER' ? (
+                    <Link
+                      href="/customer/home"
+                      className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-sm bg-crimson hover:bg-crimson-hover text-porcelain text-xs font-mono uppercase tracking-wider font-medium transition-colors"
+                    >
+                      <span>Launch Customer Workspace</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  ) : user?.role === 'MECHANIC' ? (
+                    <div className="text-[11px] font-mono text-stone-dim flex items-center gap-2 py-2">
+                      <span className="w-2 h-2 rounded-full bg-ochre" />
+                      <span>Active session: Field Mechanic (Restricted)</span>
+                    </div>
+                  ) : (
+                    <>
+                      <Link
+                        href="/login?role=CUSTOMER&redirect=/customer/home"
+                        className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-sm bg-porcelain hover:bg-porcelain-dim text-carbon text-xs font-mono uppercase tracking-wider font-medium transition-colors"
+                      >
+                        <span>Driver Sign In</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+                      <Link
+                        href="/report-breakdown"
+                        className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-sm border border-divider text-stone-muted hover:text-porcelain text-xs font-mono uppercase tracking-wider transition-colors"
+                      >
+                        <span>Emergency Intake</span>
+                      </Link>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* Mechanic Gateway Card */}
+              <div id="mechanic-gateway" className="border border-divider/80 bg-graphite/40 p-8 sm:p-10 rounded-sm flex flex-col justify-between space-y-8 relative overflow-hidden group hover:border-divider-strong transition-colors">
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div className="w-10 h-10 rounded-sm bg-cyan-950/40 border border-cyan-800/40 flex items-center justify-center text-cyan-400">
+                      <Wrench className="w-5 h-5" />
+                    </div>
+                    <span className="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-sm bg-elevated border border-divider text-stone-muted">
+                      ROUTE: /mechanic/home
+                    </span>
+                  </div>
+
+                  <div className="space-y-2">
+                    <h3 className="text-2xl font-medium text-porcelain tracking-tight">
+                      Mechanic Workspace & CAD Terminal
+                    </h3>
+                    <p className="text-sm text-stone-muted leading-relaxed font-normal">
+                      A comprehensive operating desk for certified field technicians and workshops, featuring real-time Haversine dispatch discovery and 3D digital twin diagnostics.
+                    </p>
+                  </div>
+
+                  <div className="space-y-2.5 pt-2 border-t border-divider/40 text-xs font-mono text-stone-muted">
+                    <div className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                      <span>Interactive 3D Holographic Twin with 8 Subsystems</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-stone-muted" />
+                      <span>10-100km Operational Perimeter & Haversine Proximity</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-stone-muted" />
+                      <span>Real Recorded Financials (Revenue, Labor, Parts, AOV)</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-stone-muted" />
+                      <span>Active Mission Control with Quotation Intake & Stepper</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-stone-muted" />
+                      <span>ASE Accreditation & Automated Audit Governance</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-divider/40 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                  {user?.role === 'MECHANIC' ? (
+                    <Link
+                      href="/mechanic/home"
+                      className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-sm bg-cyan-600 hover:bg-cyan-500 text-porcelain text-xs font-mono uppercase tracking-wider font-medium transition-colors"
+                    >
+                      <span>Launch Mechanic Workshop</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  ) : user?.role === 'CUSTOMER' ? (
+                    <div className="text-[11px] font-mono text-stone-dim flex items-center gap-2 py-2">
+                      <span className="w-2 h-2 rounded-full bg-ochre" />
+                      <span>Active session: Driver / Motorist (Restricted)</span>
+                    </div>
+                  ) : (
+                    <>
+                      <Link
+                        href="/login?role=MECHANIC&redirect=/mechanic/home"
+                        className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-sm bg-porcelain hover:bg-porcelain-dim text-carbon text-xs font-mono uppercase tracking-wider font-medium transition-colors"
+                      >
+                        <span>Technician Sign In</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+                      <Link
+                        href="/register?role=MECHANIC"
+                        className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-sm border border-divider text-stone-muted hover:text-porcelain text-xs font-mono uppercase tracking-wider transition-colors"
+                      >
+                        <span>Accreditation Intake</span>
+                      </Link>
+                    </>
+                  )}
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        {/* ================================================================= */}
+        {/* 3. ARCHITECTURAL PROTOCOL: HOW IT WORKS (WIDE 3-COLUMN LAYOUT)    */}
         {/* ================================================================= */}
         <section className="py-24 lg:py-28 border-b border-divider/60 bg-carbon">
           <div className="layout-container">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-14 border-b border-divider/40">
               <div className="space-y-2">
                 <span className="text-[11px] font-mono tracking-widest uppercase text-stone-dim">
-                  System Architecture
+                  02 // System Architecture
                 </span>
                 <h2 className="text-3xl lg:text-4xl font-medium tracking-tight text-porcelain">
                   Roadside Incident Resolution Protocol
@@ -161,7 +393,7 @@ export default function EditorialLandingPage() {
         </section>
 
         {/* ================================================================= */}
-        {/* 3. CRAFT & PHOTOGRAPHY EDITORIAL SECTION                          */}
+        {/* 4. CRAFT & PHOTOGRAPHY EDITORIAL SECTION                          */}
         {/* ================================================================= */}
         <section className="py-24 lg:py-28 border-b border-divider/60 bg-graphite/30">
           <div className="layout-container">
@@ -169,7 +401,7 @@ export default function EditorialLandingPage() {
               
               <div className="lg:col-span-5 space-y-6">
                 <span className="text-[11px] font-mono tracking-widest uppercase text-stone-dim">
-                  Craft & Capability
+                  03 // Craft & Capability
                 </span>
                 <h2 className="text-3xl lg:text-4xl font-medium tracking-tight text-porcelain leading-tight">
                   Engineered for Automotive Integrity
@@ -223,7 +455,7 @@ export default function EditorialLandingPage() {
         </section>
 
         {/* ================================================================= */}
-        {/* 4. NETWORK RADAR OVERVIEW (WIDE CONTAINER)                        */}
+        {/* 5. NETWORK RADAR OVERVIEW (WIDE CONTAINER)                        */}
         {/* ================================================================= */}
         <section className="py-24 lg:py-28 border-b border-divider/60 bg-carbon">
           <div className="layout-container">
@@ -231,7 +463,7 @@ export default function EditorialLandingPage() {
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 pb-10 border-b border-divider/60">
                 <div className="space-y-1">
                   <span className="text-[11px] font-mono tracking-widest uppercase text-stone-dim block">
-                    Coverage Spectrum
+                    04 // Coverage Spectrum
                   </span>
                   <h2 className="text-2xl sm:text-3xl lg:text-4xl font-medium tracking-tight text-porcelain">
                     Autonomous Dispatch Readiness
@@ -240,16 +472,16 @@ export default function EditorialLandingPage() {
 
                 <div className="flex items-center gap-4 text-xs font-mono uppercase tracking-wider shrink-0">
                   <Link
-                    href="/customer/vehicles"
+                    href={user?.role === 'CUSTOMER' ? '/customer/home' : '/login?role=CUSTOMER&redirect=/customer/home'}
                     className="px-6 py-3 rounded-sm bg-porcelain text-carbon font-medium hover:bg-porcelain-dim transition-colors"
                   >
-                    Open My Garage
+                    Driver Portal
                   </Link>
                   <Link
-                    href="/login?role=MECHANIC"
+                    href={user?.role === 'MECHANIC' ? '/mechanic/home' : '/login?role=MECHANIC&redirect=/mechanic/home'}
                     className="px-6 py-3 rounded-sm border border-divider text-stone-muted hover:text-porcelain transition-colors"
                   >
-                    Mechanic Portal
+                    Mechanic Workshop
                   </Link>
                 </div>
               </div>
@@ -278,7 +510,7 @@ export default function EditorialLandingPage() {
       </main>
 
       {/* ================================================================= */}
-      {/* 5. MINIMALIST ARCHITECTURAL FOOTER                                */}
+      {/* 6. MINIMALIST ARCHITECTURAL FOOTER                                */}
       {/* ================================================================= */}
       <footer className="py-14 bg-carbon border-t border-divider/40 text-stone-dim text-xs font-mono">
         <div className="layout-container flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">

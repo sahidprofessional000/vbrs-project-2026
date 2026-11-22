@@ -44,7 +44,7 @@ interface UploadedFilePreview {
 }
 
 export default function ReportBreakdownPage() {
-  const { user } = useAuth();
+  const { user, isLoading: authLoading } = useAuth();
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -71,6 +71,13 @@ export default function ReportBreakdownPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submittedReport, setSubmittedReport] = useState<BreakdownReport | null>(null);
+
+  // Role separation guard: Redirect certified mechanics away from driver breakdown intake
+  useEffect(() => {
+    if (!authLoading && user?.role === 'MECHANIC') {
+      router.push('/mechanic/home');
+    }
+  }, [user, authLoading, router]);
 
   useEffect(() => {
     async function loadGarage() {
@@ -217,6 +224,17 @@ export default function ReportBreakdownPage() {
 
   const selectedVehicle = vehicles.find((v) => v.id === selectedVehicleId);
   const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+
+  if (!authLoading && user?.role === 'MECHANIC') {
+    return (
+      <div className="min-h-screen bg-carbon flex flex-col items-center justify-center text-stone-muted">
+        <Loader2 className="w-7 h-7 animate-spin text-porcelain mb-3" />
+        <span className="text-xs font-mono uppercase tracking-widest">
+          Mechanic Station Detected — Redirecting to Workshop...
+        </span>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-carbon text-porcelain flex flex-col selection:bg-porcelain selection:text-carbon">

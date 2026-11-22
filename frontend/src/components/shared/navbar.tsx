@@ -54,6 +54,31 @@ export function Navbar() {
               Overview
             </Link>
 
+            {!user && (
+              <>
+                <Link
+                  href="/login?role=CUSTOMER&redirect=/customer/home"
+                  className="text-stone-muted hover:text-porcelain transition-colors py-1"
+                >
+                  Driver Portal
+                </Link>
+
+                <Link
+                  href="/login?role=MECHANIC&redirect=/mechanic/home"
+                  className="text-stone-muted hover:text-porcelain transition-colors py-1"
+                >
+                  Technician Desk
+                </Link>
+
+                <Link
+                  href="/report-breakdown"
+                  className="text-crimson hover:text-crimson-hover transition-colors py-1 flex items-center gap-1 font-medium"
+                >
+                  <span>Request Rescue</span>
+                </Link>
+              </>
+            )}
+
             {user?.role === 'CUSTOMER' && (
               <>
                 <Link

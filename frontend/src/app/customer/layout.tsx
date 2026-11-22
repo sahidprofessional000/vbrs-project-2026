@@ -3,7 +3,6 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/auth-context';
-import { Navbar } from '@/components/shared/navbar';
 import { Loader2 } from 'lucide-react';
 
 export default function CustomerLayout({
@@ -15,8 +14,14 @@ export default function CustomerLayout({
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoading && !user) {
-      router.push('/login');
+    if (!isLoading) {
+      if (!user) {
+        router.push('/login?role=CUSTOMER&redirect=/customer/home');
+      } else if (user.role === 'MECHANIC') {
+        router.push('/mechanic/home');
+      } else if (user.role === 'ADMIN') {
+        router.push('/admin/dashboard');
+      }
     }
   }, [user, isLoading, router]);
 
@@ -24,21 +29,16 @@ export default function CustomerLayout({
     return (
       <div className="min-h-screen bg-carbon flex flex-col items-center justify-center text-stone-muted">
         <Loader2 className="w-7 h-7 animate-spin text-porcelain mb-3" />
-        <span className="text-xs font-mono uppercase tracking-widest">Restoring Secure Session...</span>
+        <span className="text-xs font-mono uppercase tracking-widest">
+          Restoring Driver Workspace...
+        </span>
       </div>
     );
   }
 
-  if (!user) {
+  if (!user || user.role !== 'CUSTOMER') {
     return null;
   }
 
-  return (
-    <div className="min-h-screen flex flex-col bg-carbon text-porcelain selection:bg-porcelain selection:text-carbon">
-      <Navbar />
-      <main className="flex-1 layout-container py-10">
-        {children}
-      </main>
-    </div>
-  );
+  return <>{children}</>;
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { Navbar } from '@/components/shared/navbar';
 import { api } from '@/lib/api';
 import { Vehicle, PowertrainType } from '@/types';
 import { 
@@ -157,7 +158,10 @@ export default function VehiclesPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="min-h-screen bg-carbon text-porcelain flex flex-col selection:bg-porcelain selection:text-carbon">
+      <Navbar />
+      <main className="flex-1 layout-container py-10">
+        <div className="space-y-8">
       {/* Editorial Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 pb-6 border-b border-divider/60">
         <div className="space-y-1.5">
@@ -578,6 +582,8 @@ export default function VehiclesPage() {
           </div>
         </div>
       )}
+        </div>
+      </main>
     </div>
   );
 }

@@ -35,7 +35,7 @@
 | **M6** | Admin Center, Moderation & Analytics | Admin dashboard, mechanic verification desk, dispute manager, SQL analytics, audit log viewer | 🟢 **COMPLETED & AUDITED** | 128 Backend Tests + 9 Frontend E2E suites pass; Audit in `docs/MILESTONE_6_VERIFICATION.md` |
 | **M7** | Rule-Based Diagnosis & Review System | Expert failure diagnosis engine, customer review submission, mechanic reputation scoring | 🟢 **COMPLETED & AUDITED** | 142 Backend Tests + 10 Frontend E2E suites pass; Audit in `docs/MILESTONE_7_VERIFICATION.md` |
 | **M8** | Testing, Security Hardening & Documentation | Full regression, security hardening (OWASP headers & penetration tests), responsive multi-device audit, academic report & presentation | 🟢 **COMPLETED & AUDITED** | 159 Backend Tests + 11 Frontend E2E suites pass; Audit in `docs/MILESTONE_8_VERIFICATION.md` |
-| **EXP-UPGRADE** | Customer & Mechanic Experiences + 3D Hologram | Dedicated Customer (`/customer/home`, `/customer/profile`) & Mechanic (`/mechanic/home`, `/mechanic/profile`) portals, Saved Addresses, Earnings API, 3D Automotive Hologram with 8 Selectable Subsystems | 🟡 **IN PROGRESS (Steps 1, 2, 3, 4 & 5 Complete)** | Safe migration deployed, 171 backend tests + customer, mechanic & 3D hologram Playwright E2E passing (100% green) |
+| **EXP-UPGRADE** | Customer & Mechanic Experiences + 3D Hologram | Dedicated Customer (`/customer/home`, `/customer/profile`) & Mechanic (`/mechanic/home`, `/mechanic/profile`) portals, Saved Addresses, Earnings API, 3D Automotive Hologram with 8 Selectable Subsystems, Public Gateways & Role Separation | 🟡 **IN PROGRESS (Steps 1, 2, 3, 4, 5 & 6 Complete)** | Safe migration deployed, 171 backend tests + customer, mechanic, 3D hologram & role separation Playwright E2E passing (100% green) |
 
 ---
 
@@ -85,7 +85,34 @@
     - `public/academic/screenshot-workshop-3d.png` (Workshop Full CAD Terminal)
     - `public/academic/screenshot-3d-hologram.png` (Translucent X-Ray Mode)
     - `public/academic/screenshot-3d-exploded.png` (Exploded Subsystem View)
-- [ ] **Step 6: Role Separation Navigation & Public Landing Gateways.**
+- [x] **Step 6: Role Separation Navigation & Public Landing Gateways:**
+  - **Public Landing Page Gateways (`/`)**:
+    - Created dual dedicated portal gateway cards (`#portal-gateways`) distinguishing the **Motorist Assistance Portal** (`#customer-gateway`) and the **Technician & Workshop Portal** (`#mechanic-gateway`).
+    - Dynamic authentication state: Unauthenticated visitors see direct role-tailored registration and sign-in shortcuts with prefilled intent (`/login?role=CUSTOMER&redirect=/customer/home`, `/login?role=MECHANIC&redirect=/mechanic/home`). Authenticated users receive direct contextual access buttons to their active workspace (`/customer/home` for drivers, `/mechanic/home` for mechanics, `/admin/dashboard` for admins).
+    - Preserved 3D Automotive Hologram in the Overview Hero (`variant="overview"`) with unrestricted 360-degree free orbit, real-time subsystem selection, and CAD/X-Ray toggles.
+  - **Secure Role-Based Authentication & Redirects (`/login`)**:
+    - Implemented strict role validation in login handler: Customers routed to `/customer/home`, Mechanics routed to `/mechanic/home`, Admins routed to `/admin/dashboard`.
+    - Sanitized `?redirect=` target handling: prevents cross-role privilege escalation or accidental navigation into unauthorized areas by verifying that destination paths match the user's granted role.
+  - **Strict Layout Boundaries & Role Interception Guards**:
+    - `/customer/layout.tsx`: Rejects unauthenticated traffic (redirecting to `/login?role=CUSTOMER`), intercepts `MECHANIC` users and routes to `/mechanic/home`, intercepts `ADMIN` users and routes to `/admin/dashboard`.
+    - `/mechanic/layout.tsx`: Rejects unauthenticated traffic (redirecting to `/login?role=MECHANIC`), intercepts `CUSTOMER` users and routes to `/customer/home`, intercepts `ADMIN` users and routes to `/admin/dashboard`.
+    - `/admin/layout.tsx`: Rejects unauthenticated traffic (redirecting to `/login?role=ADMIN`), intercepts `CUSTOMER` and `MECHANIC` roles and routes to their respective homeports.
+    - `/report-breakdown/page.tsx`: Added role separation guard intercepting `MECHANIC` role with automatic redirection to `/mechanic/home`.
+  - **Navigation Bar Alignment (`Navbar`)**:
+    - Public navigation links provided for guests (`Driver Portal`, `Technician Desk`, `Request Rescue`) alongside distinct `Sign In` / `Register` CTA buttons.
+    - Role-specific desktop and mobile menus: Customers see Garage, Service History, and Profile; Mechanics see Workshop, Profile, and Active Orders; Admins see Admin Dashboard.
+  - **Automated Playwright E2E Verification (`frontend/test/role-separation.e2e.mjs`)**:
+    - 5/5 test parts passed with 100% green:
+      1. Public Landing Gateways (`#customer-gateway`, `#mechanic-gateway`) and dynamic CTAs.
+      2. Role-based Login Redirection (Customer -> `/customer/home`, Mechanic -> `/mechanic/home`).
+      3. Cross-role protection: Customer navigating directly to `/mechanic/home` intercepted and returned to `/customer/home`.
+      4. Cross-role protection: Mechanic navigating directly to `/customer/home` or `/report-breakdown` intercepted and returned to `/mechanic/home`.
+      5. Hologram preservation: 3D Holographic Twin operational in Overview Hero and Full CAD Station in Mechanic Workshop.
+  - **High-Resolution Verification Screenshots**:
+    - `frontend/public/academic/screenshot-landing-gateways.png`
+    - `frontend/public/academic/screenshot-role-redirect-customer.png`
+    - `frontend/public/academic/screenshot-role-redirect-mechanic.png`
+- [ ] **Step 7: Full Regression & Verification.**
 - [ ] **Step 7: Full Regression & Verification.**
 
 ---

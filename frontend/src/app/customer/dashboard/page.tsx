@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { Navbar } from '@/components/shared/navbar';
 import { useAuth } from '@/context/auth-context';
 import { api } from '@/lib/api';
 import { Vehicle } from '@/types';
@@ -45,7 +46,10 @@ export default function CustomerDashboardPage() {
   const primaryVehicle = vehicles.find((v) => v.isDefault) || vehicles[0];
 
   return (
-    <div className="space-y-10">
+    <div className="min-h-screen bg-carbon text-porcelain flex flex-col selection:bg-porcelain selection:text-carbon">
+      <Navbar />
+      <main className="flex-1 layout-container py-10">
+        <div className="space-y-10">
       {/* Editorial Welcome Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 pb-6 border-b border-divider/60">
         <div className="space-y-1.5">
@@ -197,6 +201,8 @@ export default function CustomerDashboardPage() {
           </div>
         </div>
       </div>
+        </div>
+      </main>
     </div>
   );
 }
