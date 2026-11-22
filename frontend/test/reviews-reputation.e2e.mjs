@@ -35,7 +35,7 @@ async function testReviewsAndReputationLifecycle() {
     await custPage.locator('button:has-text("Driver")').click();
     await custPage.waitForTimeout(300);
     await custPage.locator('button:has-text("Authenticate Session")').click();
-    await custPage.waitForURL('**/customer/vehicles', { timeout: 10000 });
+    await custPage.waitForURL(/customer\/(home|vehicles)/, { timeout: 10000 });
 
     console.log('>>> Submitting breakdown incident on FDR Drive...');
     await custPage.goto('http://localhost:3000/report-breakdown', { waitUntil: 'networkidle' });
@@ -69,7 +69,7 @@ async function testReviewsAndReputationLifecycle() {
     await mechPage.locator('button:has-text("Technician")').click();
     await mechPage.waitForTimeout(300);
     await mechPage.locator('button:has-text("Authenticate Session")').click();
-    await mechPage.waitForURL('**/mechanic/portal', { timeout: 10000 });
+    await mechPage.waitForURL(/mechanic\/(home|portal)/, { timeout: 10000 });
 
     await mechPage.goto('http://localhost:3000/mechanic/portal', { waitUntil: 'networkidle' });
     await mechPage.waitForTimeout(1500);

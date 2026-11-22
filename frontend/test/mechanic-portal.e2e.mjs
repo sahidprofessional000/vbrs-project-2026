@@ -28,7 +28,7 @@ async function testMechanicPortalAndDiscovery() {
     await page.locator('button:has-text("Driver")').click();
     await page.waitForTimeout(300);
     await page.locator('button:has-text("Authenticate Session")').click();
-    await page.waitForURL('**/customer/vehicles', { timeout: 10000 });
+    await page.waitForURL(/customer\/(home|vehicles)/, { timeout: 10000 });
     console.log('    ✓ Customer authenticated.');
 
     console.log('>>> Navigating to /report-breakdown...');

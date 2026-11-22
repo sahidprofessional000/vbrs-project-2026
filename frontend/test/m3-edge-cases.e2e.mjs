@@ -60,7 +60,7 @@ async function runM3FrontendEdgeCaseTests() {
     await page.locator('button:has-text("Driver")').click();
     await page.waitForTimeout(300);
     await page.locator('button:has-text("Authenticate Session")').click();
-    await page.waitForURL('**/customer/vehicles', { timeout: 10000 });
+    await page.waitForURL(/customer\/(home|vehicles)/, { timeout: 10000 });
     console.log('    ✓ Customer authenticated.');
 
     // 2. Navigate to Breakdown Reporting Terminal

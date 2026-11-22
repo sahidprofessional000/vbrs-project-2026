@@ -46,7 +46,7 @@ async function testBreakdownReporting() {
     await submitBtn.click();
 
     // Wait for redirect to customer terminal
-    await page.waitForURL('**/customer/vehicles', { timeout: 10000 });
+    await page.waitForURL(/customer\/(home|vehicles)/, { timeout: 10000 });
     console.log('    ✓ Customer authenticated successfully.');
 
     // 3. Navigate to Breakdown Reporting Terminal

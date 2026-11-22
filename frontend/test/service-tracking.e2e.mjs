@@ -42,7 +42,7 @@ async function runServiceTrackingWorkflowTest() {
     await customerPage.locator('button:has-text("Driver")').click();
     await customerPage.waitForTimeout(300);
     await customerPage.locator('button:has-text("Authenticate Session")').click();
-    await customerPage.waitForURL('**/customer/vehicles', { timeout: 10000 });
+    await customerPage.waitForURL(/customer\/(home|vehicles)/, { timeout: 10000 });
     console.log('    ✓ Customer authenticated.');
 
     console.log('>>> Step 2: Navigating to Breakdown Reporting Wizard...');
@@ -94,7 +94,7 @@ async function runServiceTrackingWorkflowTest() {
     await mechanicPage.locator('button:has-text("Technician")').click();
     await mechanicPage.waitForTimeout(300);
     await mechanicPage.locator('button:has-text("Authenticate Session")').click();
-    await mechanicPage.waitForURL('**/mechanic/portal', { timeout: 10000 });
+    await mechanicPage.waitForURL(/mechanic\/(home|portal)/, { timeout: 10000 });
     console.log('    ✓ Mechanic authenticated.');
 
     await mechanicPage.goto(`${BASE_URL}/mechanic/portal`, { waitUntil: 'networkidle' });

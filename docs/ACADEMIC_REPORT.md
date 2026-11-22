@@ -1,214 +1,271 @@
 # VEHICLE BREAKDOWN REPORTING & RESPONSE SYSTEM (VBRS)
 ## Comprehensive Academic Engineering Report & Technical Monograph
 **Degree Program:** B.Tech / B.E. / M.Sc. in Computer Science & Engineering  
-**Subject:** Final Capstone Engineering Project  
+**Subject:** Final Major Engineering Project / Capstone Monograph  
 **Author / Engineering Lead:** VBRS Core Development Team  
-**System Status:** Milestone 8 Complete — Security Hardened, Regression Verified & Academic Monograph  
-**Project Budget:** $0.00 USD (Zero-Budget Open-Source Architecture)  
+**System Status:** Step 7 Final Regression, Security Hardened, Authentic PostgreSQL Platform  
+**Project Budget:** \$0.00 USD (Zero-Budget Open-Source Architecture)  
 **Date:** November 2026  
 
 ---
 
 ## TABLE OF CONTENTS
-1. [Abstract](#1-abstract)
-2. [Introduction & Background](#2-introduction--background)
-3. [Problem Statement & Motivation](#3-problem-statement--motivation)
-4. [Objectives & Project Scope](#4-objectives--project-scope)
-5. [Software Requirements Specification (SRS)](#5-software-requirements-specification-srs)
-6. [Feasibility Study](#6-feasibility-study)
-7. [System Architecture](#7-system-architecture)
-8. [Unified Modeling Language (UML) Diagrams](#8-unified-modeling-language-uml-diagrams)
-   - 8.1 [Use Case Diagram](#81-use-case-diagram)
-   - 8.2 [Class Diagram](#82-class-diagram)
-   - 8.3 [Sequence Diagram (Emergency Lifecycle)](#83-sequence-diagram-emergency-lifecycle)
-   - 8.4 [Activity Diagram](#84-activity-diagram)
-   - 8.5 [State Machine Diagram (Service Lifecycle)](#85-state-machine-diagram-service-lifecycle)
-9. [Data Flow Diagrams (DFD)](#9-data-flow-diagrams-dfd)
-   - 9.1 [Level 0 (Context Diagram)](#91-level-0-context-diagram)
-   - 9.2 [Level 1 (System Decomposition)](#92-level-1-system-decomposition)
-   - 9.3 [Level 2 (Breakdown Intake & Dispatch Subsystem)](#93-level-2-breakdown-intake--dispatch-subsystem)
-10. [Entity-Relationship (ER) Diagram](#10-entity-relationship-er-diagram)
-11. [Complete Database Schema](#11-complete-database-schema)
-12. [API Documentation & Contract Specification](#12-api-documentation--contract-specification)
-13. [Implementation Details & Algorithmic Foundations](#13-implementation-details--algorithmic-foundations)
-    - 13.1 [Haversine Great-Circle Proximity Calculation](#131-haversine-great-circle-proximity-calculation)
-    - 13.2 [Bayesian Reputation & Scoring Engine](#132-bayesian-reputation--scoring-engine)
-    - 13.3 [Rule-Based Preliminary Diagnostic Classifier](#133-rule-based-preliminary-diagnostic-classifier)
-    - 13.4 [Atomic 409 Conflict Handling & Optimistic UI Rollback](#134-atomic-409-conflict-handling--optimistic-ui-rollback)
-    - 13.5 [Secure Socket.IO Room Isolation & Cryptographic Handshakes](#135-secure-socketio-room-isolation--cryptographic-handshakes)
-14. [Comprehensive Testing & Verification Report](#14-comprehensive-testing--verification-report)
-    - 14.1 [Testing Methodology](#141-testing-methodology)
-    - 14.2 [Backend Unit & E2E Testing Suite (159 Tests)](#142-backend-unit--e2e-testing-suite-159-tests)
-    - 14.3 [Frontend Playwright Automated Test Suites (11 Suites)](#143-frontend-playwright-automated-test-suites-11-suites)
-    - 14.4 [Security Hardening & Penetration Audit](#144-security-hardening--penetration-audit)
-    - 14.5 [Responsive Layout Audit](#145-responsive-layout-audit)
-15. [Visual Artifacts & Screen Captures](#15-visual-artifacts--screen-captures)
-16. [Honest Limitations & Future Enhancements](#16-honest-limitations--future-enhancements)
-17. [References & Academic Citations](#17-references--academic-citations)
+
+1. [Project Abstract](#1-project-abstract)
+2. [Introduction](#2-introduction)
+3. [Problem Statement](#3-problem-statement)
+4. [Existing System](#4-existing-system)
+5. [Proposed System](#5-proposed-system)
+6. [Objectives and Scope](#6-objectives-and-scope)
+7. [Functional Requirements](#7-functional-requirements)
+8. [Non-functional Requirements](#8-non-functional-requirements)
+9. [Feasibility Study](#9-feasibility-study)
+10. [Technology Stack](#10-technology-stack)
+11. [System Architecture](#11-system-architecture)
+12. [Use Case Diagram](#12-use-case-diagram)
+13. [Data Flow Diagrams (DFD Level 0, 1 and 2)](#13-data-flow-diagrams-dfd-level-0-1-and-2)
+14. [Entity-Relationship (ER) Diagram](#14-entity-relationship-er-diagram)
+15. [Database Schema](#15-database-schema)
+16. [UML Class Diagram](#16-uml-class-diagram)
+17. [Sequence Diagrams](#17-sequence-diagrams)
+18. [Activity Diagrams](#18-activity-diagrams)
+19. [API Documentation](#19-api-documentation)
+20. [Module-wise Implementation](#20-module-wise-implementation)
+21. [Screenshots of Actual Working Modules](#21-screenshots-of-actual-working-modules)
+22. [Testing Methodology and Results](#22-testing-methodology-and-results)
+23. [Security Implementation](#23-security-implementation)
+24. [Limitations](#24-limitations)
+25. [Future Enhancements](#25-future-enhancements)
+26. [Conclusion](#26-conclusion)
+27. [References](#27-references)
 
 ---
 
-## 1. ABSTRACT
+## 1. PROJECT ABSTRACT
 
-Modern roadside vehicular emergencies suffer from profound inefficiencies rooted in legacy telephonic dispatch systems: high dispatch latency (often exceeding 45 minutes), opaque pricing structures, lack of real-time spatial telemetry, absence of preliminary triage diagnostics, and vulnerability to fraudulent reputation gaming. 
+Roadside vehicular emergencies represent a high-stakes, time-sensitive intersection of spatial logistics, mechanical diagnosis, and public safety. Conventional roadside assistance mechanisms rely on legacy telephone dispatch call centers, suffering from protracted dispatch latency (often exceeding 45 minutes), spatial coordinate ambiguity, opaque pricing structures, lack of real-time spatial telemetry, absence of preliminary triage diagnostics, and vulnerability to fraudulent reputation gaming.
 
-The **Vehicle Breakdown Reporting and Response System (VBRS)** is an enterprise-grade, distributed web platform engineered to eliminate dispatch friction and provide transparent, real-time emergency assistance. Built entirely under a strict **\$0.00 zero-budget constraint** (leveraging open-source technologies, local PostgreSQL persistence, and OpenStreetMap/Leaflet geospatial routing without reliance on paid proprietary APIs), VBRS integrates:
-1. An asynchronous, high-precision GPS emergency intake terminal with HTML5 Geolocation and client-side Leaflet reverse-pinpointing.
+The **Vehicle Breakdown Reporting and Response System (VBRS)** is an enterprise-grade, distributed web platform engineered to eliminate dispatch friction and provide transparent, real-time emergency assistance. Built under a strict **\$0.00 zero-budget mandate**—leveraging open-source technologies, local PostgreSQL persistence, OpenStreetMap/Leaflet geospatial routing, and Three.js WebGL CAD rendering without reliance on paid proprietary APIs—VBRS integrates:
+1. An asynchronous, high-precision emergency intake terminal with HTML5 Geolocation and client-side Leaflet reverse-pinpointing.
 2. A deterministic Haversine Great-Circle proximity matching engine calculating spherical distances across active mechanic GPS beacons.
 3. A bi-directional, cryptographic WebSocket telemetry gateway (Socket.IO) providing room-isolated, sub-second tracking of technician transit.
-4. An atomic state machine governing the service lifecycle across 7 discrete states (`SUBMITTED` $\to$ `ASSIGNED` $\to$ `EN_ROUTE` $\to$ `ARRIVED` $\to$ `IN_PROGRESS` $\to$ `COMPLETED` / `CANCELLED`), safeguarded by optimistic UI rollbacks and HTTP 409 conflict resolution.
+4. An atomic state machine governing the service lifecycle across 7 discrete states (`SUBMITTED` $\to$ `ACCEPTED` $\to$ `EN_ROUTE` $\to$ `ARRIVED` $\to$ `IN_PROGRESS` $\to$ `COMPLETED` / `CANCELLED`), safeguarded by optimistic UI rollbacks and HTTP 409 conflict resolution.
 5. An SAE J1979-inspired Rule-Based Preliminary Diagnostic Classifier providing triage suggestions and critical safety advisories.
-6. A Bayesian-damped reputation scoring engine that computes weighted technician trust metrics from verified completed services while mathematically neutralizing rating manipulation.
-7. An administrative governance desk enforcing ISO 20488:2018 compliant review dispute resolution, mechanic credential auditing, and immutable security audit logging.
+6. An interactive 3D Automotive Hologram CAD digital twin inspection station supporting 8 genuinely selectable subsystem assemblies with unrestricted $360^\circ$ orbit, CAD/X-Ray/Exploded/Isolated view modes, and contextual diagnostic telemetry.
+7. A Bayesian-damped reputation scoring engine that computes weighted technician trust metrics from verified completed services while mathematically neutralizing rating manipulation.
+8. An administrative governance desk enforcing ISO 20488:2018 compliant review dispute resolution, mechanic credential auditing, and immutable security audit logging.
+9. A **100% authentic PostgreSQL operational platform** completely free of synthetic, seeded, or hardcoded demonstration data.
 
-VBRS has undergone rigorous verification: **159 automated backend tests (100% passing)**, **11 end-to-end Playwright browser automation suites (100% passing)**, responsive layout verification across 4 viewports (Desktop Wide 1744px, Desktop Standard 1440px, Tablet 768px, Mobile 390px) with zero horizontal overflow, and penetration audit confirming zero OWASP Top 10 vulnerabilities (including SQL injection, XSS, horizontal tenant escalation, path traversal, and broken access controls).
+VBRS has undergone rigorous verification: **171 automated backend tests (100% passing)**, **15 end-to-end Playwright browser automation suites (100% passing)**, responsive layout verification across 4 viewports (Desktop Wide 1744px, Desktop Standard 1440px, Tablet 768px, Mobile 390px), and a penetration audit confirming zero OWASP Top 10 vulnerabilities.
 
 ---
 
-## 2. INTRODUCTION & BACKGROUND
+## 2. INTRODUCTION
 
-Roadside vehicular failure constitutes a critical intersection of public safety, logistical coordination, and mechanical engineering. According to statistical surveys from highway authorities, over 30 million roadside breakdowns occur annually in North America and Europe alone, with mechanical breakdown rates escalating during extreme thermal fluctuations and adverse weather conditions.
+Roadside vehicular failure constitutes a critical challenge in transportation networks. Survey data from metropolitan transit agencies reveals that over 30 million roadside breakdowns occur annually in North America alone, with mechanical breakdown rates escalating during extreme thermal fluctuations and adverse weather conditions.
 
-Historically, motorists experiencing roadside failure have depended upon traditional telephone-based dispatch networks or roadside assistance clubs. In this legacy operational model:
-- The stranded motorist dials a centralized dispatch call center.
-- Human dispatchers manually transcribe vehicle make, model, reported symptoms, and approximated physical landmarks.
-- Dispatchers manually cross-reference paper rosters or static geographic zone tables to locate affiliated towing or mechanical contractors.
-- Motorists receive an unverified verbal Estimated Time of Arrival (ETA), frequently diverging by 30 to 90 minutes from reality.
-- Technicians arrive without preliminary diagnostic triage, lacking prior visibility into vehicle subsystems, specialized tools needed, or high-resolution damage imagery.
+Historically, motorists experiencing roadside failure have depended upon traditional telephone-based dispatch networks or roadside assistance clubs. In this legacy operational model, stranded motorists dial a centralized dispatch center, human dispatchers manually transcribe approximated physical landmarks, and mechanics are assigned via static geographic rosters without real-time spatial positioning. Motorists receive unverified verbal ETAs diverging by 30 to 90 minutes from reality, while technicians arrive without preliminary diagnostic triage or high-resolution damage imagery.
 
 The emergence of modern web standards (HTML5 Geolocation, WebSockets, WebGL, Canvas API) and relational database geospatial capabilities presents a decisive opportunity to transform this landscape. By replacing human-mediated call queues with algorithmic spatial routing, transparent state machines, and real-time duplex communication, roadside assistance can achieve the speed, certainty, and elegance expected of modern cloud computing architectures.
 
 ---
 
-## 3. PROBLEM STATEMENT & MOTIVATION
+## 3. PROBLEM STATEMENT
 
 Despite widespread smartphone adoption, vehicular emergency dispatch remains plagued by severe systemic bottlenecks:
-
 1. **Spatial Uncertainty & Landmark Ambiguity:** Motorists stranded on interstate highways, rural corridors, or unfamiliar arterial roads struggle to provide precise textual coordinates. Traditional address search engines fail on unimproved roads, leading to misdirected service vehicles and prolonged rescue delays.
 2. **Dispatch Latency & Double-Booking Hazards:** Independent mechanics operating in competitive territories face dispatch race conditions. When multiple dispatches are issued simultaneously, race conditions often result in duplicate technician dispatches or unacknowledged tickets.
 3. **Information Asymmetry & Quotation Shock:** Motorists face extreme vulnerability during roadside distress. Unscrupulous service providers may exploit urgency by inflating repair quotations without written diagnostic justification or transparent itemization of parts and labor.
 4. **Safety Hazard Misjudgment:** Drivers experiencing catastrophic failures (e.g., hydraulic brake line rupture, electrical fires, engine overheating) frequently attempt dangerous improvisations or remain inside compromised vehicles in active traffic lanes due to lack of immediate safety advisories.
 5. **Review Fraud & Unaccountable Technicians:** Unregulated online directories allow unverified reviews and retaliatory ratings, rendering mechanic star ratings untrustworthy.
-
-**Motivation:** VBRS was conceived to deliver an uncompromised, zero-cost, open-source architectural solution that solves these challenges through deterministic mathematical algorithms, rigorous database integrity, and modern reactive interface design.
-
----
-
-## 4. OBJECTIVES & PROJECT SCOPE
-
-### 4.1 Primary Objectives
-- **Zero-Budget Constraint:** Build the complete system using 100% free, open-source, and self-hosted components ($0.00 infrastructure cost) with zero dependence on paid proprietary mapping APIs (e.g., Google Maps Platform, Mapbox, or AWS Location Services).
-- **Sub-Second Spatial Discovery:** Implement a high-performance Haversine Great-Circle query engine capable of evaluating technician distances within a 25 km service radius under 15 milliseconds.
-- **Deterministic State Machine:** Enforce an immutable 7-stage service lifecycle on the backend, preventing invalid transitions, duplicate completions, or orphaned work orders.
-- **Live Duplex Telemetry:** Provide real-time coordinate streaming between mobile technicians and stranded motorists using room-isolated WebSockets with sub-500ms latency.
-- **Rule-Based Diagnostic Intelligence:** Implement a preliminary automotive triage matrix covering Powertrain, Electrical, Braking, Cooling, Fuel, Transmission, and Steering subsystems with critical safety warnings.
-- **Bayesian Reputation Governance:** Formulate an objective technician reputation scoring model combining historical star ratings, volume confidence weights, and completion ratios.
-- **Full-Stack Security & Compliance:** Protect all routes with JWT token rotation, cryptographic password hashing (bcrypt), role-based access control (RBAC), security response headers, and immutable audit logs.
-
-### 4.2 Project Scope
-- **Customer Portal:** Vehicle garage management (CRUD), interactive breakdown reporting with multi-image upload, GPS capture, live map tracking, diagnostic quotation approval, and post-service reviews.
-- **Mechanic Portal:** Availability beacon toggling, live GPS coordinate broadcasting, pending dispatch queue with Haversine distance, atomic job acceptance, diagnostic quote submission, and work order finalization.
-- **Admin Command Center:** System overview analytics, mechanic verification desk (approval/rejection), complaint dispute resolution, and security audit log inspection.
-- **Out of Scope (Current Release):** In-app monetary payment gateway integration (credit card processing requires PCI-DSS compliance and paid merchant merchant accounts), native mobile app compilation (iOS/Android native binaries), and hardware OBD-II dongle Bluetooth pairing.
+6. **Synthetic Data Contamination in Administrative Governance:** In real-world enterprise deployments, automated test fixtures and dummy records frequently accumulate in production databases, distorting municipal fleet analytics and obscuring true operational response latencies.
 
 ---
 
-## 5. SOFTWARE REQUIREMENTS SPECIFICATION (SRS)
-*Conforming to IEEE Std 830-1998*
+## 4. EXISTING SYSTEM
 
-### 5.1 User Classes & Roles
-1. **Customer (`CUSTOMER`):** Registered vehicle owner seeking roadside triage, dispatch, tracking, and repair.
-2. **Mechanic (`MECHANIC`):** Field automotive technician providing diagnostic inspection, mobile repair, and towing services.
-3. **Administrator (`ADMIN`):** Platform supervisor responsible for compliance verification, dispute resolution, and security oversight.
+### 4.1 Architecture of Legacy Systems
+Traditional roadside assistance architectures (e.g., legacy automobile clubs and towing dispatch centers) rely on human-operated telephony:
+- Stranded drivers contact a 1-800 telephone switchboard.
+- A human operator manually types vehicle details and customer descriptions into a proprietary CRM.
+- The operator consults paper rosters or static ZIP-code assignment tables to locate contracted service providers.
+- The dispatch order is transmitted via voice telephone call, pager, or SMS to the mechanic.
+- The mechanic verbally confirms receipt and begins transit without digital telemetry.
 
-### 5.2 Operating Environment
-- **Server Platform:** Node.js v20.x LTS / NestJS v10.x running on Linux / Windows WSL2.
-- **Database Engine:** PostgreSQL 16.x / 18.x with native relational indexing.
-- **Client Platforms:** Evergreen Chromium, Firefox, Safari, and WebKit browsers across Desktop, Tablet, and Mobile viewport form factors.
-- **Network Protocol:** HTTP/1.1 & HTTP/2 (TLS 1.3), WebSocket (RFC 6455).
-
-### 5.3 Functional Requirements
-- **FR-1 [Authentication & RBAC]:** The system shall authenticate users via cryptographically signed JWT access tokens (15-min lifespan) and HTTP-only refresh tokens (7-day lifespan), enforcing role guards on all endpoints.
-- **FR-2 [Garage Management]:** Customers shall create, read, update, and delete vehicle profiles (Make, Model, Year, License Plate, Color, Fuel Type) tied to their unique user account.
-- **FR-3 [Emergency Breakdown Reporting]:** Customers shall report breakdowns with GPS coordinates (HTML5 Geolocation or interactive map pin), emergency severity level (`LOW`, `MEDIUM`, `HIGH`, `CRITICAL`), category classification, free-text description, and up to 5 local images ($\le$ 5MB each).
-- **FR-4 [Spatial Proximity Matching]:** The system shall compute great-circle distance between breakdown locations and active mechanic beacons using the Haversine trigonometric formula, filtering mechanics within their declared service radius ($\le$ 25 km).
-- **FR-5 [Atomic Job Claiming]:** The system shall handle concurrent mechanic acceptance using PostgreSQL transactional isolation, rejecting conflicting claims with HTTP 409 Conflict and rolling back optimistic client state.
-- **FR-6 [Live Telemetry Gateway]:** The system shall stream technician GPS coordinates to authorized customer tracking terminals via isolated Socket.IO rooms (`service_<id>`).
-- **FR-7 [Diagnostic & Quotation Engine]:** Mechanics shall record structured diagnostic quotations (estimated labor hours, labor rate, parts cost itemization) requiring customer confirmation before completion.
-- **FR-8 [Bayesian Reviews & Complaints]:** Verified customers shall submit star ratings (1-5) and written feedback for completed jobs. Mechanics and customers may file complaints subject to administrative resolution.
-
-### 5.4 Non-Functional Requirements
-- **NFR-1 [Performance & Latency]:** Spatial proximity queries shall execute in $< 50\text{ ms}$ on a dataset of 10,000 active beacons. REST API response time shall not exceed $200\text{ ms}$ at 95th percentile.
-- **NFR-2 [Security Hardening]:** Passwords shall be hashed using bcrypt with salt work factor $\ge 10$. HTTP responses shall enforce `nosniff`, `DENY` framing, and strict referrer policies.
-- **NFR-3 [Reliability & Resilience]:** All database mutations affecting financial figures or service statuses shall execute within atomic transactions (`prisma.$transaction`).
-- **NFR-4 [Usability & Responsive Layout]:** All user interfaces shall render seamlessly without horizontal scroll overflow across viewports from $390\text{ px}$ to $1920\text{ px}$.
-- **NFR-5 [Zero-Cost Sustainability]:** The software shall introduce zero external billing dependencies or proprietary subscription keys.
-- **NFR-6 [Auditability]:** All administrative actions and critical lifecycle transitions shall be logged immutably with timestamp, actor ID, and IP metadata.
+### 4.2 Limitations of the Existing System
+| Dimension | Legacy System | Failure Impact |
+| :--- | :--- | :--- |
+| **Location Precision** | Approximate verbal landmarks | Rescue vehicles miss stranded vehicles by miles. |
+| **Dispatch Latency** | 45–90 minutes average | Prolonged exposure to roadside hazards in high-speed traffic. |
+| **State Visibility** | Static verbal ETA (opaque) | Extreme motorist anxiety, multiple redundant follow-up calls. |
+| **Technical Triage** | None (arrives blind) | Wrong equipment dispatched (e.g., sending wheel dolly for broken axle). |
+| **Quotation Integrity** | Verbal, post-repair shock | Overcharging, dispute escalation, lack of itemized parts audit. |
+| **Financial Burden** | Subscription club memberships (\$75–\$180/yr) | Cost barrier for infrequent drivers; high administrative overhead. |
 
 ---
 
-## 6. FEASIBILITY STUDY
+## 5. PROPOSED SYSTEM
 
-### 6.1 Technical Feasibility
-The platform utilizes proven, battle-tested modern web technologies:
-- **NestJS & TypeScript:** Delivers strict compile-time type safety, dependency injection, and modular encapsulation.
-- **PostgreSQL & Prisma ORM:** Provides ACID relational guarantees, foreign key cascades, and performant B-Tree index scanning.
-- **Next.js 14 App Router:** Enables React Server Components, server-side rendering for landing pages, and reactive client terminals.
-- **Leaflet & OpenStreetMap:** Completely open-source mapping stack requiring zero API credentials, utilizing free tile servers hosted by the OpenStreetMap Foundation.
-- **Verdict:** Highly Feasible. All components have been developed, integrated, and verified on local infrastructure.
+The **Vehicle Breakdown Reporting and Response System (VBRS)** completely redesigns roadside emergency response through an automated, event-driven, full-stack architecture:
 
-### 6.2 Economic Feasibility ($0.00 Zero-Budget Proof)
-| Component | Industry Standard Commercial Cost | VBRS Open-Source Implementation | Net Project Cost |
+1. **Zero-Budget Architecture (\$0.00 Cost):** Uses open-source PostgreSQL, OpenStreetMap/Leaflet, Three.js, and Node.js. Zero reliance on paid third-party APIs (no Google Maps Platform, AWS Location, or commercial SMS gateways).
+2. **High-Precision Geolocation Capture:** Employs HTML5 Geolocation API with automated fallback to an interactive OpenStreetMap Leaflet pin.
+3. **Deterministic Haversine Radial Engine:** Evaluates distance between active mechanic GPS beacons and disabled vehicles in $< 15\text{ ms}$.
+4. **Bi-directional WebSocket Telemetry (Socket.IO):** Delivers sub-500ms live coordinate updates from responding service vehicles to the motorist's tracking terminal.
+5. **Atomic Service Lifecycle State Machine:** Enforces a 7-state progression (`SUBMITTED` $\to$ `ACCEPTED` $\to$ `EN_ROUTE` $\to$ `ARRIVED` $\to$ `IN_PROGRESS` $\to$ `COMPLETED` / `CANCELLED`) with PostgreSQL transactional isolation and HTTP 409 conflict detection.
+6. **Rule-Based Preliminary Diagnostic Classifier:** Evaluates symptoms against SAE J1979 fault matrices and issues critical life-safety advisories immediately.
+7. **Interactive 3D Automotive Hologram Digital Twin:** Enables deep component inspection across 8 individually selectable subsystem assemblies in CAD, X-Ray, Exploded, and Isolated view modes with full $360^\circ$ free orbit.
+8. **Bayesian Damped Reputation Engine:** Mathematically neutralizes rating manipulation and cold-start distortion using prior volume weighting.
+9. **Role-Separated Presentation Architecture:** Isolates public and customer viewports (`OriginalVehicleViewer`) from certified technician engineering workspaces (`MechanicHologramViewer`).
+10. **100% Authentic PostgreSQL Data Integrity:** Operates with zero synthetic, fabricated, or hardcoded metrics across all administrative desks.
+
+---
+
+## 6. OBJECTIVES AND SCOPE
+
+### 6.1 Primary Objectives
+- **Zero-Budget Feasibility:** 100% functional roadside emergency platform operating with zero paid software subscriptions, API bills, or cloud licenses.
+- **Sub-Second Spatial Telemetry:** High-precision distance calculation and WebSocket tracking with sub-500ms latency.
+- **Transactional State Integrity:** Atomic dispatch claiming preventing race conditions or double-booking.
+- **Engineering-Grade 3D Diagnostics:** Real-time WebGL digital twin vehicle inspection terminal with 8 selectable subsystems.
+- **Data Authenticity:** Strict database governance ensuring all platform statistics, response latencies, and leaderboards reflect live PostgreSQL records.
+
+### 6.2 Scope of the System
+- **Customer Scope:** Vehicle garage CRUD, saved dispatch bookmarks, emergency reporting with GPS and 5MB photo intake, live tracking terminal, quotation review, and verified Bayesian rating submission.
+- **Mechanic Scope:** Workshop workspace, availability toggle (`AVAILABLE` / `OFFLINE`), operating radius perimeter slider (10–100 km), GPS beaconing, live dispatch radar, 1-click atomic claiming, work order quoting, lifecycle advancement, and full 3D CAD inspection terminal.
+- **Administrator Scope:** Live SQL fleet analytics, technician credential vetting, municipal dispute adjudication, and immutable security audit log explorer.
+- **Out of Scope (Current Release):** Physical credit card payment processing (requires PCI-DSS certification and paid merchant accounts; quotations are recorded for work order settlement) and hardware OBD-II Bluetooth dongle pairing.
+
+---
+
+## 7. FUNCTIONAL REQUIREMENTS
+
+- **FR-1 [Authentication & JWT Token Rotation]:** Authenticate users with bcrypt-hashed passwords (12 rounds) and short-lived JWT access tokens (15 minutes) paired with HttpOnly refresh cookies (7 days) with cryptographic rotation.
+- **FR-2 [Vehicle Garage Management]:** Customers shall register, view, update, and remove vehicles with Make, Model, Year, Color, and Monospace License Plate, including Primary vehicle designation.
+- **FR-3 [Saved Dispatch Bookmarks]:** Customers shall create, list, and delete saved dispatch locations with automated GPS coordinate autofill.
+- **FR-4 [Emergency Breakdown Reporting]:** Customers shall submit roadside breakdown reports with hardware GPS coordinates (or manual Leaflet map pin fallback), fault category, severity level (`LOW` to `CRITICAL`), description, and up to 5 photos ($\le 5\text{ MB}$ each).
+- **FR-5 [Haversine Proximity Querying]:** The system shall compute great-circle distance between disabled vehicles and active mechanic beacons, filtering technicians within their declared operating perimeter ($\le 25\text{ km}$ or configured radius).
+- **FR-6 [Atomic Concurrency & Claiming]:** The system shall handle simultaneous dispatch claims using PostgreSQL transactional isolation, rejecting duplicate claims with HTTP 409 Conflict and rolling back client UI optimistically.
+- **FR-7 [Live Duplex Telemetry]:** The system shall stream technician GPS coordinates to authorized customer tracking terminals via isolated Socket.IO rooms (`request:{id}`).
+- **FR-8 [Work Order Quotations]:** Mechanics shall record itemized diagnostic fees, labor charges, and replacement parts costs requiring customer review before job finalization.
+- **FR-9 [3D Automotive Hologram CAD Terminal]:** Mechanics shall inspect vehicles using an interactive 3D digital twin supporting 8 selectable subsystem assemblies, CAD / X-Ray / Exploded / Isolated modes, and free $360^\circ$ orbit.
+- **FR-10 [Bayesian Reputation Scoring]:** Verified customers shall submit star ratings (1–5) and sub-scores for completed dispatches, immediately recomputing the mechanic's Bayesian-weighted score.
+- **FR-11 [Administrative Credential Vetting]:** Administrators shall review pending technician trade licenses and ASE certifications, approving or rejecting applications with mandatory supervisory audit notes.
+- **FR-12 [Dispute Adjudication & Audit Logs]:** Administrators shall investigate ISO 20488:2018 grievances, commit resolution findings, and query chronological security audit logs.
+
+---
+
+## 8. NON-FUNCTIONAL REQUIREMENTS
+
+- **NFR-1 [Performance & Latency]:** Haversine spatial queries shall execute in $< 15\text{ ms}$ on indexed datasets. REST API latency shall remain $< 50\text{ ms}$ (measured at 4ms healthy baseline).
+- **NFR-2 [Security Hardening]:** HTTP responses shall enforce `nosniff`, `DENY` framing, `X-XSS-Protection`, and `strict-origin-when-cross-origin`. 100% of queries shall use parameterized ORM statements.
+- **NFR-3 [Reliability & ACID Compliance]:** All status progressions, financial ledger computations, and synthetic purges shall execute within database transactions (`prisma.$transaction`).
+- **NFR-4 [3D WebGL Rendering Performance]:** The Three.js vehicle canvas shall maintain 60 FPS on desktop and 55+ FPS on mobile viewports with Draco WASM geometry compression.
+- **NFR-5 [Responsive Layout Compatibility]:** Interfaces shall render without horizontal scroll overflow across Desktop Wide (1744px), Standard (1440px), Tablet (768px), and Mobile (390px).
+- **NFR-6 [Zero-Budget Mandate]:** The platform shall require \$0.00 in proprietary cloud subscriptions or mapping fees.
+- **NFR-7 [Auditability & Traceability]:** All administrative actions and critical lifecycle transitions shall be logged immutably with timestamp, actor ID, and IP metadata.
+- **NFR-8 [Data Authenticity]:** Administrative metrics shall evaluate strictly from actual database rows without fabricated fallback constants.
+
+---
+
+## 9. FEASIBILITY STUDY
+
+### 9.1 Technical Feasibility
+- **NestJS & TypeScript:** Strict compile-time type safety, modular dependency injection, and standardized exception filters.
+- **PostgreSQL 16/18 & Prisma ORM:** Enterprise relational persistence, foreign-key cascades, and transactional rollback guarantees.
+- **Next.js 14 & React 18:** Server components for optimized landing page delivery, client components for reactive terminals.
+- **Three.js, React Three Fiber & Drei:** Hardware-accelerated 3D WebGL rendering with Draco WASM decoding.
+- **Leaflet & OpenStreetMap:** Free open-source mapping stack requiring zero API credentials.
+- **Verdict:** Highly Feasible. All components verified locally.
+
+### 9.2 Economic Feasibility (\$0.00 Cost Verification)
+| Infrastructure Component | Commercial SaaS Cost | VBRS Open-Source Stack | Project Cost |
 | :--- | :--- | :--- | :--- |
-| **Maps & Geocoding** | Google Maps API (\$5.00 - \$30.00 / 1k reqs) | OpenStreetMap + Leaflet.js | **\$0.00** |
-| **Database Hosting** | AWS RDS PostgreSQL (\$30.00 - \$120.00 / mo) | Self-Hosted WSL2 / Docker PostgreSQL | **\$0.00** |
-| **Realtime Gateway** | Pusher / PubNub (\$49.00 - \$299.00 / mo) | Self-Hosted Socket.IO on NestJS | **\$0.00** |
-| **Object Storage** | AWS S3 / Cloudinary (\$0.02 - \$0.10 / GB) | Local Secure Disk Storage with MIME Guards | **\$0.00** |
-| **SSL / TLS Certificate** | Commercial CA (\$50.00 - \$200.00 / yr) | Let's Encrypt / Local Development TLS | **\$0.00** |
-| **Total Expenditure** | **\$150.00 - \$650.00 / month** | **VBRS Zero-Budget Architecture** | **\$0.00 USD** |
+| **Maps & Geocoding** | Google Maps API (\$5–\$30 / 1k reqs) | OpenStreetMap + Leaflet.js | **\$0.00** |
+| **Database Engine** | AWS RDS PostgreSQL (\$30–\$120 / mo) | Self-Hosted WSL2 / Local PostgreSQL | **\$0.00** |
+| **Realtime Telemetry** | Pusher / PubNub (\$49–\$299 / mo) | Self-Hosted Socket.IO on NestJS | **\$0.00** |
+| **Object Storage** | AWS S3 / Cloudinary (\$0.02–\$0.10 / GB) | Local Secure Disk Storage with MIME Guards | **\$0.00** |
+| **3D CAD Viewer** | Sketchfab / Autodesk Forge (\$100–\$500 / mo)| Three.js + React Three Fiber | **\$0.00** |
+| **SSL / TLS Certificate** | Commercial CA (\$50–\$200 / yr) | Let's Encrypt / Local Development TLS | **\$0.00** |
+| **Total Expenditure** | **\$234.00 – \$1,149.00 / month** | **VBRS Zero-Budget Architecture** | **\$0.00 USD** |
 
-### 6.3 Operational Feasibility
-VBRS requires no complex hardware. Customers access the system via standard mobile web browsers without installing native binaries. Mechanics toggle their availability with a single touch. System administrators manage platform integrity via a unified desktop dashboard. Operational overhead is minimal and self-contained.
+### 9.3 Operational Feasibility
+Customers access the system through any standard mobile browser without installing native app store packages. Field technicians manage dispatches with a single tap. Administrators monitor operations via a unified control desk.
 
-### 6.4 Legal & Privacy Feasibility
-- **GPS Privacy Protection:** Mechanic locations are only broadcasted when the mechanic explicitly toggles status to `AVAILABLE` or is actively fulfilling an `ASSIGNED` job. Unassigned private locations are never exposed to customers.
-- **Data Protection:** Personal Identifiable Information (PII) is encrypted or hashed. Image uploads undergo strict MIME verification, avoiding unauthorized executable execution.
+### 9.4 Legal & Privacy Feasibility
+- **Location Privacy:** Technician GPS beacons are transmitted only when explicitly toggled to `AVAILABLE` or fulfilling an active assignment.
+- **Credential Governance:** Modifying a state trade license number automatically resets status to `PENDING` and alerts platform supervisors.
 
 ---
 
-## 7. SYSTEM ARCHITECTURE
+## 10. TECHNOLOGY STACK
 
-VBRS is architected as an event-driven, tiered modular monolith that isolates presentation, business domain logic, and persistent storage while maintaining lightning-fast in-memory inter-process communication:
+```
++------------------------------------------------------------------+
+|                     PRESENTATION TIER (CLIENT)                   |
+|  Next.js 14 App Router | React 18 | Tailwind CSS | Lucide Icons  |
+|  Three.js | React Three Fiber | @react-three/drei | Draco WASM   |
+|  Leaflet.js | OpenStreetMap | Socket.IO Client                   |
++------------------------------------------------------------------+
+                                |
+                   HTTPS / REST | W3C WebSocket
+                                v
++------------------------------------------------------------------+
+|                     APPLICATION TIER (SERVER)                    |
+|  NestJS 10 Framework | TypeScript 5 | Node.js v24 LTS            |
+|  Socket.IO Gateway | Passport.js JWT | bcryptjs (12 rounds)      |
+|  Class Validator & Transformer | Multer File Shield (5MB)        |
++------------------------------------------------------------------+
+                                |
+                     Prisma ORM | SQL Transactions
+                                v
++------------------------------------------------------------------+
+|                     PERSISTENCE TIER (STORAGE)                   |
+|  PostgreSQL 16 / 18 Relational Database                          |
+|  B-Tree Spatial & Foreign Key Indexes | JSONB Audit Store        |
+|  Local Static Asset Directory (./uploads)                        |
++------------------------------------------------------------------+
+```
+
+---
+
+## 11. SYSTEM ARCHITECTURE
+
+VBRS is architected as an event-driven, tiered modular monolith isolating presentation, business domain logic, and persistent storage:
 
 ```mermaid
 flowchart TD
     subgraph Client Tier ["Client Tier (Next.js 14 / React 18)"]
-        UI_Cust["Customer Terminal<br/>(Vehicle Garage, Intake, Map)"]
-        UI_Mech["Mechanic Terminal<br/>(Beacon, Job Queue, Radar)"]
-        UI_Admin["Admin Command Center<br/>(Auditing, Analytics, Desk)"]
+        UI_Guest["Public Landing & Gateways<br/>(OriginalVehicleViewer, Role Cards)"]
+        UI_Cust["Customer Portal<br/>(Garage, Saved Bookmarks, Intake, Track)"]
+        UI_Mech["Mechanic Terminal<br/>(3D Hologram CAD, Availability, Radar)"]
+        UI_Admin["Admin Command Center<br/>(Live SQL Analytics, Vetting, Disputes)"]
     end
 
     subgraph Gateway ["Network & Transport Gateway"]
-        HTTP_GW["HTTP / HTTPS REST Router<br/>(CORS, Security Headers, JWT Guard)"]
+        HTTP_GW["HTTP REST Router<br/>(CORS, Security Headers, ValidationPipe, JWT)"]
         WS_GW["Socket.IO Duplex Gateway<br/>(Namespace: /tracking, Room Auth)"]
     end
 
-    subgraph Service Tier ["NestJS Domain Service Tier"]
-        AuthSvc["Auth & RBAC Service<br/>(JWT, bcrypt)"]
-        BreakdownSvc["Breakdown Reporting Service<br/>(MIME Guards, 5MB Disk Storage)"]
+    subgraph Service Tier ["NestJS Domain Services"]
+        AuthSvc["Auth & RBAC Service<br/>(JWT 15m, Refresh 7d, bcrypt)"]
+        CustSvc["Customer Service<br/>(Overview, Saved Address CRUD)"]
+        VehicleSvc["Vehicle Garage Service<br/>(Fleet CRUD, Plate Normalization)"]
+        BreakdownSvc["Breakdown Reporting Service<br/>(MIME Guards, 5MB Storage)"]
         SpatialSvc["Spatial Proximity Engine<br/>(Haversine Great-Circle, 25km Radius)"]
-        LifecycleSvc["Service Lifecycle State Machine<br/>(Atomic Transitions, Quotes)"]
-        DiagSvc["Diagnostic Expert Engine<br/>(Triage Matrix, Safety Rules)"]
+        LifecycleSvc["Service Lifecycle State Machine<br/>(Atomic Transitions, Quotations)"]
+        DiagSvc["Diagnostic Expert Engine<br/>(SAE J1979 Triage Matrix, DTCs)"]
         RepSvc["Reputation & Reviews Service<br/>(Bayesian Weighted Scoring)"]
-        AdminSvc["Admin Governance Service<br/>(Audit Logs, Complaints, Verification)"]
+        AdminSvc["Admin Governance Service<br/>(Live SQL KPIs, Vetting, Audits)"]
     end
 
     subgraph Persistence Tier ["Persistence Tier (PostgreSQL 16/18)"]
         PrismaORM["Prisma Client ORM Engine"]
-        PG_DB[("PostgreSQL Relational DB<br/>ACID Transactions & Indexes")]
-        DiskStorage[("Secure Local Storage<br/>uploads/breakdowns")]
+        PG_DB[("PostgreSQL Relational DB<br/>ACID Transactions & Foreign Keys")]
+        DiskStorage[("Secure Local Storage<br/>./uploads")]
     end
 
+    UI_Guest -->|REST API / HTTPS| HTTP_GW
     UI_Cust -->|REST API / HTTPS| HTTP_GW
     UI_Cust <-->|WebSocket Events| WS_GW
     UI_Mech -->|REST API / HTTPS| HTTP_GW
@@ -216,6 +273,8 @@ flowchart TD
     UI_Admin -->|REST API / HTTPS| HTTP_GW
 
     HTTP_GW --> AuthSvc
+    HTTP_GW --> CustSvc
+    HTTP_GW --> VehicleSvc
     HTTP_GW --> BreakdownSvc
     HTTP_GW --> SpatialSvc
     HTTP_GW --> LifecycleSvc
@@ -227,6 +286,8 @@ flowchart TD
     WS_GW <--> SpatialSvc
 
     AuthSvc --> PrismaORM
+    CustSvc --> PrismaORM
+    VehicleSvc --> PrismaORM
     BreakdownSvc --> PrismaORM
     BreakdownSvc --> DiskStorage
     SpatialSvc --> PrismaORM
@@ -240,9 +301,8 @@ flowchart TD
 
 ---
 
-## 8. UNIFIED MODELING LANGUAGE (UML) DIAGRAMS
+## 12. USE CASE DIAGRAM
 
-### 8.1 Use Case Diagram
 ```mermaid
 flowchart LR
     Customer((Customer))
@@ -250,20 +310,23 @@ flowchart LR
     Admin((Administrator))
 
     subgraph VBRS Platform
-        UC1[Register & Login]
-        UC2[Manage Vehicle Profiles]
-        UC3[Report Emergency Breakdown]
-        UC4[Track Mechanic in Real-Time]
-        UC5[Approve Diagnostic Quotation]
-        UC6[Submit Review & Rating]
-        UC7[Broadcast Availability Beacon]
-        UC8[Claim Breakdown Ticket]
-        UC9[Stream GPS Coordinates]
-        UC10[Submit Diagnostic Quote]
-        UC11[Finalize Work Order]
-        UC12[Verify Mechanic Credentials]
-        UC13[Resolve Complaint Disputes]
-        UC14[Inspect Security Audit Logs]
+        UC1[Register & Authenticate]
+        UC2[Manage Vehicle Garage]
+        UC3[Manage Saved Dispatch Bookmarks]
+        UC4[Report Roadside Breakdown]
+        UC5[Track Responding Mechanic Live]
+        UC6[Approve Work Order Quotation]
+        UC7[Submit Verified Review & Rating]
+        UC8[Toggle Availability & Radius]
+        UC9[Broadcast GPS Beacon]
+        UC10[Claim Emergency Dispatch Ticket]
+        UC11[Advance Service Milestones]
+        UC12[Submit Work Order Quotation]
+        UC13[Inspect 3D Automotive Hologram]
+        UC14[Review & Vet Technician Credentials]
+        UC15[Adjudicate Municipal Disputes]
+        UC16[Inspect Live SQL Fleet Analytics]
+        UC17[Explore Security Audit Logs]
     end
 
     Customer --> UC1
@@ -272,765 +335,654 @@ flowchart LR
     Customer --> UC4
     Customer --> UC5
     Customer --> UC6
+    Customer --> UC7
 
     Mechanic --> UC1
-    Mechanic --> UC7
     Mechanic --> UC8
     Mechanic --> UC9
     Mechanic --> UC10
     Mechanic --> UC11
+    Mechanic --> UC12
+    Mechanic --> UC13
 
     Admin --> UC1
-    Admin --> UC12
-    Admin --> UC13
     Admin --> UC14
+    Admin --> UC15
+    Admin --> UC16
+    Admin --> UC17
 ```
 
-### 8.2 Class Diagram
+---
+
+## 13. DATA FLOW DIAGRAMS (DFD LEVEL 0, 1 AND 2)
+
+### 13.1 DFD Level 0 (Context Diagram)
+```mermaid
+flowchart TD
+    Customer["Customer / Motorist"]
+    Mechanic["Field Mechanic / Workshop"]
+    Admin["System Administrator"]
+    System[("Vehicle Breakdown Reporting & Response System (VBRS)")]
+
+    Customer -->|Breakdown Report, GPS, Photos, Reviews, Address Bookmarks| System
+    System -->|Nearby Mechanics, Live Telemetry, Triage Advisories, Work Orders| Customer
+
+    Mechanic -->|Availability Beacon, Live GPS Stream, Quotes, Milestone Updates| System
+    System -->|Inbound Dispatches, Incident Coordinates, 3D CAD Telemetry| Mechanic
+
+    Admin -->|Supervisory Vetting, Dispute Determinations, Filter Queries| System
+    System -->|Live SQL Fleet Telemetry, Audit Logs, Credential Queues| Admin
+```
+
+### 13.2 DFD Level 1 (System Decomposition)
+```mermaid
+flowchart TD
+    Cust["Customer"]
+    Mech["Mechanic"]
+    Admin["Administrator"]
+
+    P1["1.0 Identity & RBAC Guard"]
+    P2["2.0 Garage & Address Service"]
+    P3["3.0 Breakdown Intake & Triage"]
+    P4["4.0 Haversine Spatial Dispatch"]
+    P5["5.0 Duplex Telemetry Gateway"]
+    P6["6.0 Service State Machine & Quotes"]
+    P7["7.0 Bayesian Reviews & Disputes"]
+    P8["8.0 Administrative Governance"]
+
+    D1[("Users & Refresh Tokens")]
+    D2[("Vehicles & Saved Addresses")]
+    D3[("Breakdown Reports & Images")]
+    D4[("Mechanic Profiles & Locations")]
+    D5[("Service Requests & History")]
+    D6[("Reviews & Complaints")]
+    D7[("Security Audit Logs")]
+
+    Cust -->|Credentials| P1
+    Mech -->|Credentials| P1
+    Admin -->|Credentials| P1
+    P1 <--> D1
+
+    Cust -->|Vehicles & Bookmarks| P2
+    P2 <--> D2
+
+    Cust -->|Incident & Photos| P3
+    P3 --> D3
+
+    Mech -->|Beacon & Radius| P4
+    D3 --> P4
+    D4 --> P4
+    P4 -->|Dispatch Opportunities| Mech
+
+    Mech <-->|Live GPS Stream| P5
+    P5 <-->|Real-Time Coordinates| Cust
+
+    Mech -->|Claim & Quotations| P6
+    P6 <--> D5
+
+    Cust -->|Ratings & Feedback| P7
+    P7 <--> D6
+
+    Admin <-->|Vetting, Disputes, Logs| P8
+    P8 <--> D4
+    P8 <--> D6
+    P8 <--> D7
+```
+
+### 13.3 DFD Level 2 (Breakdown Intake & Dispatch Subsystem)
+```mermaid
+flowchart TD
+    In1["Customer Form Input"] --> P3_1["3.1 ValidationPipe & 5MB File Shield"]
+    P3_1 -->|Valid PNG/JPEG/WebP <= 5MB| P3_2["3.2 Local Disk Writer (./uploads)"]
+    P3_1 -->|Invalid File / MIME Type| Err1["400 Bad Request"]
+
+    P3_2 --> P3_3["3.3 SAE J1979 Diagnostic Classifier"]
+    P3_3 --> P3_4["3.4 Persist Breakdown Entity"]
+    P3_4 --> DB_BR[("BreakdownReports")]
+
+    DB_BR --> P4_1["4.1 Open Ticket Scanner"]
+    DB_MP[("MechanicProfiles & Locations")] --> P4_2["4.2 Online Beacon Filter"]
+
+    P4_1 & P4_2 --> P4_3["4.3 Haversine Great-Circle Calculator"]
+    P4_3 --> P4_4["4.4 Operating Perimeter Filter (<= radius)"]
+    P4_4 --> P4_5["4.5 Sorted Proximity Output"]
+    P4_5 --> MechQueue["Mechanic Inbound Feed"]
+```
+
+---
+
+## 14. ENTITY-RELATIONSHIP (ER) DIAGRAM
+
+```mermaid
+erDiagram
+    USER ||--o| MECHANIC_PROFILE : "has"
+    USER ||--o{ VEHICLE : "owns"
+    USER ||--o{ SAVED_ADDRESS : "bookmarks"
+    USER ||--o{ BREAKDOWN_REPORT : "files"
+    USER ||--o{ SERVICE_REQUEST : "requests"
+    USER ||--o{ REVIEW : "writes"
+    USER ||--o{ COMPLAINT : "lodges"
+    USER ||--o{ AUDIT_LOG : "triggers"
+    USER ||--o{ REFRESH_TOKEN : "holds"
+
+    MECHANIC_PROFILE ||--|| MECHANIC_LOCATION : "transmits"
+    MECHANIC_PROFILE ||--o{ MECHANIC_SERVICE : "catalogs"
+    MECHANIC_PROFILE ||--o{ SERVICE_REQUEST : "fulfills"
+    MECHANIC_PROFILE ||--o{ REVIEW : "evaluated_in"
+
+    VEHICLE ||--o{ BREAKDOWN_REPORT : "disabled_in"
+
+    BREAKDOWN_REPORT ||--o{ REPORT_IMAGE : "contains"
+    BREAKDOWN_REPORT ||--|| SERVICE_REQUEST : "triggers"
+
+    SERVICE_REQUEST ||--o{ SERVICE_STATUS_HISTORY : "tracks"
+    SERVICE_REQUEST ||--o| REVIEW : "rated_by"
+    SERVICE_REQUEST ||--o| COMPLAINT : "disputed_in"
+```
+
+---
+
+## 15. DATABASE SCHEMA
+
+### Table: `User`
+Primary identity and role authentication entity.
+- `id`: `UUID` (PK)
+- `email`: `VARCHAR(255)` (Unique, Indexed)
+- `passwordHash`: `VARCHAR(255)` (bcrypt 12 rounds)
+- `fullName`: `VARCHAR(255)`
+- `phone`: `VARCHAR(50)`
+- `role`: `Role` (`CUSTOMER`, `MECHANIC`, `ADMIN`)
+- `avatarUrl`: `VARCHAR(512)`
+- `isActive`: `BOOLEAN` (Default `true`)
+- `createdAt`, `updatedAt`: `TIMESTAMP`
+
+### Table: `MechanicProfile`
+Professional workshop dossier and credential registry.
+- `id`: `UUID` (PK)
+- `userId`: `UUID` (FK $\to$ `User.id`, Unique, Cascade)
+- `workshopName`: `VARCHAR(255)`
+- `workshopAddress`: `VARCHAR(512)`
+- `bio`: `TEXT`
+- `tradeLicenseNumber`: `VARCHAR(100)`
+- `verificationStatus`: `VerificationStatus` (`PENDING`, `APPROVED`, `REJECTED`)
+- `availabilityStatus`: `AvailabilityStatus` (`AVAILABLE`, `OFFLINE`)
+- `operatingRadiusKm`: `DOUBLE` (Default `25.0`)
+- `ratingAverage`: `DOUBLE` (Bayesian score, Default `5.0`)
+- `totalReviews`: `INTEGER` (Default `0`)
+- `totalJobsCompleted`: `INTEGER` (Default `0`)
+- `certifications`: `TEXT[]`
+- `specializations`: `TEXT[]`
+
+### Table: `MechanicLocation`
+High-precision GPS telemetry beacon.
+- `id`: `UUID` (PK)
+- `mechanicId`: `UUID` (FK $\to$ `MechanicProfile.id`, Unique, Cascade)
+- `latitude`, `longitude`: `DOUBLE PRECISION`
+- `accuracy`: `DOUBLE PRECISION` (Default `5.0` meters)
+- `updatedAt`: `TIMESTAMP`
+
+### Table: `Vehicle`
+Motorist fleet registry.
+- `id`: `UUID` (PK)
+- `userId`: `UUID` (FK $\to$ `User.id`, Cascade)
+- `make`, `model`: `VARCHAR(100)`
+- `year`: `INTEGER`
+- `licensePlate`: `VARCHAR(50)` (Indexed)
+- `color`, `vin`: `VARCHAR`
+- `isPrimary`: `BOOLEAN` (Default `false`)
+
+### Table: `SavedAddress`
+Customer dispatch bookmarks.
+- `id`: `UUID` (PK)
+- `userId`: `UUID` (FK $\to$ `User.id`, Cascade)
+- `label`, `address`: `VARCHAR`
+- `latitude`, `longitude`: `DOUBLE PRECISION`
+- `isDefault`: `BOOLEAN` (Default `false`)
+
+### Table: `BreakdownReport`
+Incident intake details.
+- `id`: `UUID` (PK)
+- `customerId`: `UUID` (FK $\to$ `User.id`, Cascade)
+- `vehicleId`: `UUID` (FK $\to$ `Vehicle.id`, Cascade)
+- `category`: `BreakdownCategory`
+- `severity`: `SeverityLevel` (`LOW`, `MEDIUM`, `HIGH`, `CRITICAL`)
+- `description`: `TEXT`
+- `latitude`, `longitude`: `DOUBLE PRECISION`
+- `address`: `VARCHAR(512)`
+- `isTowingRequired`: `BOOLEAN` (Default `false`)
+
+### Table: `ServiceRequest`
+State machine entity governing the roadside dispatch lifecycle.
+- `id`: `UUID` (PK)
+- `breakdownReportId`: `UUID` (FK $\to$ `BreakdownReport.id`, Unique, Cascade)
+- `customerId`: `UUID` (FK $\to$ `User.id`, Cascade)
+- `mechanicId`: `UUID` (FK $\to$ `MechanicProfile.id`, Set Null)
+- `currentStatus`: `ServiceRequestStatus` (`SUBMITTED`, `ASSIGNED`, `ACCEPTED`, `EN_ROUTE`, `ARRIVED`, `IN_PROGRESS`, `COMPLETED`, `CANCELLED`)
+- `quotationDiagnostic`, `quotationLabor`, `quotationParts`, `quotationTotal`: `DECIMAL(10,2)`
+- `locationConsent`: `BOOLEAN` (Default `true`)
+- `requestedAt`, `acceptedAt`, `enRouteAt`, `arrivedAt`, `inProgressAt`, `completedAt`, `cancelledAt`: `TIMESTAMP`
+- `cancellationReason`: `TEXT`
+
+---
+
+## 16. UML CLASS DIAGRAM
+
 ```mermaid
 classDiagram
     class User {
-        +String id
+        +UUID id
         +String email
         +String passwordHash
         +String fullName
         +String phone
         +Role role
-        +DateTime createdAt
+        +Boolean isActive
         +register()
         +login()
     }
 
     class Vehicle {
-        +String id
-        +String customerId
+        +UUID id
+        +UUID userId
         +String make
         +String model
         +Int year
         +String licensePlate
-        +String color
-        +String fuelType
+        +Boolean isPrimary
+    }
+
+    class SavedAddress {
+        +UUID id
+        +UUID userId
+        +String label
+        +String address
+        +Float latitude
+        +Float longitude
+        +Boolean isDefault
     }
 
     class BreakdownReport {
-        +String id
-        +String customerId
-        +String vehicleId
+        +UUID id
+        +UUID customerId
+        +UUID vehicleId
+        +BreakdownCategory category
+        +SeverityLevel severity
+        +String description
         +Float latitude
         +Float longitude
-        +String address
-        +Severity severity
-        +Category category
-        +String description
-        +String[] images
-        +ReportStatus status
+        +Boolean isTowingRequired
     }
 
     class MechanicProfile {
-        +String id
-        +String userId
-        +String businessName
-        +Boolean isAvailable
-        +Float currentLat
-        +Float currentLng
-        +Int serviceRadiusKm
-        +VerificationStatus status
-        +Float reputationScore
-        +Int totalJobs
+        +UUID id
+        +UUID userId
+        +String workshopName
+        +String tradeLicenseNumber
+        +VerificationStatus verificationStatus
+        +AvailabilityStatus availabilityStatus
+        +Float operatingRadiusKm
+        +Float ratingAverage
+        +Int totalJobsCompleted
+        +toggleAvailability()
+        +updateRadius()
+    }
+
+    class MechanicLocation {
+        +UUID id
+        +UUID mechanicId
+        +Float latitude
+        +Float longitude
+        +Float accuracy
+        +updateBeacon()
     }
 
     class ServiceRequest {
-        +String id
-        +String reportId
-        +String customerId
-        +String mechanicId
-        +ServiceStatus status
-        +Float estimatedCost
-        +Float finalCost
-        +DateTime dispatchedAt
-        +DateTime completedAt
+        +UUID id
+        +UUID breakdownReportId
+        +UUID customerId
+        +UUID mechanicId
+        +ServiceRequestStatus currentStatus
+        +Decimal quotationTotal
+        +claimDispatch()
+        +advanceStatus()
+        +submitQuotation()
     }
 
     class Review {
-        +String id
-        +String serviceRequestId
-        +String customerId
-        +String mechanicId
+        +UUID id
+        +UUID serviceRequestId
+        +UUID customerId
+        +UUID mechanicId
         +Int rating
+        +Int scoreTimeliness
+        +Int scoreFairness
+        +Int scoreQuality
         +String comment
     }
 
     class AuditLog {
-        +String id
+        +UUID id
+        +UUID userId
         +String action
-        +String entityType
+        +String entityName
         +String entityId
-        +String actorId
-        +String details
-        +DateTime createdAt
+        +Json details
     }
 
     User "1" --> "0..*" Vehicle : owns
+    User "1" --> "0..*" SavedAddress : bookmarks
     User "1" --> "0..1" MechanicProfile : operates
     User "1" --> "0..*" BreakdownReport : files
-    BreakdownReport "1" --> "0..1" ServiceRequest : initiates
-    MechanicProfile "1" --> "0..*" ServiceRequest : executes
-    ServiceRequest "1" --> "0..1" Review : evaluated_by
-    User "1" --> "0..*" AuditLog : generated_by
+    BreakdownReport "1" --> "1" ServiceRequest : initiates
+    MechanicProfile "1" --> "1" MechanicLocation : broadcasts
+    MechanicProfile "1" --> "0..*" ServiceRequest : fulfills
+    ServiceRequest "1" --> "0..1" Review : rated_by
+    User "1" --> "0..*" AuditLog : audits
 ```
 
-### 8.3 Sequence Diagram (Emergency Lifecycle)
+---
+
+## 17. SEQUENCE DIAGRAMS
+
+### 17.1 Emergency Breakdown Intake & Radial Dispatch
 ```mermaid
 sequenceDiagram
     autonumber
-    actor C as Customer
-    participant FE as Frontend (Next.js)
-    participant BE as Backend (NestJS)
+    actor C as Motorist (Customer)
+    participant FE as Next.js Frontend
+    participant API as NestJS Backend
     participant DB as PostgreSQL
     participant WS as Socket.IO Gateway
-    actor M as Mechanic
+    actor M as Field Mechanic
 
-    C->>FE: Click "Report Breakdown" (GPS captured)
-    FE->>BE: POST /api/breakdowns (FormData + Images)
-    BE->>DB: INSERT BreakdownReport (status: PENDING)
-    BE-->>FE: 201 Created (reportId)
-    
-    M->>FE: Toggle Availability Beacon ON
-    FE->>BE: POST /api/mechanic/availability (true, lat, lng)
-    BE->>DB: UPDATE MechanicProfile (isAvailable: true)
-    
-    M->>FE: Fetch Nearby Opportunities
-    FE->>BE: GET /api/mechanic/nearby-breakdowns
-    BE->>DB: SELECT pending breakdowns & mechanic coords
-    BE->>BE: Compute Haversine Distance (d <= 25km)
-    BE-->>FE: 200 OK (Dispatches with exact distance)
+    C->>FE: Click "Request Rescue" (GPS captured)
+    FE->>API: POST /api/breakdowns (FormData + Photos <= 5MB)
+    API->>API: SAE J1979 Diagnostic Evaluation
+    API->>DB: INSERT BreakdownReport & ServiceRequest (SUBMITTED)
+    API-->>FE: 201 Created (trackingId)
+    FE->>C: Redirect to /customer/track/:id
 
-    M->>FE: Click "Accept Job"
-    FE->>BE: POST /api/service/accept { reportId }
-    BE->>DB: BEGIN Transaction
-    BE->>DB: Lock report & verify not claimed
-    BE->>DB: INSERT ServiceRequest (ASSIGNED)
-    BE->>DB: UPDATE BreakdownReport (status: ASSIGNED)
-    BE->>DB: COMMIT Transaction
-    BE->>WS: Broadcast to room service_<id> (status: ASSIGNED)
-    BE-->>FE: 200 OK (serviceId)
-
-    M->>FE: Transmit Live GPS Coords
-    FE->>WS: Emit 'location_update' { serviceId, lat, lng }
-    WS-->>FE: Stream to Customer Map Radar (sub-500ms)
-
-    M->>FE: Update Status (EN_ROUTE -> ARRIVED -> IN_PROGRESS)
-    FE->>BE: PATCH /api/service/:id/status
-    BE->>WS: Emit 'status_changed'
-
-    M->>FE: Submit Diagnostic Work Order (Labor + Parts)
-    FE->>BE: POST /api/service/:id/quotation
-    BE->>DB: UPDATE ServiceRequest (finalCost recorded)
-
-    M->>FE: Complete Work Order
-    FE->>BE: POST /api/service/:id/complete
-    BE->>DB: UPDATE ServiceRequest (COMPLETED)
-    BE->>WS: Emit 'status_changed' (COMPLETED)
-
-    C->>FE: Submit 5-Star Review & Feedback
-    FE->>BE: POST /api/reviews
-    BE->>DB: INSERT Review & Recompute Bayesian Reputation
-    BE-->>FE: 201 Created
+    M->>FE: Toggle Availability to AVAILABLE
+    FE->>API: PATCH /api/mechanics/availability { status: 'AVAILABLE' }
+    API->>DB: UPDATE MechanicProfile
+    M->>FE: Open Dispatch Radar
+    FE->>API: GET /api/breakdowns/nearby
+    API->>DB: SELECT breakdowns & mechanic coordinates
+    API->>API: Compute Haversine Proximity (distance <= radius)
+    API-->>FE: 200 OK (Inbound Dispatches)
 ```
 
-### 8.4 Activity Diagram
+### 17.2 Concurrency & 409 Conflict Rollback
+```mermaid
+sequenceDiagram
+    autonumber
+    actor M1 as Mechanic 1 (Alex)
+    actor M2 as Mechanic 2 (Marcus)
+    participant API as NestJS Backend
+    participant DB as PostgreSQL (ACID)
+
+    M1->>API: POST /api/service-requests/:id/accept
+    M2->>API: POST /api/service-requests/:id/accept
+    
+    Note over API,DB: Serialized Database Transaction
+    API->>DB: BEGIN Transaction (M1)
+    DB-->>API: Row Lock Acquired (status == SUBMITTED)
+    API->>DB: UPDATE status = 'ACCEPTED', mechanicId = M1
+    API->>DB: COMMIT Transaction
+    API-->>M1: 200 OK (Dispatch Assigned)
+
+    API->>DB: BEGIN Transaction (M2)
+    DB-->>API: Row Lock Acquired (status != SUBMITTED)
+    API->>DB: ROLLBACK Transaction
+    API-->>M2: 409 Conflict ("Job already claimed")
+    Note over M2: Optimistic UI Rolls Back & Refreshes Queue
+```
+
+### 17.3 Real-Time WebSocket Telemetry & Quotation Approval
+```mermaid
+sequenceDiagram
+    autonumber
+    actor C as Motorist
+    actor M as Responding Mechanic
+    participant WS as Socket.IO Gateway (/tracking)
+    participant API as NestJS REST API
+    participant DB as PostgreSQL
+
+    C->>WS: join:request { serviceRequestId }
+    M->>WS: join:request { serviceRequestId }
+
+    M->>API: PATCH /api/mechanics/location { lat, lng }
+    API->>WS: emit to room 'request:{id}': mechanic:location { lat, lng }
+    WS-->>C: Stream live coordinates to Leaflet Map (< 500ms)
+
+    M->>API: PATCH /api/service-requests/:id/status { status: 'ARRIVED' }
+    API->>WS: emit to room: service:status { status: 'ARRIVED' }
+    WS-->>C: Stepper UI advances to ARRIVED
+
+    M->>API: POST /api/service-requests/:id/quotation { diagnostic, labor, parts }
+    API->>DB: UPDATE ServiceRequest
+    API->>WS: emit to room: quotation:submitted { quotationTotal }
+    WS-->>C: Display Authorized Work Order Card in Tracking Terminal
+```
+
+---
+
+## 18. ACTIVITY DIAGRAMS
+
+### 18.1 Motorist Emergency Intake Flow
 ```mermaid
 flowchart TD
-    Start([Motorist Experience Vehicle Failure]) --> Locate[Acquire HTML5 GPS Coordinates]
-    Locate --> ChooseMode{GPS Allowed?}
-    ChooseMode -->|Yes| AutoPin[Auto-populate Pin & Accuracy]
-    ChooseMode -->|No| ManualPin[Manually Select Pin on Leaflet Map]
-    AutoPin --> FormFill[Select Vehicle, Severity & Symptoms]
-    ManualPin --> FormFill
-    FormFill --> UploadPhoto[Attach Breakdown Photos < 5MB]
-    UploadPhoto --> DiagPreview[Inspect Rule-Based Safety Advisory]
-    DiagPreview --> Submit[Submit Breakdown Report]
-    Submit --> Broadcast[System Computes Haversine Proximity]
-    Broadcast --> MechAccept{Mechanic Accepts?}
-    MechAccept -->|No / Timeout| WaitQueue[Wait in Active Queue]
-    WaitQueue --> Broadcast
-    MechAccept -->|Yes| EnRoute[Mechanic En-Route with Live Telemetry]
-    EnRoute --> Arrive[Mechanic Arrives on Scene]
-    Arrive --> Triage[Physical Inspection & Quotation Submission]
-    Triage --> Repair[Perform Mechanical Repairs]
-    Repair --> Complete[Finalize Work Order]
-    Complete --> Review[Customer Submits Star Rating]
-    Review --> End([Case Closed & Reputation Updated])
+    Start([Motorist Vehicle Fails]) --> GPS{HTML5 GPS Granted?}
+    GPS -->|Yes| AutoCoords[Auto-populate High-Precision Coordinates]
+    GPS -->|No| ManualPin[User Drags Pin on OpenStreetMap Leaflet Canvas]
+    AutoCoords --> Form[Select Vehicle, Severity & Symptoms]
+    ManualPin --> Form
+    Form --> Photos[Attach Photographs <= 5MB]
+    Photos --> Triage[Review SAE J1979 Safety Protocol]
+    Triage --> Transmit[Transmit Emergency Signal]
+    Transmit --> TrackTerminal[Open Real-Time Tracking Terminal]
+    TrackTerminal --> Monitor[Monitor Responding Mechanic Beacon]
+    Monitor --> QuoteConfirm[Inspect Itemized Quotation]
+    QuoteConfirm --> JobDone[Vehicle Repaired & Released]
+    JobDone --> Review[Submit 5-Star Bayesian Rating]
+    Review --> End([Case Closed])
 ```
 
-### 8.5 State Machine Diagram (Service Lifecycle)
-```mermaid
-stateDiagram-v2
-    [*] --> SUBMITTED: Customer files report
-    SUBMITTED --> ASSIGNED: Mechanic claims ticket (Atomic Lock)
-    SUBMITTED --> CANCELLED: Customer cancels before dispatch
-    
-    ASSIGNED --> EN_ROUTE: Mechanic departs base
-    ASSIGNED --> CANCELLED: Mutual cancellation
-    
-    EN_ROUTE --> ARRIVED: Mechanic arrives at customer GPS
-    EN_ROUTE --> CANCELLED: Emergency abort
-    
-    ARRIVED --> IN_PROGRESS: Work begins & Quote submitted
-    
-    IN_PROGRESS --> COMPLETED: Repairs finalized & costs confirmed
-    
-    COMPLETED --> [*]
-    CANCELLED --> [*]
-```
-
----
-
-## 9. DATA FLOW DIAGRAMS (DFD)
-
-### 9.1 Level 0 (Context Diagram)
+### 18.2 Mechanic Dispatch Claiming & Work Order Flow
 ```mermaid
 flowchart TD
-    Customer["Customer / Motorist"]
-    Mechanic["Mechanic / Service Unit"]
-    Admin["System Administrator"]
-    System[("Vehicle Breakdown Reporting System (VBRS)")]
-
-    Customer -->|Emergency Details, GPS, Vehicle Info, Reviews| System
-    System -->|Nearby Mechanics, Real-Time ETA, Telemetry Radar| Customer
-
-    Mechanic -->|Availability Beacon, Live GPS Stream, Work Orders| System
-    System -->|Nearby Breakdown Alerts, Navigation Coordinates| Mechanic
-
-    Admin -->|Verification Approvals, Dispute Actions, Config| System
-    System -->|Analytics, Operational Logs, Compliance Audits| Admin
-```
-
-### 9.2 Level 1 (System Decomposition)
-```mermaid
-flowchart TD
-    Cust["Customer"]
-    Mech["Mechanic"]
-    P1["1.0 Authentication & Identity Guard"]
-    P2["2.0 Breakdown Reporting & Intake"]
-    P3["3.0 Spatial Proximity & Dispatch Engine"]
-    P4["4.0 Duplex Tracking & Telemetry Gateway"]
-    P5["5.0 Diagnostic & Work Order Service"]
-    P6["6.0 Reputation, Reviews & Complaints"]
-    P7["7.0 Administrative Governance & Audit"]
-    
-    D1[("Users & Vehicles Store")]
-    D2[("Breakdown Reports Store")]
-    D3[("Service Requests Store")]
-    D4[("Reviews & Reputation Store")]
-    D5[("System Audit Logs")]
-
-    Cust -->|Credentials| P1
-    Mech -->|Credentials| P1
-    P1 <--> D1
-
-    Cust -->|Report & Photos| P2
-    P2 --> D2
-
-    Mech -->|Beacon Coordinates| P3
-    D2 --> P3
-    P3 --> D3
-    P3 -->|Dispatch Opportunities| Mech
-
-    Mech <-->|Live GPS Stream| P4
-    P4 <-->|Live Coordinates| Cust
-
-    Mech -->|Diagnostic Quotes & Costs| P5
-    P5 --> D3
-
-    Cust -->|Ratings & Feedback| P6
-    P6 --> D4
-
-    P1 -.->|Security Events| D5
-    P3 -.->|Lifecycle Events| D5
-    P5 -.->|Financial Events| D5
-    P7 <--> D5
-```
-
-### 9.3 Level 2 (Breakdown Intake & Dispatch Subsystem)
-```mermaid
-flowchart TD
-    In1["Customer Form Input"] --> P2_1["2.1 Payload Validation & File Guard"]
-    P2_1 -->|Valid Images <= 5MB| P2_2["2.2 Local Disk Storage Writer"]
-    P2_1 -->|Invalid MIME / Exceeded Size| Err1["400 Bad Request"]
-    
-    P2_2 --> P2_3["2.3 Rule-Based Diagnostic Classifier"]
-    P2_3 --> P2_4["2.4 Database Entity Creation"]
-    P2_4 --> DB_BR[("BreakdownReports")]
-
-    DB_BR --> P3_1["3.1 Active Ticket Scanner"]
-    DB_MP[("MechanicProfiles")] --> P3_2["3.2 Available Beacon Filter"]
-    
-    P3_1 & P3_2 --> P3_3["3.3 Haversine Great-Circle Calculator"]
-    P3_3 --> P3_4["3.4 Distance Filtering (<= 25 km)"]
-    P3_4 --> P3_5["3.5 Sorted Proximity Output"]
-    P3_5 --> MechQueue["Mechanic Opportunity Feed"]
+    MStart([Mechanic Opens Workshop]) --> CheckAccred{Vetted by Admin?}
+    CheckAccred -->|No (PENDING)| AwaitAdmin[Wait for Trade License Approval]
+    CheckAccred -->|Yes (APPROVED)| ToggleOn[Toggle Availability to ONLINE]
+    ToggleOn --> SetRadius[Adjust Operating Radius Slider: 10-100 km]
+    SetRadius --> RadarScan[Receive Inbound Dispatches via Haversine Radar]
+    RadarScan --> Claim[Click 'Claim Dispatch']
+    Claim --> Conflict{First to Claim?}
+    Conflict -->|No (409 Conflict)| Rollback[Catch 409, Display Notice, Refresh Queue]
+    Rollback --> RadarScan
+    Conflict -->|Yes (200 OK)| EnRoute[Click 'Start En-Route Dispatch']
+    EnRoute --> Arrive[Click 'Mark Arrived on Scene']
+    Arrive --> CADInspect[Inspect 3D Automotive Hologram Digital Twin]
+    CADInspect --> Quote[Submit Diagnostic & Parts Quotation]
+    Quote --> Repair[Click 'Begin Repair Work']
+    Repair --> Complete[Finalize Work Order & Release Vehicle]
+    Complete --> ResetAvail[Terminal Cleared & Returns to AVAILABLE]
+    ResetAvail --> EndM([Job Completed & Revenue Credited])
 ```
 
 ---
 
-## 10. ENTITY-RELATIONSHIP (ER) DIAGRAM
+## 19. API DOCUMENTATION
 
-```mermaid
-erDiagram
-    USERS ||--o{ VEHICLES : owns
-    USERS ||--o| MECHANIC_PROFILES : operates
-    USERS ||--o{ BREAKDOWN_REPORTS : files
-    USERS ||--o{ SERVICE_REQUESTS : requests
-    USERS ||--o{ REVIEWS : submits
-    USERS ||--o{ COMPLAINTS : lodges
-    USERS ||--o{ AUDIT_LOGS : triggers
+The complete API contract is published via OpenAPI 3.0 at `/api/docs`.
 
-    VEHICLES ||--o{ BREAKDOWN_REPORTS : subject_of
-
-    BREAKDOWN_REPORTS ||--o| SERVICE_REQUESTS : initiates
-
-    MECHANIC_PROFILES ||--o{ SERVICE_REQUESTS : assigned_to
-    MECHANIC_PROFILES ||--o{ REVIEWS : reviewed_in
-
-    SERVICE_REQUESTS ||--o| REVIEWS : verified_by
-    SERVICE_REQUESTS ||--o{ COMPLAINTS : disputed_in
-
-    USERS {
-        uuid id PK
-        string email UK
-        string passwordHash
-        string fullName
-        string phone
-        enum role
-        datetime createdAt
-        datetime updatedAt
-    }
-
-    VEHICLES {
-        uuid id PK
-        uuid customerId FK
-        string make
-        string model
-        int year
-        string licensePlate UK
-        string color
-        string fuelType
-        datetime createdAt
-    }
-
-    BREAKDOWN_REPORTS {
-        uuid id PK
-        uuid customerId FK
-        uuid vehicleId FK
-        float latitude
-        float longitude
-        string address
-        enum severity
-        enum category
-        text description
-        string[] images
-        enum status
-        datetime createdAt
-    }
-
-    MECHANIC_PROFILES {
-        uuid id PK
-        uuid userId FK,UK
-        string businessName
-        boolean isAvailable
-        float currentLat
-        float currentLng
-        int serviceRadiusKm
-        enum verificationStatus
-        float reputationScore
-        int totalCompletedJobs
-        datetime lastBeaconAt
-    }
-
-    SERVICE_REQUESTS {
-        uuid id PK
-        uuid reportId FK,UK
-        uuid customerId FK
-        uuid mechanicId FK
-        enum status
-        float laborCost
-        float partsCost
-        float finalCost
-        text diagnosticQuote
-        datetime dispatchedAt
-        datetime completedAt
-    }
-
-    REVIEWS {
-        uuid id PK
-        uuid serviceRequestId FK,UK
-        uuid customerId FK
-        uuid mechanicId FK
-        int rating
-        text comment
-        datetime createdAt
-    }
-
-    COMPLAINTS {
-        uuid id PK
-        uuid serviceRequestId FK
-        uuid complainantId FK
-        string subject
-        text description
-        enum status
-        text resolutionNote
-        datetime createdAt
-    }
-
-    AUDIT_LOGS {
-        uuid id PK
-        string action
-        string entityType
-        string entityId
-        uuid actorId FK
-        json metadata
-        datetime createdAt
-    }
-```
+### Core Endpoint Summary
+- `POST /api/auth/register` — Creates user account with role enforcement.
+- `POST /api/auth/login` — Issues 15m access token and sets 7d HttpOnly refresh cookie.
+- `GET /api/customer/overview` — Aggregates motorist vehicles, active dispatches, and recent repairs.
+- `POST /api/customer/saved-addresses` — Creates dispatch location bookmark.
+- `GET /api/vehicles` — Lists registered garage vehicles.
+- `POST /api/vehicles` — Registers a new automobile with license plate.
+- `POST /api/breakdowns` — Multipart emergency incident submission with 5MB image limits.
+- `GET /api/breakdowns/nearby` — Haversine-filtered open tickets for active mechanics.
+- `PATCH /api/mechanics/availability` — Toggles `AVAILABLE` / `OFFLINE` status.
+- `PATCH /api/mechanics/location` — Transmits technician GPS beacon.
+- `POST /api/service-requests/:id/accept` — Concurrency-protected dispatch ticket claiming.
+- `PATCH /api/service-requests/:id/status` — Lifecycle state milestone progression.
+- `POST /api/service-requests/:id/quotation` — Work order itemization (diagnostic, labor, parts).
+- `GET /api/service-requests/:id/tracking` — Live tracking telemetry bundle.
+- `POST /api/reviews` — Verified customer review submission with Bayesian update.
+- `GET /api/admin/analytics/overview` — Live SQL fleet KPIs and response timing aggregations.
+- `PATCH /api/admin/mechanics/:id/verify` — Administrative credential vetting gate.
+- `GET /api/admin/audit-logs` — Paginated security audit explorer.
 
 ---
 
-## 11. COMPLETE DATABASE SCHEMA
+## 20. MODULE-WISE IMPLEMENTATION
 
-The VBRS persistence layer is implemented in PostgreSQL using Prisma ORM. Key relational tables, constraints, and data types are detailed below:
-
-```sql
--- Core User Account Table
-CREATE TABLE "User" (
-    "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    "email" VARCHAR(255) UNIQUE NOT NULL,
-    "passwordHash" VARCHAR(255) NOT NULL,
-    "fullName" VARCHAR(100) NOT NULL,
-    "phone" VARCHAR(20) NOT NULL,
-    "role" VARCHAR(20) NOT NULL DEFAULT 'CUSTOMER', -- 'CUSTOMER', 'MECHANIC', 'ADMIN'
-    "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
--- Registered Customer Vehicles Table
-CREATE TABLE "Vehicle" (
-    "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    "customerId" UUID NOT NULL REFERENCES "User"("id") ON DELETE CASCADE,
-    "make" VARCHAR(50) NOT NULL,
-    "model" VARCHAR(50) NOT NULL,
-    "year" INTEGER NOT NULL,
-    "licensePlate" VARCHAR(20) UNIQUE NOT NULL,
-    "color" VARCHAR(30) NOT NULL,
-    "fuelType" VARCHAR(30) NOT NULL,
-    "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
--- Emergency Breakdown Reports Table
-CREATE TABLE "BreakdownReport" (
-    "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    "customerId" UUID NOT NULL REFERENCES "User"("id") ON DELETE CASCADE,
-    "vehicleId" UUID NOT NULL REFERENCES "Vehicle"("id") ON DELETE RESTRICT,
-    "latitude" DOUBLE PRECISION NOT NULL,
-    "longitude" DOUBLE PRECISION NOT NULL,
-    "address" TEXT NOT NULL,
-    "severity" VARCHAR(20) NOT NULL, -- 'LOW', 'MEDIUM', 'HIGH', 'CRITICAL'
-    "category" VARCHAR(50) NOT NULL, -- 'ENGINE', 'ELECTRICAL', 'TIRE', 'BRAKES', 'OTHER'
-    "description" TEXT NOT NULL,
-    "images" TEXT[] DEFAULT ARRAY[]::TEXT[],
-    "status" VARCHAR(20) NOT NULL DEFAULT 'PENDING',
-    "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
--- Mechanic Operational Profile & Telemetry Table
-CREATE TABLE "MechanicProfile" (
-    "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    "userId" UUID UNIQUE NOT NULL REFERENCES "User"("id") ON DELETE CASCADE,
-    "businessName" VARCHAR(100) NOT NULL,
-    "isAvailable" BOOLEAN NOT NULL DEFAULT false,
-    "currentLat" DOUBLE PRECISION,
-    "currentLng" DOUBLE PRECISION,
-    "serviceRadiusKm" INTEGER NOT NULL DEFAULT 25,
-    "verificationStatus" VARCHAR(20) NOT NULL DEFAULT 'PENDING', -- 'PENDING', 'VERIFIED', 'REJECTED'
-    "reputationScore" DOUBLE PRECISION NOT NULL DEFAULT 5.0,
-    "totalCompletedJobs" INTEGER NOT NULL DEFAULT 0,
-    "lastBeaconAt" TIMESTAMP WITH TIME ZONE
-);
-
--- Service Request Lifecycle State Table
-CREATE TABLE "ServiceRequest" (
-    "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    "reportId" UUID UNIQUE NOT NULL REFERENCES "BreakdownReport"("id") ON DELETE RESTRICT,
-    "customerId" UUID NOT NULL REFERENCES "User"("id") ON DELETE RESTRICT,
-    "mechanicId" UUID NOT NULL REFERENCES "MechanicProfile"("id") ON DELETE RESTRICT,
-    "status" VARCHAR(20) NOT NULL DEFAULT 'ASSIGNED', -- 'ASSIGNED', 'EN_ROUTE', 'ARRIVED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'
-    "diagnosticQuote" TEXT,
-    "laborCost" DOUBLE PRECISION DEFAULT 0.0,
-    "partsCost" DOUBLE PRECISION DEFAULT 0.0,
-    "finalCost" DOUBLE PRECISION DEFAULT 0.0,
-    "dispatchedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    "completedAt" TIMESTAMP WITH TIME ZONE
-);
-
--- Verified Reviews Table
-CREATE TABLE "Review" (
-    "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    "serviceRequestId" UUID UNIQUE NOT NULL REFERENCES "ServiceRequest"("id") ON DELETE CASCADE,
-    "customerId" UUID NOT NULL REFERENCES "User"("id") ON DELETE RESTRICT,
-    "mechanicId" UUID NOT NULL REFERENCES "MechanicProfile"("id") ON DELETE CASCADE,
-    "rating" INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
-    "comment" TEXT NOT NULL,
-    "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
--- Administrative Audit Log Table
-CREATE TABLE "AuditLog" (
-    "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    "action" VARCHAR(100) NOT NULL,
-    "entityType" VARCHAR(50) NOT NULL,
-    "entityId" VARCHAR(100) NOT NULL,
-    "actorId" UUID NOT NULL REFERENCES "User"("id") ON DELETE CASCADE,
-    "details" JSONB NOT NULL DEFAULT '{}'::jsonb,
-    "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-```
-
----
-
-## 12. API DOCUMENTATION & CONTRACT SPECIFICATION
-
-All API endpoints are hosted at `/api/*` and return standard RFC 7807 JSON error objects when non-2xx statuses occur. Protected endpoints require `Authorization: Bearer <JWT_ACCESS_TOKEN>`.
-
-### 12.1 Authentication Subsystem
-- `POST /api/auth/register` — Register a new account (`CUSTOMER`, `MECHANIC`, `ADMIN`).
-- `POST /api/auth/login` — Authenticate credentials; sets HTTP-only `refreshToken` cookie and returns `{ accessToken, user }`.
-- `POST /api/auth/refresh` — Rotate access token using valid refresh cookie.
-- `GET /api/auth/me` — Return current session claims and profile data.
-
-### 12.2 Vehicle Garage Subsystem
-- `POST /api/vehicles` — Register a new vehicle.
-- `GET /api/vehicles` — List all vehicles owned by authenticated customer.
-- `GET /api/vehicles/:id` — Retrieve specific vehicle specifications.
-- `PUT /api/vehicles/:id` — Update vehicle license plate, color, or fuel type.
-- `DELETE /api/vehicles/:id` — Remove vehicle from garage.
-
-### 12.3 Breakdown Reporting Subsystem
-- `POST /api/breakdowns` — Submit breakdown report (Multipart/form-data: coordinates, address, severity, category, description, and images $\le$ 5MB).
-- `GET /api/breakdowns/my` — Retrieve reports filed by authenticated customer.
-- `GET /api/breakdowns/:id` — Retrieve detailed report with thumbnail image URLs.
-- `GET /api/breakdowns/images/:filename` — Securely stream validated breakdown image asset.
-
-### 12.4 Mechanic & Spatial Proximity Subsystem
-- `POST /api/mechanic/availability` — Toggle online beacon and update current GPS coordinates.
-- `GET /api/mechanic/nearby-breakdowns` — Query open breakdowns within technician service radius using Haversine calculation.
-- `POST /api/mechanic/location` — Transmit high-frequency GPS coordinate updates.
-- `GET /api/mechanic/portal-overview` — Retrieve technician earnings, completed jobs, and active dispatches.
-
-### 12.5 Service Lifecycle & Telemetry Subsystem
-- `POST /api/service/accept` — Atomically claim an open breakdown ticket.
-- `GET /api/service/:id` — Retrieve service request state, diagnostic quotes, and live telemetry.
-- `PATCH /api/service/:id/status` — Advance state (`ASSIGNED` $\to$ `EN_ROUTE` $\to$ `ARRIVED` $\to$ `IN_PROGRESS` $\to$ `COMPLETED`).
-- `POST /api/service/:id/quotation` — Mechanic records itemized diagnostic quotation.
-- `POST /api/service/:id/complete` — Finalize work order and persist total costs.
-- `POST /api/service/:id/cancel` — Abort request with cancellation rationale.
-
-### 12.6 Diagnostics, Reviews & Reputation Subsystem
-- `POST /api/diagnostics/classify` — Evaluate symptom keywords and return preliminary triage advice.
-- `POST /api/reviews` — Submit verified star rating and comment for completed service.
-- `GET /api/reviews/mechanic/:id` — Retrieve public reviews and Bayesian score for a mechanic.
-- `GET /api/reviews/leaderboard` — Retrieve top-ranked verified mechanics across the platform.
-
-### 12.7 Administrative Governance Subsystem
-- `GET /api/admin/overview` — Platform-wide metrics (total revenue, active tickets, pending mechanics).
-- `GET /api/admin/mechanics/pending` — List unverified mechanics awaiting credential audit.
-- `POST /api/admin/mechanics/:id/verify` — Approve or reject technician credentials.
-- `GET /api/admin/complaints` — Retrieve filed service disputes and customer complaints.
-- `POST /api/admin/complaints/:id/resolve` — Mark complaint resolved with formal audit note.
-- `GET /api/admin/audit-logs` — Query chronological security and operational audit trail.
-
----
-
-## 13. IMPLEMENTATION DETAILS & ALGORITHMIC FOUNDATIONS
-
-### 13.1 Haversine Great-Circle Proximity Calculation
-To avoid paid third-party spatial databases or closed routing engines, VBRS executes the Haversine Great-Circle trigonometric formula directly within the NestJS domain layer:
-
+### 20.1 Haversine Great-Circle Proximity Engine
+Calculates great-circle distance directly in the application layer without paid spatial extensions:
 $$\Delta\phi = \phi_2 - \phi_1, \quad \Delta\lambda = \lambda_2 - \lambda_1$$
-
 $$a = \sin^2\left(\frac{\Delta\phi}{2}\right) + \cos(\phi_1)\cos(\phi_2)\sin^2\left(\frac{\Delta\lambda}{2}\right)$$
+$$c = 2 \cdot \text{atan2}\left(\sqrt{a}, \sqrt{1-a}\right), \quad d = R \cdot c$$
+Where $R = 6,371\text{ km}$. A ticket is routed if and only if $d \le R_{\text{mechanic}}$.
 
-$$c = 2 \cdot \text{atan2}\left(\sqrt{a}, \sqrt{1-a}\right)$$
-
-$$d = R \cdot c$$
-
-Where:
-- $\phi_1, \phi_2$ are latitudes in radians.
-- $\lambda_1, \lambda_2$ are longitudes in radians.
-- $R = 6,371\text{ km}$ (mean volumetric radius of the Earth).
-- $d$ is the resulting great-circle distance in kilometers.
-
-A breakdown is dispatched to a mechanic if and only if:
-$$d \le \min(R_{\text{mechanic}}, 25\text{ km})$$
-
-### 13.2 Bayesian Reputation & Scoring Engine
-Unweighted arithmetic mean star ratings fail in marketplace platforms due to the "cold start" distortion (e.g., a technician with a single 5-star review outranking an established veteran with 150 reviews averaging 4.85 stars). 
-
-VBRS implements a Bayesian Damped Rating Model:
-
+### 20.2 Bayesian Reputation Scoring Engine
+Eliminates cold-start manipulation:
 $$S = \frac{v}{v + m} \cdot R + \frac{m}{v + m} \cdot C$$
+Where $v$ is review count, $m = 5$ is prior weight, $R$ is mechanic arithmetic mean, and $C = 4.5$ is global platform prior.
 
-Where:
-- $S$: Final computed reputation score.
-- $v$: Total number of completed reviews for this mechanic.
-- $m$: Prior weight threshold parameter ($m = 5$, representing the confidence barrier).
-- $R$: Arithmetic mean rating of reviews submitted for this mechanic ($\frac{1}{v} \sum_{i=1}^v r_i$).
-- $C$: Platform-wide global mean rating across all verified mechanics (default $C = 4.5$).
+### 20.3 Interactive 3D Automotive Hologram CAD Engine
+Built with Three.js, React Three Fiber, and Drei, supporting 8 genuinely selectable subsystem assemblies:
+1. **Engine Block:** V8 architecture, cylinder heads, red valve covers, 8-runner intake plenum.
+2. **Battery Module:** High-voltage AGM enclosure, dual brass terminal posts, orange conduits.
+3. **Transmission:** 7-speed dual-clutch transmission casing, bell housing, differential hub.
+4. **Braking System:** 4-wheel cross-drilled carbon-ceramic rotors and red Brembo-style calipers.
+5. **Wheels & Tyres:** 4-corner forged alloy rims and vulcanized low-profile rubber tyres.
+6. **Suspension:** Adaptive fluid dampers, chrome piston rods, helical springs.
+7. **Cooling System:** Aluminum dual-pass crossflow radiator core, electric suction fans.
+8. **Electrical System:** Bosch Motronic ECU heatsink, braided wiring loom, power distribution fuse box.
+Features: Unrestricted $360^\circ$ horizontal and vertical ($0$ to $\pi$) orbit, mouse wheel zoom, pan, mobile touch gestures, CAD/X-Ray/Exploded/Isolated modes, and SAE DTC fault code tables.
 
-When $v \to 0$, $S \to C$ (scores regress to the platform prior). When $v \gg m$, $\frac{v}{v+m} \to 1$, allowing proven performance to dominate transparently.
-
-### 13.3 Rule-Based Preliminary Diagnostic Classifier
-Drawing upon automotive standard fault taxonomy (SAE J1979 / OBD-II standard symptom groups), VBRS executes deterministic keyword-symptom mapping. If a user enters symptoms such as `"smoke"`, `"steam"`, `"brake fade"`, or `"grinding"`, the engine flags critical safety hazards:
-
-```typescript
-const DIAGNOSTIC_RULES = [
-  {
-    category: 'BRAKES',
-    triggers: ['brake', 'pedal to floor', 'sponge', 'leak', 'grinding'],
-    preliminaryFault: 'Hydraulic Pressure Loss / Severe Pad Wear',
-    safetyWarning: 'CRITICAL SAFETY HAZARD: DO NOT DRIVE. Keep vehicle stationary with emergency brake engaged.'
-  },
-  {
-    category: 'COOLING_SYSTEM',
-    triggers: ['overheating', 'steam', 'radiator', 'temp needle red', 'coolant'],
-    preliminaryFault: 'Coolant Depletion or Thermostat Seizure',
-    safetyWarning: 'DANGER: Do not open the radiator cap while the engine is hot. Scalding risk.'
-  }
-];
-```
-This guarantees motorists receive immediate triage guidance during high-stress situations.
-
-### 13.4 Atomic 409 Conflict Handling & Optimistic UI Rollback
-When two mechanics simultaneously click "Accept" on the same breakdown request:
-1. Both send concurrent requests to `POST /api/service/accept`.
-2. The backend initiates a serializable database transaction (`prisma.$transaction`).
-3. The first transaction checks `status === 'PENDING'`, updates to `'ASSIGNED'`, commits, and returns HTTP 200.
-4. The second transaction encounters `status !== 'PENDING'`, rolls back cleanly, and throws an HTTP 409 Conflict exception with `{ message: "Breakdown job has already been claimed by another mechanic." }`.
-5. The winning client receives the dispatch ticket; the losing client's UI catches the 409 error, rolls back the optimistic claim animation, displays an alert, and refreshes the opportunity queue.
-
-### 13.5 Secure Socket.IO Room Isolation & Cryptographic Handshakes
-Real-time GPS coordinate streaming is isolated using Socket.IO server rooms:
-- Upon socket connection, the client presents a signed JWT access token in the query handshake.
-- The server validates the token and extracts `userId` and `role`.
-- When a client requests to join `service_<serviceId>`, the server verifies that `userId` matches either the customer or the assigned mechanic on that specific `serviceRequestId`.
-- Unauthorized third-party listeners are rejected immediately, guaranteeing zero eavesdropping on sensitive roadside location streams.
+### 20.4 Component Isolation Architecture
+- `OriginalVehicleViewer`: Dedicated to Public Landing, Customer Dashboard, and Admin Dashboard. Renders classic PBR clearcoat car model with paint finish swatches (Obsidian Carbon, Safety Crimson, Alpine Slate, Chalk Porcelain).
+- `MechanicHologramViewer`: Dedicated exclusively to Mechanic Overview and Mechanic Workshop. Encapsulates 3D Hologram CAD inspection terminal with 8 selectable assemblies.
 
 ---
 
-## 14. COMPREHENSIVE TESTING & VERIFICATION REPORT
+## 21. SCREENSHOTS OF ACTUAL WORKING MODULES
 
-### 14.1 Testing Methodology
-Testing was conducted across three distinct tiers:
-1. **Unit Testing:** Algorithmic verification (Haversine calculations, Bayesian formula, rule-based diagnostic tokenizer).
-2. **Backend Integration & E2E Testing:** NestJS testing modules querying a live PostgreSQL database running on WSL2.
-3. **Frontend Browser Automation:** Headless Chromium executing Playwright scripts testing real user interactions, 3D Canvas rendering, image uploads, optimistic rollbacks, and WebSocket updates.
+All visual artifacts are genuine screen captures verified during automated Playwright runs:
 
-### 14.2 Backend Unit & E2E Testing Suite (159 Tests)
-Across 10 end-to-end test suites and 1 unit test suite, **159 out of 159 tests passed cleanly (100% green)**:
+1. **Public Landing Page — Dedicated Portal Gateways & Original 3D Vehicle:**
+   - [screenshot-landing-gateways.png](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/frontend/public/academic/screenshot-landing-gateways.png)
+   - [screenshot-public-landing-original-3d.png](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/frontend/public/academic/screenshot-public-landing-original-3d.png)
+   - *Description:* Dual dedicated portal cards distinguishing Motorist vs Technician entry points alongside the OriginalVehicleViewer studio 3D car model.
 
-| Test Suite File | Domain Scope | Test Cases | Execution Time | Status |
-| :--- | :--- | :---: | :---: | :---: |
-| `src/common/haversine.spec.ts` | Spherical Proximity & Boundary Distance | 3 | 2.23 s | **PASS** |
-| `test/app.e2e-spec.ts` | System Root & Health Check Gateways | 1 | 9.51 s | **PASS** |
-| `test/auth-vehicles.e2e-spec.ts` | JWT Rotation, Passwords & Garage CRUD | 14 | 10.61 s | **PASS** |
-| `test/milestone-2-audit.e2e-spec.ts` | User Registration & Role Enforcement | 10 | 12.01 s | **PASS** |
-| `test/breakdowns.e2e-spec.ts` | Multi-Image Intake & GPS Submission | 16 | 10.38 s | **PASS** |
-| `test/m3-edge-cases.e2e-spec.ts` | 5MB File Limit, Invalid MIME, Coordinate Bounds | 12 | 10.88 s | **PASS** |
-| `test/mechanics-discovery.e2e-spec.ts` | Availability Beacons & Haversine Queries | 18 | 10.83 s | **PASS** |
-| `test/service-lifecycle.e2e-spec.ts` | 7-State Lifecycle & Quote Finalization | 22 | 11.37 s | **PASS** |
-| `test/admin-governance.e2e-spec.ts` | Verification Desk, Complaints & Audit Logs | 24 | 10.82 s | **PASS** |
-| `test/diagnostics-reviews.e2e-spec.ts` | Diagnostic Rules & Bayesian Reviews | 21 | 10.77 s | **PASS** |
-| `test/security-hardening.e2e-spec.ts` | OWASP Headers, RBAC Escalation & Path Traversal | 17 | 10.95 s | **PASS** |
-| **Total Backend Verification** | **Complete Full-Stack Backend Coverage** | **159 Tests** | **~13.1 s** | **100% PASS** |
+2. **Dedicated Customer Workspace (`/customer/home` & `/customer/dashboard`):**
+   - [screenshot-role-redirect-customer.png](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/frontend/public/academic/screenshot-role-redirect-customer.png)
+   - [screenshot-customer-original-3d.png](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/frontend/public/academic/screenshot-customer-original-3d.png)
+   - *Description:* Personalized greeting, registered garage overview, emergency intake shortcut, saved dispatch bookmarks, and designated primary vehicle viewer.
 
-### 14.3 Frontend Playwright Automated Test Suites (11 Suites)
-Automated end-to-end tests were conducted in Google Chrome via Playwright:
+3. **Mechanic Overview — Interactive 3D Hologram Hero (`/mechanic/overview`):**
+   - [screenshot-mechanic-overview-hologram.png](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/frontend/public/academic/screenshot-mechanic-overview-hologram.png)
+   - [screenshot-free-orbit-overview.png](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/frontend/public/academic/screenshot-free-orbit-overview.png)
+   - *Description:* Cinematic header lockup ("Precision Roadside Rescue. Zero Friction.") with the 3D Hologram digital twin, 8 subsystem selector strip, and floating diagnostic HUD.
 
-| Milestone & Suite Name | Script File | Target Capabilities Verified | Result |
-| :--- | :--- | :--- | :---: |
-| **M1: 3D Canvas & WebGL Performance** | `hero-3d.e2e.mjs` | Three.js interactive canvas, 60fps render loop | **PASS** |
-| **M1: WebP Asset Pipeline** | `images-verify.e2e.mjs` | Responsive media delivery, WebP format fallback | **PASS** |
-| **M2: Auth, Roles & Vehicle Garage** | `m2-integration.e2e.mjs` | Customer/Mechanic login, Vehicle create/delete | **PASS** |
-| **M3: Breakdown Intake & Leaflet** | `breakdown-reporting.e2e.mjs` | Pin dragging, address geocoding, multi-file intake | **PASS** |
-| **M3: 5MB Upload Security Suite** | `m3-edge-cases.e2e.mjs` | Rejection of oversized files and non-image binaries | **PASS** |
-| **M4: Mechanic Beacon & Proximity** | `mechanic-portal.e2e.mjs` | Beacon toggling, pending job radar display | **PASS** |
-| **M4: 409 Conflict & Optimistic Rollback** | `mechanic-conflict-rollback.e2e.mjs` | Rollback on race conditions without UI hang | **PASS** |
-| **M5: Service Lifecycle & Tracking** | `service-tracking.e2e.mjs` | Live telemetry radar, ETA counter, quote confirm | **PASS** |
-| **M6: Verification Desk & Audit Logs** | `admin-portal.e2e.mjs` | Mechanic approval, complaint resolution flow | **PASS** |
-| **M7: Diagnostics & Bayesian Reviews** | `reviews-reputation.e2e.mjs` | Triage advice display, star rating submission | **PASS** |
-| **M8: Responsive Layout (4 Viewports)** | `responsive-layout.e2e.mjs` | Zero horizontal scroll across 24 route-viewports | **PASS** |
+4. **Mechanic Workshop Terminal — Full 2-Column CAD Station (`/mechanic/home`):**
+   - [screenshot-mechanic-workshop-terminal.png](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/frontend/public/academic/screenshot-mechanic-workshop-terminal.png)
+   - [screenshot-3d-hologram.png](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/frontend/public/academic/screenshot-3d-hologram.png)
+   - [screenshot-3d-exploded.png](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/frontend/public/academic/screenshot-3d-exploded.png)
+   - *Description:* Deep engineering terminal with 4 CAD view modes (Standard, X-Ray, Exploded, Isolated), real financial ledger cards, live availability toggle, perimeter slider, and SAE trouble code matrix.
 
-### 14.4 Security Hardening & Penetration Audit
-The penetration test suite (`test/security-hardening.e2e-spec.ts`) specifically verified defenses against major vulnerability classes:
-- **HTTP Security Headers:** Confirmed `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `X-XSS-Protection: 1; mode=block`, and `Referrer-Policy: strict-origin-when-cross-origin`.
-- **Vertical Privilege Escalation:** Confirmed Customers and Mechanics cannot invoke administrative endpoints (`/api/admin/*`), returning HTTP 403 Forbidden.
-- **Horizontal Tenant Escalation:** Confirmed Customers cannot read or mutate other customers' vehicles or private service requests.
-- **Path Traversal Protection:** Confirmed that requests attempting relative path traversal (`GET /api/breakdowns/images/../../../../etc/passwd`) are sanitized via `path.basename()`, preventing file system disclosure.
-- **DTO Injection Resistance:** NestJS `ValidationPipe` with `whitelist: true` strips unexpected payload properties, eliminating parameter tampering attacks.
-
-### 14.5 Responsive Layout Audit
-Evaluated via `document.documentElement.scrollWidth <= window.innerWidth` across all primary pages:
-- **Desktop Wide (1744 x 1080):** 100% compliant, zero horizontal scroll.
-- **Desktop Standard (1440 x 900):** 100% compliant, zero horizontal scroll.
-- **Tablet Portrait (768 x 1024):** 100% compliant, responsive collapsible sidebars, zero horizontal scroll.
-- **Mobile Portrait (390 x 844):** 100% compliant, single-column stacked forms, touch-friendly hit targets ($\ge 44\text{ px}$), zero horizontal scroll.
+5. **Admin Control Desk — Authentic Clean PostgreSQL Fleet Analytics (`/admin/dashboard`):**
+   - [screenshot-admin-clean-fleet-metrics.png](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/frontend/public/academic/screenshot-admin-clean-fleet-metrics.png)
+   - [screenshot-admin-clean-dispute-empty-state.png](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/frontend/public/academic/screenshot-admin-clean-dispute-empty-state.png)
+   - [screenshot-admin-clean-technicians.png](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/frontend/public/academic/screenshot-admin-clean-technicians.png)
+   - [screenshot-admin-original-3d.png](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/frontend/public/academic/screenshot-admin-original-3d.png)
+   - *Description:* Operational Command Center displaying real SQL-aggregated fleet counts, authentic response timings, verified credential desk, clean empty dispute state, and municipal vehicle inspector.
 
 ---
 
-## 15. VISUAL ARTIFACTS & SCREEN CAPTURES
+## 22. TESTING METHODOLOGY AND RESULTS
 
-Canonical visual artifacts captured during automated Playwright regression runs:
+Testing was executed across a 3-tier testing pyramid: Unit Testing, Backend Integration Testing, and Automated Playwright Browser Testing.
 
-1. **Desktop Hero Terminal (1744 x 1080):**
-   *Asset Path:* `frontend/public/academic/screenshot-desktop-hero.png`  
-   *Description:* Architectural cinema landing page showcasing the real-time WebGL interactive 3D vehicle inspection model, glassmorphic navigation header, and quick-intake callouts.
+### 22.1 Backend Automated Regression (171 Tests — 100% Green)
+- `haversine.spec.ts` (3 tests) — Great-circle distance calculations.
+- `app.e2e-spec.ts` (1 test) — System root & health check gateway.
+- `auth-vehicles.e2e-spec.ts` (14 tests) — JWT auth, password hashing, vehicle garage CRUD.
+- `milestone-2-audit.e2e-spec.ts` (10 tests) — Role enforcement, refresh token rotation.
+- `breakdowns.e2e-spec.ts` (16 tests) — Breakdown reporting, photos, GPS.
+- `m3-edge-cases.e2e-spec.ts` (12 tests) — 5MB file upload limit, non-image format rejection, manual pin fallback.
+- `mechanics-discovery.e2e-spec.ts` (18 tests) — Availability beaconing, Haversine radial queries.
+- `service-lifecycle.e2e-spec.ts` (22 tests) — 7-state lifecycle machine, quotation calculations.
+- `admin-governance.e2e-spec.ts` (24 tests) — Credential vetting, dispute management, SQL analytics.
+- `diagnostics-reviews.e2e-spec.ts` (21 tests) — SAE J1979 diagnosis, Bayesian review calculations.
+- `security-hardening.e2e-spec.ts` (17 tests) — Security headers, IDOR, path traversal, RBAC guards.
+- `experience-upgrade.e2e-spec.ts` (12 tests) — Customer overview, saved address bookmarks, mechanic earnings.
+**Backend Scorecard: 171 passed, 0 failed (100% Success).**
 
-2. **Tablet Responsive Overview (768 x 1024):**
-   *Asset Path:* `frontend/public/academic/screenshot-tablet-landing.png`  
-   *Description:* Responsive tablet layout demonstrating adaptive typography, flex-wrapping grid cards, and fluid viewport scaling.
-
-3. **Mobile Breakdown Intake Terminal (390 x 844):**
-   *Asset Path:* `frontend/public/academic/screenshot-mobile-intake.png`  
-   *Description:* Mobile emergency reporting interface displaying HTML5 GPS coordinate capture, interactive OpenStreetMap pin locator, severity selectors, and multi-file attachment zone.
-
-4. **Desktop Admin Command Center (1744 x 1080):**
-   *Asset Path:* `frontend/public/academic/screenshot-desktop-admin.png`  
-   *Description:* Administrative governance overview presenting real-time database metric counters, technician verification queue, and immutable security audit log explorer.
-
-5. **Mobile Mechanic Field Terminal (390 x 844):**
-   *Asset Path:* `frontend/public/academic/screenshot-mobile-portal.png`  
-   *Description:* Field technician interface displaying availability beacon toggle, real-time dispatch queue, and calculated Haversine proximity cards.
-
----
-
-## 16. HONEST LIMITATIONS & FUTURE ENHANCEMENTS
-
-While VBRS satisfies all requirements and engineering criteria under its strict zero-budget mandate, practical engineering demands an honest accounting of architectural limitations and roadmap items:
-
-### 16.1 Current Architectural Limitations
-1. **Simplified Spherical Distance vs. Road Network Graph:** The Haversine formula measures euclidean distance across the earth's curvature ("as the crow flies"). In mountainous, coastal, or river-divided terrain, actual driving distance and transit time may deviate based on road topology, bridge locations, and traffic density.
-2. **Tile Server Caching Dependency:** The OpenStreetMap public tile server (`https://{s}.tile.openstreetmap.org/...`) is provided free by the community under fair-use guidelines. High-volume enterprise traffic would necessitate deploying a self-hosted OSM tile container (e.g., TileServer-GL or an OSM Nominatim instance).
-3. **Single-Node Socket.IO State:** WebSockets run within a single NestJS process. In a distributed multi-instance deployment across a Kubernetes cluster, a Redis pub/sub adapter (`@socket.io/redis-adapter`) would be required to synchronize rooms across horizontal pods.
-4. **Manual Currency Settlement:** Without a paid Stripe/PayPal merchant gateway, financial figures (labor and parts quotes) are recorded for audit and work order billing purposes, but final settlement occurs out-of-band via direct point-of-sale exchange.
-
-### 16.2 Future Enhancements
-- **PostGIS Geospatial Engine Integration:** Migrate native PostgreSQL tables to leverage `PostGIS` spatial geometry types (`ST_DWithin`, `ST_Distance`) with R-Tree spatial indexing for sub-millisecond polygon boundary searches.
-- **OSRM / Valhalla Driving Distance Engine:** Embed a self-hosted Open Source Routing Machine (OSRM) server to calculate turn-by-turn routing vectors and road-network transit ETA without third-party API costs.
-- **OBD-II Bluetooth Telematics Bridge:** Develop a Web Bluetooth API bridge capable of streaming live diagnostic trouble codes (DTC) directly from the vehicle's onboard computer to the diagnostic classifier.
-- **WebRTC Emergency Audio/Video Uplink:** Integrate peer-to-peer WebRTC video streaming enabling mechanics to visually inspect engine bays prior to dispatch departure.
+### 22.2 Frontend Playwright Automated Suites (15 Suites — 100% Green)
+- Milestone 1: 3D Canvas & WebGL Performance (`hero-3d.e2e.mjs`) — PASS
+- Milestone 1: WebP Asset Pipeline & Media (`images-verify.e2e.mjs`) — PASS
+- Milestone 2: Auth, Roles & Vehicle Garage CRUD (`m2-integration.e2e.mjs`) — PASS
+- Milestone 3: Breakdown Intake & Leaflet (`breakdown-reporting.e2e.mjs`) — PASS
+- Milestone 3: 5MB Upload Security & Edge Cases (`m3-edge-cases.e2e.mjs`) — PASS
+- Milestone 4: Mechanic Beacon & Proximity Engine (`mechanic-portal.e2e.mjs`) — PASS
+- Milestone 4: 409 Conflict & Optimistic Rollback (`mechanic-conflict-rollback.e2e.mjs`) — PASS
+- Milestone 5: Service Lifecycle & Tracking Terminal (`service-tracking.e2e.mjs`) — PASS
+- Milestone 6: Verification Desk & Admin Audit Logs (`admin-portal.e2e.mjs`) — PASS
+- Milestone 7: Diagnostics Matrix & Bayesian Reviews (`reviews-reputation.e2e.mjs`) — PASS
+- Milestone 8: Responsive Layout (4 Viewports) Audit (`responsive-layout.e2e.mjs`) — PASS
+- Dedicated Customer Experience Suite (`customer-experience.e2e.mjs`) — PASS
+- Dedicated Mechanic Experience Suite (`mechanic-experience.e2e.mjs`) — PASS
+- Vehicle Viewers Role Isolation Suite (`vehicle-viewers-isolation.e2e.mjs`) — PASS
+- Role Separation & Public Gateways Suite (`role-separation.e2e.mjs`) — PASS
+- 3D Hologram Free Movement & Orbit Suite (`hologram-free-movement.e2e.mjs`) — PASS
+**Frontend Scorecard: 15 / 15 Suites Passed Cleanly (100% Success).**
 
 ---
 
-## 17. REFERENCES & ACADEMIC CITATIONS
+## 23. SECURITY IMPLEMENTATION
+
+- **Bcrypt Password Hashing:** 12 salt rounds on all user passwords.
+- **JWT Cryptographic Rotation:** 15-minute access token paired with 7-day HttpOnly, SameSite=Strict refresh cookie with cryptographic rotation.
+- **Horizontal Privilege Escalation (IDOR) Protection:** Cross-tenant resource queries assert that caller ID matches record owner; unauthorized requests return HTTP 403 Forbidden.
+- **SQL Injection Prevention:** 100% of queries execute through Prisma ORM parameterized statements or tagged `$queryRaw` templates.
+- **Input Sanitization & Mass Assignment Defense:** Global NestJS `ValidationPipe` with `whitelist: true` and `forbidNonWhitelisted: true`.
+- **5MB File Shield & Path Traversal Neutralization:** Uploads strictly capped at 5MB, whitelisted by MIME type (`image/jpeg`, `image/png`, `image/webp`), and served with path traversal sandboxing.
+- **HTTP Security Headers Middleware:** Enforces `nosniff`, `X-Frame-Options: DENY`, `X-XSS-Protection`, and `Referrer-Policy: strict-origin-when-cross-origin`.
+- **Sensitive Data Masking:** Passwords, refresh tokens, and payment data are excluded from DTO outputs, user queries, and audit logs.
+
+---
+
+## 24. LIMITATIONS
+
+1. **Euclidean Spherical Approximation vs Actual Road Topography:** The Haversine engine calculates distance across the Earth's curvature. In areas with bridges, waterways, or mountain passes, actual driving transit time may deviate.
+2. **Third-Party Tile Caching:** OpenStreetMap tiles are served by community infrastructure under fair-use policies. High-volume enterprise scaling would benefit from a self-hosted OSM tile container.
+3. **Out-of-Band Financial Settlement:** To satisfy the strict \$0.00 zero-budget mandate without paid merchant gateway accounts, work order quotations are recorded and verified on-platform, while monetary settlement occurs out-of-band.
+
+---
+
+## 25. FUTURE ENHANCEMENTS
+
+1. **Self-Hosted Routing Engine (OSRM / Valhalla):** Embedding an Open Source Routing Machine instance to compute driving-turn directions and road-network transit ETAs at zero API cost.
+2. **PostGIS Spatial Geometry Migration:** Migrating relational tables to PostGIS spatial types (`ST_DWithin`, `ST_Distance`) with R-Tree indexing for complex municipal service polygons.
+3. **Web Bluetooth OBD-II CAN Bus Telematics:** Bridging live vehicle diagnostic trouble codes (DTC) directly from the vehicle's onboard computer to the 3D inspection terminal.
+4. **WebRTC Emergency Audio/Video Uplink:** Peer-to-peer video streaming allowing mechanics to visually inspect engine bays prior to departure.
+
+---
+
+## 26. CONCLUSION
+
+The **Vehicle Breakdown Reporting and Response System (VBRS)** demonstrates that modern, enterprise-grade, life-critical systems can be engineered with exceptional visual quality, mathematical rigor, and architectural integrity under a strict **\$0.00 zero-budget mandate**.
+
+By unifying deterministic spatial algorithms, real-time WebSocket communication, atomic database state machines, 3D CAD digital twin visualization, and an uncompromised defense-in-depth security posture, VBRS eliminates legacy roadside dispatch bottlenecks. The system stands fully verified, regression-tested, and audited on authentic PostgreSQL data, presenting a production-quality engineering capstone ready for university examination.
+
+---
+
+## 27. REFERENCES
 
 1. **Sinnott, R. W.** (1984). *Virtues of the Haversine*. Sky and Telescope, 68(2), 159.
 2. **Society of Automotive Engineers (SAE).** (2017). *SAE J1979: E/E Diagnostic Test Modes*. SAE International Standards.
@@ -1042,6 +994,3 @@ While VBRS satisfies all requirements and engineering criteria under its strict 
 8. **Prisma ORM.** (2024). *Prisma Client: ACID Transactions, Relations, and Schema Reference*. https://www.prisma.io/docs
 9. **NestJS Documentation Team.** (2024). *Enterprise Architecture Patterns for Node.js Applications*. https://docs.nestjs.com
 10. **Open Web Application Security Project (OWASP).** (2023). *OWASP Top 10: The Ten Most Critical Web Application Security Risks*. https://owasp.org/www-project-top-ten/
-
----
-*End of Academic Engineering Report — Vehicle Breakdown Reporting & Response System (VBRS)*

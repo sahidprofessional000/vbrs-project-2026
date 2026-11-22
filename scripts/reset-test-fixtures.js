@@ -1,4 +1,9 @@
-const { PrismaClient } = require('@prisma/client');
+let PrismaClient;
+try {
+  PrismaClient = require('@prisma/client').PrismaClient;
+} catch (e) {
+  PrismaClient = require('../backend/node_modules/@prisma/client').PrismaClient;
+}
 const prisma = new PrismaClient();
 
 async function resetTestFixtures() {

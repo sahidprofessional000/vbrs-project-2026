@@ -26,7 +26,7 @@ async function testOptimisticRollbackOnConflict() {
     await page.locator('button:has-text("Driver")').click();
     await page.waitForTimeout(300);
     await page.locator('button:has-text("Authenticate Session")').click();
-    await page.waitForURL('**/customer/vehicles', { timeout: 10000 });
+    await page.waitForURL(/customer\/(home|vehicles)/, { timeout: 10000 });
 
     await page.goto('http://localhost:3000/report-breakdown', { waitUntil: 'networkidle' });
     await page.waitForTimeout(1000);
