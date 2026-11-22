@@ -25,8 +25,8 @@ export function Navbar() {
   };
 
   return (
-    <header className="border-b border-divider/60 bg-carbon/90 backdrop-blur-md sticky top-0 z-40">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10 h-18 flex items-center justify-between">
+    <header className="w-full border-b border-divider/60 bg-carbon/90 backdrop-blur-md sticky top-0 z-40">
+      <div className="layout-container h-18 flex items-center justify-between">
         {/* Brand Lockup: Leica / Bang & Olufsen typography */}
         <div className="flex items-center gap-10">
           <Link href={getPortalLink()} className="flex items-center gap-3.5 group">
@@ -42,7 +42,7 @@ export function Navbar() {
           </Link>
 
           {/* Editorial Navigation Links */}
-          <nav className="hidden md:flex items-center gap-7 text-xs font-mono tracking-wider uppercase">
+          <nav className="hidden md:flex items-center gap-8 text-xs font-mono tracking-wider uppercase">
             <Link
               href="/"
               className={`transition-colors py-1 ${
@@ -141,7 +141,7 @@ export function Navbar() {
               </button>
             </div>
           ) : (
-            <div className="flex items-center gap-4 text-xs font-mono tracking-wider uppercase">
+            <div className="flex items-center gap-5 text-xs font-mono tracking-wider uppercase">
               <Link
                 href="/login"
                 className="text-stone-muted hover:text-porcelain transition-colors py-1"

@@ -9,6 +9,9 @@ const config: Config = {
   darkMode: "class",
   theme: {
     extend: {
+      maxWidth: {
+        layout: "1600px",
+      },
       colors: {
         carbon: {
           DEFAULT: "#111214",

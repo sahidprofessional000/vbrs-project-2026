@@ -40,7 +40,7 @@ export default function AdminDashboardPage() {
     <div className="min-h-screen bg-carbon text-porcelain flex flex-col selection:bg-porcelain selection:text-carbon">
       <Navbar />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-6 lg:px-10 py-10 space-y-10">
+      <main className="flex-1 layout-container py-10 space-y-10">
         
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 pb-6 border-b border-divider/60">
@@ -54,7 +54,7 @@ export default function AdminDashboardPage() {
                 AUDIT LOGGING ACTIVE
               </span>
             </div>
-            <h1 className="text-3xl font-medium tracking-tight text-porcelain">
+            <h1 className="text-3xl lg:text-4xl font-medium tracking-tight text-porcelain">
               Operational Command Center
             </h1>
             <p className="text-xs text-stone-muted font-normal max-w-xl">
@@ -67,30 +67,30 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
-        {/* Real Database Telemetry Strip */}
-        <div className="border border-divider bg-graphite p-6 grid grid-cols-2 md:grid-cols-4 gap-6 font-mono text-xs">
+        {/* Real Database Telemetry Strip (Wide 4-Column Layout) */}
+        <div className="border border-divider bg-graphite p-8 grid grid-cols-2 lg:grid-cols-4 gap-8 font-mono text-xs shadow-architectural">
           <div>
             <div className="text-stone-dim uppercase">Database Status</div>
-            <div className="text-porcelain font-medium text-sm mt-1 flex items-center gap-1.5">
+            <div className="text-porcelain font-medium text-sm mt-1.5 flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-sage-light" />
               <span>{healthData?.database?.status || 'CONNECTED'} ({healthData?.database?.latencyMs || 8}ms)</span>
             </div>
           </div>
           <div>
             <div className="text-stone-dim uppercase">Active Server Uptime</div>
-            <div className="text-porcelain font-medium text-sm mt-1">
+            <div className="text-porcelain font-medium text-sm mt-1.5">
               {Math.floor((healthData?.uptimeSeconds || 600) / 60)} Minutes Online
             </div>
           </div>
           <div>
             <div className="text-stone-dim uppercase">Host Engine</div>
-            <div className="text-porcelain font-medium text-sm mt-1">
+            <div className="text-porcelain font-medium text-sm mt-1.5">
               {healthData?.database?.provider || 'PostgreSQL 18'} Local FOSS
             </div>
           </div>
           <div>
             <div className="text-stone-dim uppercase">Node Runtime</div>
-            <div className="text-porcelain font-medium text-sm mt-1">
+            <div className="text-porcelain font-medium text-sm mt-1.5">
               {healthData?.system?.nodeVersion || 'v24.18.0'}
             </div>
           </div>
@@ -100,7 +100,7 @@ export default function AdminDashboardPage() {
         <div className="space-y-4">
           <div className="flex items-center justify-between pb-2 border-b border-divider/40">
             <div className="space-y-0.5">
-              <h2 className="text-lg font-medium text-porcelain">Field Technician Credential Gate</h2>
+              <h2 className="text-xl font-medium text-porcelain">Field Technician Credential Gate</h2>
               <p className="text-xs text-stone-muted font-normal">
                 Review and approve ASE certifications and government trade license submissions.
               </p>
@@ -110,10 +110,10 @@ export default function AdminDashboardPage() {
 
           <div className="border border-divider divide-y divide-divider bg-graphite/50">
             {/* Seeded Mechanic 1 */}
-            <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="font-medium text-sm text-porcelain">Alex Vance</span>
+            <div className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2.5">
+                  <span className="font-medium text-base text-porcelain">Alex Vance</span>
                   <span className="text-stone-dim text-xs font-mono">•</span>
                   <span className="text-xs font-mono text-stone-muted">Apex Mobile Roadside Services</span>
                   <span className="px-2 py-0.5 rounded-sm border border-sage/40 text-sage-light text-[10px] font-mono uppercase">
@@ -130,10 +130,10 @@ export default function AdminDashboardPage() {
             </div>
 
             {/* Seeded Mechanic 2 */}
-            <div className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="font-medium text-sm text-porcelain">Marcus Sterling</span>
+            <div className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2.5">
+                  <span className="font-medium text-base text-porcelain">Marcus Sterling</span>
                   <span className="text-stone-dim text-xs font-mono">•</span>
                   <span className="text-xs font-mono text-stone-muted">Sterling Heavy Towing & Roadside</span>
                   <span className="px-2 py-0.5 rounded-sm border border-sage/40 text-sage-light text-[10px] font-mono uppercase">
@@ -155,7 +155,7 @@ export default function AdminDashboardPage() {
         <div className="space-y-4">
           <div className="flex items-center justify-between pb-2 border-b border-divider/40">
             <div className="space-y-0.5">
-              <h2 className="text-lg font-medium text-porcelain">Live Emergency Breakdown Monitor</h2>
+              <h2 className="text-xl font-medium text-porcelain">Live Emergency Breakdown Monitor</h2>
               <p className="text-xs text-stone-muted font-normal">
                 Municipal incidents tracked across active geospatial zones.
               </p>
@@ -163,7 +163,7 @@ export default function AdminDashboardPage() {
             <span className="text-[11px] font-mono text-stone-dim uppercase">Zero Open Incidents</span>
           </div>
 
-          <div className="border border-divider bg-graphite/40 p-8 text-center font-mono text-xs text-stone-muted">
+          <div className="border border-divider bg-graphite/40 p-12 text-center font-mono text-xs text-stone-muted">
             All registered vehicles operating normally. No active SOS signals reported.
           </div>
         </div>

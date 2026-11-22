@@ -20,11 +20,11 @@ export default function EditorialLandingPage() {
 
       <main className="flex-1">
         {/* ================================================================= */}
-        {/* 1. CINEMATIC ASYMMETRIC HERO SECTION                              */}
+        {/* 1. CINEMATIC ASYMMETRIC HERO SECTION (WIDE EXPANSIVE LAYOUT)       */}
         {/* ================================================================= */}
-        <section className="relative border-b border-divider/60 pt-16 pb-24 lg:pt-24 lg:pb-32 overflow-hidden">
-          <div className="max-w-7xl mx-auto px-6 lg:px-10">
-            <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <section className="relative border-b border-divider/60 pt-16 pb-24 lg:pt-20 lg:pb-32 overflow-hidden">
+          <div className="layout-container">
+            <div className="grid lg:grid-cols-12 gap-12 lg:gap-12 xl:gap-16 items-center">
               
               {/* Editorial Typography Column (Left: 6 cols) */}
               <div className="lg:col-span-6 space-y-8">
@@ -35,24 +35,24 @@ export default function EditorialLandingPage() {
                   </span>
                 </div>
 
-                <div className="space-y-4">
-                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-medium tracking-tightest text-porcelain leading-[1.08]">
+                <div className="space-y-5">
+                  <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-medium tracking-tightest text-porcelain leading-[1.05]">
                     Precision Roadside Rescue. <br />
                     <span className="text-stone-muted font-normal">
                       Zero Friction.
                     </span>
                   </h1>
                   
-                  <p className="text-stone-muted text-base sm:text-lg leading-relaxed max-w-xl font-normal pt-2">
+                  <p className="text-stone-muted text-base sm:text-lg lg:text-xl leading-relaxed max-w-xl xl:max-w-2xl font-normal pt-1">
                     An open-source assistance architecture bridging stranded drivers and certified field mechanics through high-accuracy spherical trigonometry and live telemetry.
                   </p>
                 </div>
 
                 {/* Primary Restrained Call-to-Actions */}
-                <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
+                <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
                   <Link
                     href="/login?redirect=/report-breakdown"
-                    className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-sm bg-crimson hover:bg-crimson-hover active:bg-crimson text-porcelain font-medium text-xs font-mono uppercase tracking-wider transition-colors"
+                    className="inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-sm bg-crimson hover:bg-crimson-hover active:bg-crimson text-porcelain font-medium text-xs font-mono uppercase tracking-wider transition-colors"
                   >
                     <span>Request Emergency Assistance</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -60,49 +60,49 @@ export default function EditorialLandingPage() {
 
                   <Link
                     href="/login?role=MECHANIC"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-sm bg-graphite hover:bg-elevated text-stone-muted hover:text-porcelain border border-divider text-xs font-mono uppercase tracking-wider transition-colors"
+                    className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-sm bg-graphite hover:bg-elevated text-stone-muted hover:text-porcelain border border-divider text-xs font-mono uppercase tracking-wider transition-colors"
                   >
                     <span>Mechanic Terminal</span>
                   </Link>
                 </div>
 
                 {/* Editorial Telemetry Bar */}
-                <div className="pt-8 border-t border-divider/40 grid grid-cols-3 gap-6 text-left">
+                <div className="pt-10 border-t border-divider/40 grid grid-cols-3 gap-6 sm:gap-8 text-left">
                   <div>
-                    <div className="text-xl font-mono font-medium text-porcelain tracking-tight">4.2 min</div>
-                    <div className="text-[11px] font-mono text-stone-dim uppercase tracking-wider mt-0.5">Average Dispatch</div>
+                    <div className="text-2xl font-mono font-medium text-porcelain tracking-tight">4.2 min</div>
+                    <div className="text-[11px] font-mono text-stone-dim uppercase tracking-wider mt-1">Average Dispatch</div>
                   </div>
                   <div>
-                    <div className="text-xl font-mono font-medium text-porcelain tracking-tight">&lt; 50ms</div>
-                    <div className="text-[11px] font-mono text-stone-dim uppercase tracking-wider mt-0.5">Haversine Vector</div>
+                    <div className="text-2xl font-mono font-medium text-porcelain tracking-tight">&lt; 50ms</div>
+                    <div className="text-[11px] font-mono text-stone-dim uppercase tracking-wider mt-1">Haversine Vector</div>
                   </div>
                   <div>
-                    <div className="text-xl font-mono font-medium text-porcelain tracking-tight">100%</div>
-                    <div className="text-[11px] font-mono text-stone-dim uppercase tracking-wider mt-0.5">ASE Vetted Network</div>
+                    <div className="text-2xl font-mono font-medium text-porcelain tracking-tight">100%</div>
+                    <div className="text-[11px] font-mono text-stone-dim uppercase tracking-wider mt-1">ASE Vetted Network</div>
                   </div>
                 </div>
               </div>
 
-              {/* Cinematic Automotive Photography Frame (Right: 6 cols) */}
+              {/* Cinematic Automotive Photography Frame (Right: 6 cols - Proportional Expansion) */}
               <div className="lg:col-span-6">
-                <div className="relative border border-divider p-2 bg-graphite/40">
-                  <div className="relative aspect-[4/3] sm:aspect-[16/11] overflow-hidden bg-carbon">
+                <div className="relative border border-divider p-2 bg-graphite/40 shadow-elevated">
+                  <div className="relative aspect-[4/3] sm:aspect-[16/11] xl:aspect-[16/11] overflow-hidden bg-carbon">
                     <img
-                      src="https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=1600&q=85"
+                      src="https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=2000&q=85"
                       alt="Nighttime roadside highway precision headlights"
                       className="w-full h-full object-cover grayscale-[25%] contrast-[110%] brightness-[90%]"
                     />
                     
                     {/* Architectural Technical Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-carbon/90 via-transparent to-transparent pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-carbon/95 via-transparent to-transparent pointer-events-none" />
 
-                    <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between font-mono text-[10px] text-stone-muted">
+                    <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between font-mono text-[11px] text-stone-muted">
                       <div>
-                        <span className="text-porcelain uppercase block font-semibold">Incident Radar // Active</span>
+                        <span className="text-porcelain uppercase block font-semibold tracking-wider">Incident Radar // Active</span>
                         <span className="text-stone-dim">40.7128° N, 74.0060° W</span>
                       </div>
                       <div className="text-right">
-                        <span className="inline-flex items-center gap-1.5 text-sage-light">
+                        <span className="inline-flex items-center gap-2 text-sage-light">
                           <span className="w-1.5 h-1.5 rounded-full bg-sage animate-pulse" />
                           <span>STATION MONITOR ONLINE</span>
                         </span>
@@ -117,30 +117,30 @@ export default function EditorialLandingPage() {
         </section>
 
         {/* ================================================================= */}
-        {/* 2. ARCHITECTURAL PROTOCOL: HOW IT WORKS                           */}
+        {/* 2. ARCHITECTURAL PROTOCOL: HOW IT WORKS (WIDE 3-COLUMN LAYOUT)    */}
         {/* ================================================================= */}
-        <section className="py-24 border-b border-divider/60 bg-carbon">
-          <div className="max-w-7xl mx-auto px-6 lg:px-10">
+        <section className="py-24 lg:py-28 border-b border-divider/60 bg-carbon">
+          <div className="layout-container">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-14 border-b border-divider/40">
               <div className="space-y-2">
                 <span className="text-[11px] font-mono tracking-widest uppercase text-stone-dim">
                   System Architecture
                 </span>
-                <h2 className="text-3xl font-medium tracking-tight text-porcelain">
+                <h2 className="text-3xl lg:text-4xl font-medium tracking-tight text-porcelain">
                   Roadside Incident Resolution Protocol
                 </h2>
               </div>
-              <p className="text-sm font-normal text-stone-muted max-w-md">
+              <p className="text-sm font-normal text-stone-muted max-w-lg leading-relaxed">
                 Three deterministic stages designed to eliminate communication ambiguity during mechanical breakdown emergencies.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-divider/60 pt-6">
+            <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-divider/60 pt-8">
               
               {/* Step 1 */}
-              <div className="pt-8 md:pt-0 md:pr-10 space-y-4">
+              <div className="pt-8 md:pt-0 md:pr-10 lg:pr-12 xl:pr-16 space-y-4">
                 <div className="font-mono text-xs text-stone-dim">01 // INTAKE</div>
-                <h3 className="text-lg font-medium text-porcelain">Coordinate Pinpointing & Fault Categorization</h3>
+                <h3 className="text-xl font-medium text-porcelain">Coordinate Pinpointing & Fault Categorization</h3>
                 <p className="text-sm text-stone-muted leading-relaxed font-normal">
                   Immediate acquisition of device GPS coordinates paired with an interactive Leaflet fallback pin. The driver selects symptoms from a standardized automotive matrix with optional damage imagery.
                 </p>
@@ -151,9 +151,9 @@ export default function EditorialLandingPage() {
               </div>
 
               {/* Step 2 */}
-              <div className="pt-8 md:pt-0 md:px-10 space-y-4">
+              <div className="pt-8 md:pt-0 md:px-10 lg:px-12 xl:px-16 space-y-4">
                 <div className="font-mono text-xs text-stone-dim">02 // DISCOVERY</div>
-                <h3 className="text-lg font-medium text-porcelain">Haversine Great-Circle Proximity Calculation</h3>
+                <h3 className="text-xl font-medium text-porcelain">Haversine Great-Circle Proximity Calculation</h3>
                 <p className="text-sm text-stone-muted leading-relaxed font-normal">
                   The backend executes pure trigonometric spherical distance calculations directly in PostgreSQL without proprietary mapping fees, querying active technicians within the configurable operational radius.
                 </p>
@@ -164,9 +164,9 @@ export default function EditorialLandingPage() {
               </div>
 
               {/* Step 3 */}
-              <div className="pt-8 md:pt-0 md:pl-10 space-y-4">
+              <div className="pt-8 md:pt-0 md:pl-10 lg:pl-12 xl:pl-16 space-y-4">
                 <div className="font-mono text-xs text-stone-dim">03 // RESOLUTION</div>
-                <h3 className="text-lg font-medium text-porcelain">Bidirectional Telemetry & Service Sign-off</h3>
+                <h3 className="text-xl font-medium text-porcelain">Bidirectional Telemetry & Service Sign-off</h3>
                 <p className="text-sm text-stone-muted leading-relaxed font-normal">
                   Socket.IO WebSocket rooms stream the technician’s en-route position live to the customer’s terminal. State transitions are immutably logged until verified on-site service completion.
                 </p>
@@ -183,52 +183,52 @@ export default function EditorialLandingPage() {
         {/* ================================================================= */}
         {/* 3. CRAFT & PHOTOGRAPHY EDITORIAL SECTION                          */}
         {/* ================================================================= */}
-        <section className="py-24 border-b border-divider/60 bg-graphite/30">
-          <div className="max-w-7xl mx-auto px-6 lg:px-10">
-            <div className="grid lg:grid-cols-12 gap-12 items-center">
+        <section className="py-24 lg:py-28 border-b border-divider/60 bg-graphite/30">
+          <div className="layout-container">
+            <div className="grid lg:grid-cols-12 gap-12 lg:gap-14 xl:gap-20 items-center">
               
               <div className="lg:col-span-5 space-y-6">
                 <span className="text-[11px] font-mono tracking-widest uppercase text-stone-dim">
                   Craft & Capability
                 </span>
-                <h2 className="text-3xl font-medium tracking-tight text-porcelain leading-tight">
+                <h2 className="text-3xl lg:text-4xl font-medium tracking-tight text-porcelain leading-tight">
                   Engineered for Automotive Integrity
                 </h2>
-                <p className="text-sm text-stone-muted leading-relaxed font-normal">
+                <p className="text-sm lg:text-base text-stone-muted leading-relaxed font-normal">
                   From flat tires and high-voltage electric powertrain faults to emergency flatbed winch extractions, every technician registered on the VBRS platform undergoes trade credential and master certification vetting before dispatch eligibility.
                 </p>
 
                 <div className="pt-4 space-y-3 font-mono text-xs text-stone-muted">
                   <div className="flex items-center gap-3 pb-3 border-b border-divider/60">
                     <span className="text-porcelain">01</span>
-                    <span className="text-porcelain font-sans font-medium">Mechanical Powertrain Diagnostics</span>
+                    <span className="text-porcelain font-sans font-medium text-sm">Mechanical Powertrain Diagnostics</span>
                     <span className="ml-auto text-stone-dim">ICE & Hybrid</span>
                   </div>
                   <div className="flex items-center gap-3 pb-3 border-b border-divider/60">
                     <span className="text-porcelain">02</span>
-                    <span className="text-porcelain font-sans font-medium">High-Voltage EV Roadside Safe Triage</span>
+                    <span className="text-porcelain font-sans font-medium text-sm">High-Voltage EV Roadside Safe Triage</span>
                     <span className="ml-auto text-stone-dim">400V - 800V</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="text-porcelain">03</span>
-                    <span className="text-porcelain font-sans font-medium">Heavy Flatbed & Winch Recovery</span>
+                    <span className="text-porcelain font-sans font-medium text-sm">Heavy Flatbed & Winch Recovery</span>
                     <span className="ml-auto text-stone-dim">Low-Clearance</span>
                   </div>
                 </div>
               </div>
 
               <div className="lg:col-span-7">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="border border-divider p-1.5 bg-graphite/60">
+                <div className="grid grid-cols-2 gap-5 lg:gap-6">
+                  <div className="border border-divider p-2 bg-graphite/60 shadow-architectural">
                     <img
-                      src="https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=800&q=80"
+                      src="https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=1200&q=80"
                       alt="Mechanic inspecting vehicle engine bay"
                       className="w-full aspect-[4/5] object-cover grayscale-[30%] contrast-[105%]"
                     />
                   </div>
-                  <div className="border border-divider p-1.5 bg-graphite/60 mt-8">
+                  <div className="border border-divider p-2 bg-graphite/60 shadow-architectural mt-10">
                     <img
-                      src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80"
+                      src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80"
                       alt="Automotive rear profile in dusk setting"
                       className="w-full aspect-[4/5] object-cover grayscale-[20%] contrast-[110%]"
                     />
@@ -241,53 +241,53 @@ export default function EditorialLandingPage() {
         </section>
 
         {/* ================================================================= */}
-        {/* 4. NETWORK RADAR OVERVIEW                                         */}
+        {/* 4. NETWORK RADAR OVERVIEW (WIDE CONTAINER)                        */}
         {/* ================================================================= */}
-        <section className="py-24 border-b border-divider/60 bg-carbon">
-          <div className="max-w-7xl mx-auto px-6 lg:px-10">
-            <div className="border border-divider bg-graphite/50 p-8 sm:p-12">
-              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 pb-8 border-b border-divider/60">
-                <div>
-                  <span className="text-[11px] font-mono tracking-widest uppercase text-stone-dim block mb-1">
+        <section className="py-24 lg:py-28 border-b border-divider/60 bg-carbon">
+          <div className="layout-container">
+            <div className="border border-divider bg-graphite/50 p-8 sm:p-12 lg:p-16 shadow-elevated">
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 pb-10 border-b border-divider/60">
+                <div className="space-y-1">
+                  <span className="text-[11px] font-mono tracking-widest uppercase text-stone-dim block">
                     Coverage Spectrum
                   </span>
-                  <h2 className="text-2xl sm:text-3xl font-medium tracking-tight text-porcelain">
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-medium tracking-tight text-porcelain">
                     Autonomous Dispatch Readiness
                   </h2>
                 </div>
 
-                <div className="flex items-center gap-4 text-xs font-mono uppercase tracking-wider">
+                <div className="flex items-center gap-4 text-xs font-mono uppercase tracking-wider shrink-0">
                   <Link
                     href="/customer/vehicles"
-                    className="px-5 py-2.5 rounded-sm bg-porcelain text-carbon font-medium hover:bg-porcelain-dim transition-colors"
+                    className="px-6 py-3 rounded-sm bg-porcelain text-carbon font-medium hover:bg-porcelain-dim transition-colors"
                   >
                     Open My Garage
                   </Link>
                   <Link
                     href="/login?role=MECHANIC"
-                    className="px-5 py-2.5 rounded-sm border border-divider text-stone-muted hover:text-porcelain transition-colors"
+                    className="px-6 py-3 rounded-sm border border-divider text-stone-muted hover:text-porcelain transition-colors"
                   >
                     Mechanic Portal
                   </Link>
                 </div>
               </div>
 
-              <div className="pt-8 grid grid-cols-2 md:grid-cols-4 gap-6 font-mono text-xs">
+              <div className="pt-10 grid grid-cols-2 md:grid-cols-4 gap-8 font-mono text-xs">
                 <div>
                   <div className="text-stone-dim uppercase">Active DB Engine</div>
-                  <div className="text-porcelain font-medium text-sm mt-1">PostgreSQL 18 Local</div>
+                  <div className="text-porcelain font-medium text-base mt-1.5">PostgreSQL 18 Local</div>
                 </div>
                 <div>
                   <div className="text-stone-dim uppercase">Distance Metric</div>
-                  <div className="text-porcelain font-medium text-sm mt-1">Great-Circle Haversine</div>
+                  <div className="text-porcelain font-medium text-base mt-1.5">Great-Circle Haversine</div>
                 </div>
                 <div>
                   <div className="text-stone-dim uppercase">Cost Model</div>
-                  <div className="text-porcelain font-medium text-sm mt-1">$0.00 / 100% FOSS</div>
+                  <div className="text-porcelain font-medium text-base mt-1.5">$0.00 / 100% FOSS</div>
                 </div>
                 <div>
                   <div className="text-stone-dim uppercase">API Specification</div>
-                  <div className="text-porcelain font-medium text-sm mt-1">OpenAPI 3.0 (NestJS)</div>
+                  <div className="text-porcelain font-medium text-base mt-1.5">OpenAPI 3.0 (NestJS)</div>
                 </div>
               </div>
             </div>
@@ -298,8 +298,8 @@ export default function EditorialLandingPage() {
       {/* ================================================================= */}
       {/* 5. MINIMALIST ARCHITECTURAL FOOTER                                */}
       {/* ================================================================= */}
-      <footer className="py-12 bg-carbon border-t border-divider/40 text-stone-dim text-xs font-mono">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+      <footer className="py-14 bg-carbon border-t border-divider/40 text-stone-dim text-xs font-mono">
+        <div className="layout-container flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div className="space-y-1">
             <span className="text-porcelain block font-sans font-medium text-sm">
               Vehicle Breakdown Reporting System (VBRS)

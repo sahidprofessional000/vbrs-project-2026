@@ -29,6 +29,22 @@
   }
 }
 
+/* Responsive Wide-Layout Container System (90-94% width on desktop, max 1600px) */
+.layout-container {
+  width: 100%;
+  max-width: 1600px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(1.25rem, 3.5vw, 4rem);
+  padding-right: clamp(1.25rem, 3.5vw, 4rem);
+}
+
+.layout-container-fluid {
+  width: 100%;
+  padding-left: clamp(1.25rem, 3.5vw, 4rem);
+  padding-right: clamp(1.25rem, 3.5vw, 4rem);
+}
+
 /* Hairline border utility */
 .border-hairline {
   border: 1px solid #303236;

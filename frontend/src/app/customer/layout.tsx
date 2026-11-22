@@ -22,9 +22,9 @@ export default function CustomerLayout({
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-slate-400">
-        <Loader2 className="w-8 h-8 animate-spin text-sky-500 mb-3" />
-        <span className="text-sm font-mono">Restoring Secure Session...</span>
+      <div className="min-h-screen bg-carbon flex flex-col items-center justify-center text-stone-muted">
+        <Loader2 className="w-7 h-7 animate-spin text-porcelain mb-3" />
+        <span className="text-xs font-mono uppercase tracking-widest">Restoring Secure Session...</span>
       </div>
     );
   }
@@ -34,9 +34,9 @@ export default function CustomerLayout({
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100">
+    <div className="min-h-screen flex flex-col bg-carbon text-porcelain selection:bg-porcelain selection:text-carbon">
       <Navbar />
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 layout-container py-10">
         {children}
       </main>
     </div>

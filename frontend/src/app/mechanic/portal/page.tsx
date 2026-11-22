@@ -19,7 +19,6 @@ import {
 export default function MechanicPortalPage() {
   const { user } = useAuth();
   const [isOnline, setIsOnline] = useState(true);
-  const [activeRequests, setActiveRequests] = useState<any[]>([]);
 
   const mechanicProfile = (user as any)?.mechanicProfile || {
     workshopName: 'Apex Mobile Roadside Services',
@@ -34,7 +33,7 @@ export default function MechanicPortalPage() {
     <div className="min-h-screen bg-carbon text-porcelain flex flex-col selection:bg-porcelain selection:text-carbon">
       <Navbar />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-6 lg:px-10 py-10 space-y-10">
+      <main className="flex-1 layout-container py-10 space-y-10">
         
         {/* Terminal Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 pb-6 border-b border-divider/60">
@@ -49,7 +48,7 @@ export default function MechanicPortalPage() {
                 <span>VERIFIED OPERATOR</span>
               </span>
             </div>
-            <h1 className="text-3xl font-medium tracking-tight text-porcelain">
+            <h1 className="text-3xl lg:text-4xl font-medium tracking-tight text-porcelain">
               {mechanicProfile.workshopName || user?.fullName}
             </h1>
             <p className="text-xs text-stone-muted font-normal max-w-xl">
@@ -75,26 +74,26 @@ export default function MechanicPortalPage() {
           </div>
         </div>
 
-        {/* Technical Stats Strip */}
-        <div className="border border-divider bg-graphite p-6 grid grid-cols-2 md:grid-cols-4 gap-6 font-mono text-xs">
+        {/* Technical Stats Strip (Wide 4-Column Layout) */}
+        <div className="border border-divider bg-graphite p-8 grid grid-cols-2 lg:grid-cols-4 gap-8 font-mono text-xs shadow-architectural">
           <div>
             <div className="text-stone-dim uppercase">Radar Telemetry</div>
-            <div className="text-porcelain font-medium text-sm mt-1 flex items-center gap-1.5">
+            <div className="text-porcelain font-medium text-sm mt-1.5 flex items-center gap-2">
               <Radio className="w-3.5 h-3.5 text-sage-light" />
               <span>{isOnline ? 'Beaconing (40.7128, -74.0060)' : 'Suspended'}</span>
             </div>
           </div>
           <div>
             <div className="text-stone-dim uppercase">Service Radius</div>
-            <div className="text-porcelain font-medium text-sm mt-1">{mechanicProfile.operatingRadiusKm} Kilometers</div>
+            <div className="text-porcelain font-medium text-sm mt-1.5">{mechanicProfile.operatingRadiusKm} Kilometers</div>
           </div>
           <div>
             <div className="text-stone-dim uppercase">Rating Score</div>
-            <div className="text-porcelain font-medium text-sm mt-1">{mechanicProfile.ratingAverage} / 5.0 (Master)</div>
+            <div className="text-porcelain font-medium text-sm mt-1.5">{mechanicProfile.ratingAverage} / 5.0 (Master)</div>
           </div>
           <div>
             <div className="text-stone-dim uppercase">Trade Verification</div>
-            <div className="text-sage-light font-medium text-sm mt-1">APPROVED BY ADMIN</div>
+            <div className="text-sage-light font-medium text-sm mt-1.5">APPROVED BY ADMIN</div>
           </div>
         </div>
 
@@ -102,7 +101,7 @@ export default function MechanicPortalPage() {
         <div className="space-y-4">
           <div className="flex items-center justify-between pb-2 border-b border-divider/40">
             <div className="space-y-0.5">
-              <h2 className="text-lg font-medium text-porcelain">Incoming Roadside Dispatches</h2>
+              <h2 className="text-xl font-medium text-porcelain">Incoming Roadside Dispatches</h2>
               <p className="text-xs text-stone-muted font-normal">
                 Real-time incident signals matched via Haversine distance within your operational radius.
               </p>
@@ -110,7 +109,7 @@ export default function MechanicPortalPage() {
             <span className="text-[11px] font-mono text-stone-dim uppercase">Live Feed</span>
           </div>
 
-          <div className="border border-divider bg-graphite/40 p-12 text-center">
+          <div className="border border-divider bg-graphite/40 p-16 text-center">
             <div className="max-w-md mx-auto space-y-3">
               <div className="w-10 h-10 border border-divider bg-graphite flex items-center justify-center mx-auto text-stone-dim">
                 <Navigation className="w-5 h-5 text-stone-muted" />
