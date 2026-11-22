@@ -193,7 +193,7 @@ export function InspectionTerminal({
         </div>
 
         {/* 3D Viewport Area */}
-        <div className="relative w-full h-[420px] sm:h-[460px] lg:h-[520px] bg-carbon overflow-hidden">
+        <div className="relative w-full h-[420px] sm:h-[460px] lg:h-[520px] bg-carbon overflow-hidden touch-none select-none">
           {isWebGLEnabled ? (
             <HologramScene
               selectedSubsystem={selectedId}
@@ -214,13 +214,13 @@ export function InspectionTerminal({
           {/* Viewport Floating Coordinates Overlay (Top-Left) */}
           <div className="absolute top-3 left-3 pointer-events-none text-[9px] font-mono text-stone-dim space-y-0.5 bg-carbon/80 backdrop-blur-sm p-1.5 rounded-sm border border-divider/40">
             <div>SCALE: 1:1 TRUE CAD</div>
-            <div>RAYCAST: ACTIVE</div>
-            <div className="text-stone-muted">ROTATION: 360° ORBIT</div>
+            <div>FREE ORBIT: 360° UNRESTRICTED</div>
+            <div className="text-stone-muted">INERTIAL DAMPING: ACTIVE</div>
           </div>
 
           {/* Viewport Floating Interaction Hint (Top-Right) */}
           <div className="absolute top-3 right-3 pointer-events-none text-[9px] font-mono text-stone-dim bg-carbon/75 backdrop-blur-sm px-2 py-0.5 rounded-sm border border-divider/30 hidden sm:block">
-            Drag to Orbit • Scroll to Zoom
+            Drag 360° Free Orbit • Scroll Zoom • Right-Click Pan
           </div>
 
           {/* Contextual Technical Overlay Card (Bottom Overlay) */}
@@ -422,7 +422,7 @@ export function InspectionTerminal({
         <div className="lg:col-span-7 bg-carbon relative flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-divider/60">
           
           {/* Main 3D Canvas Container */}
-          <div className="w-full h-[440px] sm:h-[480px] lg:h-[580px] relative overflow-hidden">
+          <div className="w-full h-[440px] sm:h-[480px] lg:h-[580px] relative overflow-hidden touch-none select-none">
             {isWebGLEnabled ? (
               <HologramScene
                 selectedSubsystem={selectedId}
@@ -447,7 +447,7 @@ export function InspectionTerminal({
             <div className="absolute top-4 left-4 pointer-events-none text-[10px] font-mono text-stone-dim space-y-0.5 bg-carbon/80 backdrop-blur-sm p-2 rounded-sm border border-divider/40">
               <div>PLATFORM: F458 COUPE</div>
               <div>SCALE: 1:1 TRUE CAD</div>
-              <div>RAYCAST SELECTION: ACTIVE</div>
+              <div>FREE 360° ORBIT: ACTIVE</div>
               <div>MODE: {displayMode.toUpperCase()}</div>
               {selectedId && (
                 <div className="text-porcelain font-semibold">
@@ -458,7 +458,7 @@ export function InspectionTerminal({
 
             {/* Instruction Tip */}
             <div className="absolute bottom-3 right-4 pointer-events-none text-[10px] font-mono text-stone-dim bg-carbon/70 backdrop-blur-sm px-2.5 py-1 rounded-sm border border-divider/30 hidden sm:block">
-              Rotate: Drag • Zoom: Wheel • Select: Click Subsystem
+              Free 360° Orbit: Drag • Zoom: Scroll • Pan: Right-Click • Click to Inspect
             </div>
           </div>
 

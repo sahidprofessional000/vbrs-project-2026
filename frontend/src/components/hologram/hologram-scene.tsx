@@ -118,52 +118,77 @@ function ChassisModel({
   );
 }
 
-function CameraRig({
-  selectedSubsystem,
+function HologramControls({
   resetTrigger,
 }: {
-  selectedSubsystem: SubsystemId | null;
   resetTrigger: number;
 }) {
   const controlsRef = useRef<any>(null);
   const { camera } = useThree();
 
-  const defaultPos = useMemo(() => new THREE.Vector3(4.2, 2.5, 4.5), []);
+  const defaultPos = useMemo(() => new THREE.Vector3(4.2, 2.2, 4.2), []);
   const defaultTarget = useMemo(() => new THREE.Vector3(0, 0.4, 0), []);
 
-  const targetCamPos = useRef<THREE.Vector3>(defaultPos.clone());
-  const targetLookAt = useRef<THREE.Vector3>(defaultTarget.clone());
+  const isResetting = useRef(false);
+  const resetStartTime = useRef(0);
+  const resetStartPos = useRef(new THREE.Vector3());
+  const resetStartTarget = useRef(new THREE.Vector3());
 
-  // Update target when subsystem selection or reset changes
+  // Trigger smooth reset animation only on explicit reset button trigger
   useEffect(() => {
-    if (selectedSubsystem) {
-      const def = SUBSYSTEM_DEFINITIONS[selectedSubsystem];
-      targetCamPos.current.set(...def.cameraPosition);
-      targetLookAt.current.set(...def.cameraTarget);
-    } else {
-      targetCamPos.current.copy(defaultPos);
-      targetLookAt.current.copy(defaultTarget);
+    if (resetTrigger > 0 && controlsRef.current) {
+      isResetting.current = true;
+      resetStartTime.current = performance.now();
+      resetStartPos.current.copy(camera.position);
+      resetStartTarget.current.copy(controlsRef.current.target);
     }
-  }, [selectedSubsystem, resetTrigger, defaultPos, defaultTarget]);
+  }, [resetTrigger, camera]);
 
-  useFrame((_, delta) => {
-    if (controlsRef.current) {
-      // Smoothly interpolate camera position toward target
-      camera.position.lerp(targetCamPos.current, THREE.MathUtils.clamp(delta * 2.8, 0, 1));
-      controlsRef.current.target.lerp(targetLookAt.current, THREE.MathUtils.clamp(delta * 2.8, 0, 1));
-      controlsRef.current.update();
+  useFrame(() => {
+    if (isResetting.current && controlsRef.current) {
+      const elapsed = (performance.now() - resetStartTime.current) / 500; // 500ms smooth reset
+      if (elapsed >= 1) {
+        isResetting.current = false;
+        camera.position.copy(defaultPos);
+        controlsRef.current.target.copy(defaultTarget);
+        controlsRef.current.update();
+      } else {
+        const t = 1 - Math.pow(1 - elapsed, 3); // cubic ease-out
+        camera.position.lerpVectors(resetStartPos.current, defaultPos, t);
+        controlsRef.current.target.lerpVectors(resetStartTarget.current, defaultTarget, t);
+        controlsRef.current.update();
+      }
     }
   });
 
   return (
     <OrbitControls
       ref={controlsRef}
-      enableDamping
-      dampingFactor={0.06}
-      minDistance={1.8}
-      maxDistance={9.5}
-      minPolarAngle={Math.PI / 16}
-      maxPolarAngle={Math.PI / 2.05}
+      makeDefault
+      enableRotate={true}
+      rotateSpeed={0.9}
+      enableZoom={true}
+      zoomSpeed={1.0}
+      enablePan={true}
+      panSpeed={0.8}
+      screenSpacePanning={true}
+      enableDamping={true}
+      dampingFactor={0.05}
+      minDistance={1.4}
+      maxDistance={14.0}
+      minPolarAngle={0}
+      maxPolarAngle={Math.PI}
+      minAzimuthAngle={-Infinity}
+      maxAzimuthAngle={Infinity}
+      touches={{
+        ONE: THREE.TOUCH.ROTATE,
+        TWO: THREE.TOUCH.DOLLY_PAN,
+      }}
+      target={[0, 0.4, 0]}
+      onStart={() => {
+        // Cancel active reset immediately if user grabs the viewport
+        isResetting.current = false;
+      }}
     />
   );
 }
@@ -176,9 +201,9 @@ export function HologramScene({
 }: HologramSceneProps) {
   return (
     <Canvas
-      camera={{ position: [4.2, 2.5, 4.5], fov: 40 }}
+      camera={{ position: [4.2, 2.2, 4.2], fov: 42 }}
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-      className="w-full h-full cursor-grab active:cursor-grabbing"
+      className="w-full h-full cursor-grab active:cursor-grabbing touch-none select-none"
     >
       {/* Studio Ambient & Key Lighting */}
       <ambientLight intensity={0.5} color="#e2e8f0" />
@@ -223,9 +248,8 @@ export function HologramScene({
         displayMode={displayMode}
       />
 
-      {/* Dynamic Camera Rig & Orbit Controls */}
-      <CameraRig
-        selectedSubsystem={selectedSubsystem}
+      {/* Free 360-Degree Damped Orbit Controls */}
+      <HologramControls
         resetTrigger={resetTrigger}
       />
     </Canvas>
