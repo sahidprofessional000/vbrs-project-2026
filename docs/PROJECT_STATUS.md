@@ -2,7 +2,7 @@
 
 **Project:** Vehicle Breakdown Reporting System (VBRS)  
 **Last Updated:** 2026-11-22  
-**Overall Completion:** 35% (Milestone 1 & Milestone 2 COMPLETED & VERIFIED; Architectural Redesign COMPLETE)
+**Overall Completion:** 50% (Milestone 1, Milestone 2 & Milestone 3 COMPLETED & VERIFIED; Architectural Redesign COMPLETE)
 
 ---
 
@@ -29,8 +29,8 @@
 | :---: | :--- | :--- | :---: | :--- |
 | **M1** | Foundation, Architecture & Design System | Architecture blueprint, SRS, database schema, NestJS + Next.js init, Local Postgres, design tokens | 🟢 **COMPLETED & VERIFIED** | Local DB running, Prisma migrated, Swagger online at `/api/docs`, Next.js build passes |
 | **M2** | Authentication, RBAC, Profiles & Vehicles | JWT auth, refresh token rotation, role guards, profile management, customer vehicle garage CRUD | 🟢 **COMPLETED & AUDITED** | 52/52 Backend Tests + 4 Frontend E2E suites pass; Audit in `docs/MILESTONE_2_VERIFICATION.md` |
-| **M3** | Breakdown Reporting & Location Capture | Breakdown wizard, Leaflet map with GPS & pin fallback, multi-image upload with validation | 🟡 **Ready for Next Milestone** | Report created with photos, coordinates stored, fallback verified |
-| **M4** | Mechanic Portal & Geospatial Discovery | Mechanic profile, verification docs, availability toggle, Haversine proximity query engine | ⚪ Pending | Mechanic coordinate stream tested, radial search returns ordered results |
+| **M3** | Breakdown Reporting & Location Capture | Breakdown wizard, Leaflet map with GPS & pin fallback, multi-image upload with validation | 🟢 **COMPLETED & AUDITED** | 63 Backend Tests + 4 Frontend E2E suites pass; Audit in `docs/MILESTONE_3_VERIFICATION.md` |
+| **M4** | Mechanic Portal & Geospatial Discovery | Mechanic profile, verification docs, availability toggle, Haversine proximity query engine | 🟡 **Ready for Next Milestone** | Mechanic coordinate stream tested, radial search returns ordered results |
 | **M5** | Service Lifecycle, WebSockets & Tracking | State machine engine, Socket.IO rooms, live status progression, en-route driver map tracking | ⚪ Pending | Bidirectional events verified, state transitions strictly validated |
 | **M6** | Admin Center, Moderation & Analytics | Admin dashboard, mechanic verification desk, dispute manager, SQL analytics, audit log viewer | ⚪ Pending | Verification workflow verified, analytics charts rendering live data |
 | **M7** | Rule-Based Diagnosis & Review System | Expert failure diagnosis engine, customer review submission, mechanic reputation scoring | ⚪ Pending | Diagnostic rules tested against test vectors, rating recalculation verified |
@@ -41,15 +41,12 @@
 ## Automated Verification Suite Status
 
 ```
-PASS test/app.e2e-spec.ts
-  VBRS Core API (e2e)
-    √ /api/health (GET) returns system health payload (39 ms)
-
-PASS test/auth-vehicles.e2e-spec.ts
-  Authentication & Vehicle Garage End-to-End Suite (18 tests passed)
-
-PASS src/common/haversine.spec.ts
-  Haversine Great-Circle Proximity Engine (3 tests passed)
+PASS src/common/haversine.spec.ts (3 passed)
+PASS test/app.e2e-spec.ts (1 passed)
+PASS test/breakdowns.e2e-spec.ts (11 passed)
+PASS test/auth-vehicles.e2e-spec.ts (18 passed)
+PASS test/milestone-2-audit.e2e-spec.ts (31 passed)
+Total Backend Tests: 63 passed, 63 total (100% Green)
 
 PASS frontend/test/hero-3d.e2e.mjs
   Interactive 3D Vehicle Showcase (Playwright Chrome E2E)
@@ -67,6 +64,23 @@ PASS frontend/test/images-verify.e2e.mjs
     √ RobustImage component fallback verified on network drop
     √ Zero external image dependencies / 100% locally self-hosted (0 404s)
 
+PASS frontend/test/m2-integration.e2e.mjs
+  Full Authentication & Garage Integration (Playwright Chrome E2E)
+    √ Customer authentication via JWT
+    √ Vehicle registration modal submission
+    √ PostgreSQL garage table persistence verified
+    √ Customer Console, Mechanic Radar, and Admin Command Desk verified
+
+PASS frontend/test/breakdown-reporting.e2e.mjs
+  Breakdown Incident Intake & Triage Suite (Playwright Chrome E2E)
+    √ OpenStreetMap Leaflet Container & Radar Pin verified
+    √ Interactive Map Repositioning & Coordinate Telemetry verified
+    √ Fault Category, Critical Severity & Diagnosis Notes verified
+    √ Multi-photo upload dropzone & thumbnail generation verified
+    √ Signal Transmission to POST /api/breakdowns verified
+    √ Deterministic Incident Triage Protocol Card rendered verified
+    √ Mandatory Towing Rule & Flatbed Recovery verified
+
 HTTP 200 Route Verification:
   [200 OK] /
   [200 OK] /login
@@ -83,5 +97,5 @@ HTTP 200 Route Verification:
   [200 OK] /images/vehicle-rear.jpg
   [200 OK] /images/hero-fallback.jpg
 
-Total Tests: 23 passed, 23 total (100% Green)
+Total Tests: 63 Backend + 4 Frontend E2E Suites Passed (100% Green)
 ```

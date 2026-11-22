@@ -124,6 +124,62 @@ class ApiClient {
     });
   }
 
+  async postFormData<T>(endpoint: string, formData: FormData): Promise<T> {
+    const url = endpoint.startsWith('http') ? endpoint : `${API_BASE_URL}${endpoint}`;
+    const token = this.getAccessToken();
+
+    const headers: Record<string, string> = {
+      Accept: 'application/json',
+    };
+
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers,
+        body: formData,
+      });
+
+      if (response.status === 401) {
+        const refreshed = await this.tryRefreshToken();
+        if (refreshed) {
+          headers['Authorization'] = `Bearer ${this.getAccessToken()}`;
+          const retryResponse = await fetch(url, {
+            method: 'POST',
+            headers,
+            body: formData,
+          });
+          if (!retryResponse.ok) {
+            const errBody = await retryResponse.json().catch(() => ({}));
+            throw new Error(errBody.message || `Request failed with status ${retryResponse.status}`);
+          }
+          return retryResponse.json();
+        } else {
+          this.clearTokens();
+          if (typeof window !== 'undefined' && !window.location.pathname.startsWith('/login')) {
+            window.location.href = '/login?expired=true';
+          }
+          throw new Error('Session expired. Please sign in again.');
+        }
+      }
+
+      if (!response.ok) {
+        const errorBody = await response.json().catch(() => ({}));
+        const message = Array.isArray(errorBody.message)
+          ? errorBody.message.join(', ')
+          : errorBody.message || `HTTP ${response.status}: ${response.statusText}`;
+        throw new Error(message);
+      }
+
+      return response.json();
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
   put<T>(endpoint: string, body?: any, options?: RequestInit) {
     return this.request<T>(endpoint, {
       ...options,

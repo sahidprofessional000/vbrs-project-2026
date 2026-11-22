@@ -66,3 +66,50 @@ export interface MechanicProfile {
   longitude?: number;
   distanceKm?: number;
 }
+
+export interface ReportImage {
+  id: string;
+  reportId: string;
+  filePath: string;
+  fileName: string;
+  fileSize: number;
+  mimeType: string;
+  createdAt: string;
+}
+
+export interface BreakdownReport {
+  id: string;
+  customerId: string;
+  vehicleId?: string | null;
+  category: BreakdownCategory;
+  severity: SeverityLevel;
+  description: string;
+  latitude: number;
+  longitude: number;
+  addressText?: string | null;
+  requiresTowing: boolean;
+  ruleDiagnosis?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  images?: ReportImage[];
+  vehicle?: Vehicle;
+  customer?: {
+    id: string;
+    fullName: string;
+    email: string;
+    phone?: string;
+  };
+  serviceRequest?: {
+    id: string;
+    currentStatus: ServiceRequestStatus;
+    mechanicId?: string | null;
+    mechanic?: any;
+    statusHistory?: Array<{
+      id: string;
+      fromStatus?: ServiceRequestStatus | null;
+      toStatus: ServiceRequestStatus;
+      timestamp: string;
+      notes?: string;
+    }>;
+  };
+}
