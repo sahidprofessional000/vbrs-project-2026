@@ -28,7 +28,7 @@
 | Milestone | Description | Target Scope | Status | Verification Gate |
 | :---: | :--- | :--- | :---: | :--- |
 | **M1** | Foundation, Architecture & Design System | Architecture blueprint, SRS, database schema, NestJS + Next.js init, Local Postgres, design tokens | 🟢 **COMPLETED & VERIFIED** | Local DB running, Prisma migrated, Swagger online at `/api/docs`, Next.js build passes |
-| **M2** | Authentication, RBAC, Profiles & Vehicles | JWT auth, refresh token rotation, role guards, profile management, customer vehicle garage CRUD | 🟢 **COMPLETED & VERIFIED** | 18/18 E2E tests pass, live login verified, frontend garage UI active |
+| **M2** | Authentication, RBAC, Profiles & Vehicles | JWT auth, refresh token rotation, role guards, profile management, customer vehicle garage CRUD | 🟢 **COMPLETED & AUDITED** | 52/52 Backend Tests + 4 Frontend E2E suites pass; Audit in `docs/MILESTONE_2_VERIFICATION.md` |
 | **M3** | Breakdown Reporting & Location Capture | Breakdown wizard, Leaflet map with GPS & pin fallback, multi-image upload with validation | 🟡 **Ready for Next Milestone** | Report created with photos, coordinates stored, fallback verified |
 | **M4** | Mechanic Portal & Geospatial Discovery | Mechanic profile, verification docs, availability toggle, Haversine proximity query engine | ⚪ Pending | Mechanic coordinate stream tested, radial search returns ordered results |
 | **M5** | Service Lifecycle, WebSockets & Tracking | State machine engine, Socket.IO rooms, live status progression, en-route driver map tracking | ⚪ Pending | Bidirectional events verified, state transitions strictly validated |
