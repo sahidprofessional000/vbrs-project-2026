@@ -6,6 +6,7 @@ import { Navbar } from '@/components/shared/navbar';
 import { useAuth } from '@/context/auth-context';
 import { api } from '@/lib/api';
 import { Vehicle } from '@/types';
+import { OriginalVehicleViewer } from '@/components/vehicle/original-vehicle-viewer';
 import { 
   ShieldAlert, 
   Car, 
@@ -166,6 +167,14 @@ export default function CustomerDashboardPage() {
             <div className="text-stone-dim uppercase">Security Clearance</div>
             <div className="text-porcelain font-medium mt-1">Verified Customer JWT</div>
           </div>
+        </div>
+
+        {/* Realtime 3D Vehicle Inspection */}
+        <div className="pt-6 border-t border-divider/40">
+          <OriginalVehicleViewer
+            variant="dashboard"
+            title={primaryVehicle ? `${primaryVehicle.year} ${primaryVehicle.make} ${primaryVehicle.model}` : 'Customer Garage Vehicle Asset'}
+          />
         </div>
       </div>
 

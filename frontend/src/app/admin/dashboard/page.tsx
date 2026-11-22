@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/context/auth-context';
 import { Navbar } from '@/components/shared/navbar';
+import { OriginalVehicleViewer } from '@/components/vehicle/original-vehicle-viewer';
 import { api } from '@/lib/api';
 import { 
   ShieldCheck, 
@@ -371,6 +372,31 @@ export default function AdminDashboardPage() {
                       Approved technicians ({analytics?.fleetMetrics?.pendingMechanics ?? 0} awaiting vetting)
                     </p>
                   </div>
+                </div>
+
+                {/* Municipal Fleet Vehicle Asset Telemetry // 3D Inspection Stage */}
+                <div className="border border-divider bg-graphite p-6 space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-divider">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                        <h3 className="font-medium text-porcelain text-sm">
+                          Municipal Fleet Asset Inspection // 3D Realtime Stage
+                        </h3>
+                      </div>
+                      <p className="text-xs text-stone-muted mt-0.5">
+                        Interactive physical asset evaluation with PBR clearcoat shaders, finish swatches, and 360° turntable inspection.
+                      </p>
+                    </div>
+                    <span className="text-[10px] font-mono text-stone-dim uppercase px-2 py-1 bg-carbon border border-divider">
+                      REGISTERED FLEET ASSET
+                    </span>
+                  </div>
+
+                  <OriginalVehicleViewer
+                    variant="compact"
+                    title="Municipal Fleet Vehicle Asset"
+                  />
                 </div>
 
                 {/* Real Breakdown Category Distribution */}

@@ -19,7 +19,7 @@ import {
   Box,
   CheckCircle2
 } from 'lucide-react';
-import { InspectionTerminal } from '@/components/hologram/inspection-terminal';
+import { OriginalVehicleViewer } from '@/components/vehicle/original-vehicle-viewer';
 import { RobustImage } from '@/components/shared/robust-image';
 
 export default function EditorialLandingPage() {
@@ -134,10 +134,10 @@ export default function EditorialLandingPage() {
                 </div>
               </div>
 
-              {/* Interactive 3D Automotive Hologram (Right: 6 cols - Proportional Expansion) */}
+              {/* Original Realtime 3D Automotive Hero Showcase (Right: 6 cols - Proportional Expansion) */}
               <div className="lg:col-span-6">
-                <div id="overview-hologram">
-                  <InspectionTerminal variant="overview" />
+                <div id="hero-vehicle-viewer">
+                  <OriginalVehicleViewer variant="hero" />
                 </div>
               </div>
 

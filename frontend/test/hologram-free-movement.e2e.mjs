@@ -23,14 +23,20 @@ async function testHologramFreeMovement() {
 
   try {
     // =========================================================================
-    // PART 1: OVERVIEW HERO 3D FREE MOVEMENT ("/")
+    // PART 1: MECHANIC OVERVIEW HERO 3D FREE MOVEMENT (/mechanic/overview)
     // =========================================================================
-    console.log('\n--- PART 1: OVERVIEW HERO 3D FREE ROTATION & MOVEMENT ---');
-    console.log('>>> Step 1.1: Navigating to http://localhost:3000/...');
-    await page.goto('http://localhost:3000/', { waitUntil: 'networkidle' });
+    console.log('\n--- PART 1: MECHANIC OVERVIEW HERO 3D FREE ROTATION & MOVEMENT ---');
+    console.log('>>> Step 1.1: Authenticating as Mechanic and navigating to /mechanic/overview...');
+    await page.goto('http://localhost:3000/login', { waitUntil: 'networkidle' });
+    await page.locator('button:has-text("Technician")').click();
+    await page.waitForTimeout(300);
+    await page.locator('button:has-text("Authenticate Session")').click();
     await page.waitForTimeout(2000);
 
-    const canvas = page.locator('#overview-hologram canvas');
+    await page.goto('http://localhost:3000/mechanic/overview', { waitUntil: 'networkidle' });
+    await page.waitForTimeout(2000);
+
+    const canvas = page.locator('#mechanic-overview-hologram canvas, [data-testid="mechanic-hologram-viewer"] canvas').first();
     await canvas.waitFor({ state: 'visible', timeout: 15000 });
     const box = await canvas.boundingBox();
     if (!box) throw new Error('Could not get bounding box for Overview 3D canvas');
@@ -100,14 +106,14 @@ async function testHologramFreeMovement() {
 
     // 1.6: Test Camera Reset Centers Vehicle
     console.log('>>> Step 1.6: Testing Camera Reset Action (Centers Vehicle)...');
-    const resetBtn = page.locator('#overview-hologram button[title*="Reset Camera"]');
+    const resetBtn = page.locator('#mechanic-overview-hologram button[title*="Reset Camera"], #overview-hologram button[title*="Reset Camera"]').first();
     await resetBtn.click({ force: true });
     await page.waitForTimeout(700);
     console.log('    ✓ Camera Reset smoothly re-centered vehicle to default perspective.');
 
     // 1.7: Test Component Selection Does NOT Hijack Camera
     console.log('>>> Step 1.7: Testing Subsystem Selection Retains Camera Rotation Autonomy...');
-    const engineBtn = page.locator('#overview-hologram button:has-text("1. Engine")');
+    const engineBtn = page.locator('#mechanic-overview-hologram button:has-text("1. Engine"), #overview-hologram button:has-text("1. Engine"), button:has-text("Engine")').first();
     await engineBtn.click({ force: true });
     await page.waitForTimeout(400);
 
@@ -119,7 +125,7 @@ async function testHologramFreeMovement() {
     await page.waitForTimeout(300);
     console.log('    ✓ Drag rotation works freely while "1. Engine" is highlighted without view locking.');
 
-    const brakesBtn = page.locator('#overview-hologram button:has-text("4. Brakes")');
+    const brakesBtn = page.locator('#mechanic-overview-hologram button:has-text("4. Brakes"), #overview-hologram button:has-text("4. Brakes"), button:has-text("Brakes")').first();
     await brakesBtn.click({ force: true });
     await page.waitForTimeout(400);
 

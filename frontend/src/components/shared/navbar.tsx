@@ -126,6 +126,17 @@ export function Navbar() {
             {user?.role === 'MECHANIC' && (
               <>
                 <Link
+                  href="/mechanic/overview"
+                  className={`transition-colors py-1 ${
+                    pathname === '/mechanic/overview'
+                      ? 'text-porcelain border-b border-porcelain'
+                      : 'text-stone-muted hover:text-porcelain'
+                  }`}
+                >
+                  Overview
+                </Link>
+
+                <Link
                   href="/mechanic/home"
                   className={`transition-colors py-1 ${
                     pathname === '/mechanic/home'

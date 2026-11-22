@@ -112,7 +112,33 @@
     - `frontend/public/academic/screenshot-landing-gateways.png`
     - `frontend/public/academic/screenshot-role-redirect-customer.png`
     - `frontend/public/academic/screenshot-role-redirect-mechanic.png`
-- [ ] **Step 7: Full Regression & Verification.**
+- [x] **Critical UI Correction: Role-Isolated Vehicle Viewers & 3D Model Restoration:**
+  - **Component Isolation Architecture**:
+    - Created `frontend/src/components/vehicle/original-vehicle-viewer.tsx` (`OriginalVehicleViewer`): dedicated presentation component for Public Landing, Customer Portal, and Admin Dashboard. Renders original PBR clearcoat 3D car model (`/models/car.glb`) with turntable rotation, architectural paint swatches (Obsidian Carbon, Safety Crimson, Alpine Slate, Chalk Porcelain), camera reset, and hardware WebGL detection. Supports `hero`, `dashboard`, and `compact` variants.
+    - Created `frontend/src/components/vehicle/mechanic-hologram-viewer.tsx` (`MechanicHologramViewer`): dedicated presentation component restricted **exclusively** to Mechanic Overview and Mechanic Workshop. Encapsulates 3D Automotive Hologram with 8 selectable subsystems, CAD & X-Ray shaders, exploded/isolated modes, and diagnostic HUD.
+  - **Public Landing Page Restoration (`/`)**:
+    - Replaced the temporary hologram hero with `<OriginalVehicleViewer variant="hero" />` in `#hero-vehicle-viewer`.
+    - Restores the original 3D vehicle showcase with finish swatches and PBR studio lighting for public visitors and guests.
+  - **Customer Portal Display (`/customer/dashboard`)**:
+    - Seamlessly embeds `<OriginalVehicleViewer variant="dashboard" />` within the Designated Primary Vehicle operational card.
+    - Preserves existing customer fleet management, breakdown history, and dispatch bookmarks. Mechanic hologram is strictly absent.
+  - **Admin Dashboard Display (`/admin/dashboard`)**:
+    - Seamlessly embeds `<OriginalVehicleViewer variant="compact" />` in a dedicated Municipal Fleet Asset Inspection stage within the Operational Fleet Analytics tab.
+    - Preserves technician vetting, dispute management, SQL analytics, and audit log explorer. Mechanic hologram is strictly absent.
+  - **Mechanic Overview Experience (`/mechanic/overview`)**:
+    - Created dedicated `/mechanic/overview` page featuring the cinematic header lockup ("Precision Roadside Rescue. Zero Friction.") and the Interactive 3D Automotive Hologram (`<MechanicHologramViewer variant="overview" />`) with 8 selectable subsystem buttons, HUD telemetry, and unrestricted 360° orbit.
+  - **Mechanic Workshop Terminal (`/mechanic/home`)**:
+    - Preserved full 2-column CAD inspection station (`<MechanicHologramViewer variant="workshop" />`) with 4 view modes (Standard CAD, X-Ray Hologram, Exploded View, Isolated Subsystem), SAE DTC fault tables, and repair cost estimators.
+  - **Automated Verification Suites**:
+    - `frontend/test/vehicle-viewers-isolation.e2e.mjs`: 5/5 parts passed (100% green).
+    - `frontend/test/role-separation.e2e.mjs`: 5/5 parts passed (100% green).
+    - `frontend/test/hologram-free-movement.e2e.mjs`: 100% green across horizontal orbit, vertical polar angles ($0$ to $\pi$), wheel zoom, pan, and touch.
+  - **High-Resolution Verification Screenshots**:
+    - `screenshot-public-landing-original-3d.png`
+    - `screenshot-customer-original-3d.png`
+    - `screenshot-admin-original-3d.png`
+    - `screenshot-mechanic-overview-hologram.png`
+    - `screenshot-mechanic-workshop-terminal.png`
 - [ ] **Step 7: Full Regression & Verification.**
 
 ---

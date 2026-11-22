@@ -41,11 +41,11 @@ async function testRoleSeparation() {
     }
     console.log('    ✓ Hero headline and guest call-to-actions verified.');
 
-    // 1.2: Verify 3D Hologram in Overview Hero
-    console.log('>>> Step 1.2: Verifying 3D Hologram in Overview Hero...');
-    const overviewCanvas = page.locator('#overview-hologram canvas');
+    // 1.2: Verify 3D Original Vehicle Viewer in Hero
+    console.log('>>> Step 1.2: Verifying 3D Original Vehicle Viewer in Hero...');
+    const overviewCanvas = page.locator('#hero-vehicle-viewer canvas, [data-testid="original-vehicle-viewer"] canvas');
     await overviewCanvas.waitFor({ state: 'visible', timeout: 15000 });
-    console.log('    ✓ 3D Holographic Twin canvas is rendered and active.');
+    console.log('    ✓ 3D Original Vehicle Viewer canvas is rendered and active.');
 
     // 1.3: Verify Navbar Guest Navigation Links
     console.log('>>> Step 1.3: Verifying Public Navigation Bar Gateway Links...');

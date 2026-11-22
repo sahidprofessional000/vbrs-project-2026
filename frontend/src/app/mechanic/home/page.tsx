@@ -8,7 +8,7 @@ import { Navbar } from '@/components/shared/navbar';
 import { api } from '@/lib/api';
 import { io, Socket } from 'socket.io-client';
 import { MechanicEarnings } from '@/types';
-import { InspectionTerminal } from '@/components/hologram/inspection-terminal';
+import { MechanicHologramViewer } from '@/components/vehicle/mechanic-hologram-viewer';
 import {
   Wrench,
   Radio,
@@ -630,7 +630,7 @@ export default function MechanicHomePage() {
           {/* 4. INTERACTIVE 3D AUTOMOTIVE INSPECTION TERMINAL (DIGITAL TWIN)    */}
           {/* ================================================================= */}
           <div id="inspection-terminal" className="space-y-4">
-            <InspectionTerminal />
+            <MechanicHologramViewer variant="workshop" />
           </div>
 
           {/* ================================================================= */}
