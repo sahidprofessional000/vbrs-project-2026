@@ -26,6 +26,15 @@ async function bootstrap() {
   // Cookie parser for secure refresh token handling
   app.use(cookieParser());
 
+  // Security Headers Hardening Middleware
+  app.use((req: any, res: any, next: any) => {
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-Frame-Options', 'DENY');
+    res.setHeader('X-XSS-Protection', '1; mode=block');
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    next();
+  });
+
   // CORS configuration
   const allowedOrigins = [
     process.env.CORS_ORIGIN || 'http://localhost:3000',

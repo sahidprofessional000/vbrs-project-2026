@@ -82,13 +82,37 @@ npm run dev
 ```
 *Web Application: http://localhost:3000*
 
+### 5. Execute Full Regression Test Suites
+In terminal (Backend unit & 10 E2E suites — 159 tests):
+```powershell
+cd backend
+npm run test
+npm run test:e2e
+```
+
+In terminal (Frontend Playwright 11 automated suites across Desktop, Tablet & Mobile):
+```powershell
+cd frontend
+npm run test:all
+```
+
 ---
 
-## Documentation Index
+## Documentation & Academic Research Index
 
-- [Project Blueprint](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/docs/PROJECT_BLUEPRINT.md)
-- [System Architecture](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/docs/ARCHITECTURE.md)
-- [Requirements Specification (SRS)](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/docs/REQUIREMENTS.md)
-- [Project Status & Milestones](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/docs/PROJECT_STATUS.md)
-- [Design Tokens & Principles](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/DESIGN.md)
-- [Product Vision](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/PRODUCT.md)
+- **Academic Monograph (Full Report):** [docs/ACADEMIC_REPORT.md](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/docs/ACADEMIC_REPORT.md)
+- **Executive Presentation Deck:** [docs/PROJECT_PRESENTATION.md](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/docs/PROJECT_PRESENTATION.md)
+- **Final Milestone 8 Audit:** [docs/MILESTONE_8_VERIFICATION.md](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/docs/MILESTONE_8_VERIFICATION.md)
+- **Project Status & Milestones:** [docs/PROJECT_STATUS.md](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/docs/PROJECT_STATUS.md)
+- **Milestone Verification Audits:**
+  - [Milestone 2 Verification](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/docs/MILESTONE_2_VERIFICATION.md)
+  - [Milestone 3 Verification](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/docs/MILESTONE_3_VERIFICATION.md)
+  - [Milestone 4 Verification](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/docs/MILESTONE_4_VERIFICATION.md)
+  - [Milestone 5 Verification](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/docs/MILESTONE_5_VERIFICATION.md)
+  - [Milestone 6 Verification](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/docs/MILESTONE_6_VERIFICATION.md)
+  - [Milestone 7 Verification](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/docs/MILESTONE_7_VERIFICATION.md)
+- **Architecture & Specifications:**
+  - [System Architecture](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/docs/ARCHITECTURE.md)
+  - [Requirements Specification (SRS)](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/docs/REQUIREMENTS.md)
+  - [Design Tokens & Principles](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/DESIGN.md)
+  - [Product Vision](file:///d:/VEHICLE%20BRAKDOWN%20SYSTEM/PRODUCT.md)

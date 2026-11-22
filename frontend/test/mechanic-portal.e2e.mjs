@@ -13,6 +13,8 @@ async function testMechanicPortalAndDiscovery() {
 
   const context = await browser.newContext({
     viewport: { width: 1744, height: 1080 },
+    geolocation: { latitude: 40.7128, longitude: -74.0060 },
+    permissions: ['geolocation'],
   });
 
   const page = await context.newPage();
