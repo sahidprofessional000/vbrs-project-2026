@@ -35,7 +35,7 @@
 | **M6** | Admin Center, Moderation & Analytics | Admin dashboard, mechanic verification desk, dispute manager, SQL analytics, audit log viewer | 🟢 **COMPLETED & AUDITED** | 128 Backend Tests + 9 Frontend E2E suites pass; Audit in `docs/MILESTONE_6_VERIFICATION.md` |
 | **M7** | Rule-Based Diagnosis & Review System | Expert failure diagnosis engine, customer review submission, mechanic reputation scoring | 🟢 **COMPLETED & AUDITED** | 142 Backend Tests + 10 Frontend E2E suites pass; Audit in `docs/MILESTONE_7_VERIFICATION.md` |
 | **M8** | Testing, Security Hardening & Documentation | Full regression, security hardening (OWASP headers & penetration tests), responsive multi-device audit, academic report & presentation | 🟢 **COMPLETED & AUDITED** | 159 Backend Tests + 11 Frontend E2E suites pass; Audit in `docs/MILESTONE_8_VERIFICATION.md` |
-| **EXP-UPGRADE** | Customer & Mechanic Experiences + 3D Hologram | Dedicated Customer (`/customer/home`, `/customer/profile`) & Mechanic (`/mechanic/home`, `/mechanic/profile`) portals, Saved Addresses, Earnings API, 3D Automotive Hologram with 8 Selectable Subsystems | 🟡 **IN PROGRESS (Steps 1, 2 & 3 Complete)** | Safe migration deployed, 171 backend tests + customer experience Playwright E2E passing (100% green) |
+| **EXP-UPGRADE** | Customer & Mechanic Experiences + 3D Hologram | Dedicated Customer (`/customer/home`, `/customer/profile`) & Mechanic (`/mechanic/home`, `/mechanic/profile`) portals, Saved Addresses, Earnings API, 3D Automotive Hologram with 8 Selectable Subsystems | 🟡 **IN PROGRESS (Steps 1, 2, 3 & 4 Complete)** | Safe migration deployed, 171 backend tests + customer & mechanic Playwright E2E passing (100% green) |
 
 ---
 
@@ -57,7 +57,11 @@
   - Built `/customer/profile`: Form for updating legal name, primary phone, and avatar URL via `PUT /api/auth/profile`; full CRUD for saved dispatch address bookmarks with GPS autofill and default designation; garage overview and sign out.
   - Role-guarded routing: Mechanics redirected to `/mechanic/home`, Admins redirected to `/admin/dashboard`, unauthenticated redirected to `/login?redirect=...`.
   - Created automated Playwright test suite `frontend/test/customer-experience.e2e.mjs` (14 / 14 checks passing 100% green).
-- [ ] **Step 4: Dedicated Mechanic Experience (`/mechanic/home` & `/mechanic/profile`).**
+- [x] **Step 4: Dedicated Mechanic Experience (`/mechanic/home` & `/mechanic/profile`):**
+  - Built `/mechanic/home`: Professional workshop workspace with authenticated mechanic branding, ASE accreditation badges, live availability switch (`AVAILABLE` <-> `OFFLINE`) with optimistic update & rollback, operating radius perimeter slider (10-100 km), hardware GPS beacon transmission, real recorded financials from PostgreSQL ledger (total revenue, itemized labor/parts, average order value, reputation score), active on-job mission terminal with lifecycle progression (`EN_ROUTE`, `ON_SITE`, `IN_PROGRESS`, `COMPLETED`), quotation intake, inbound dispatch opportunity radar with 1-click claim, completed work orders history stream, and premium 3D inspection terminal entry point showcasing 8 selectable assemblies.
+  - Built `/mechanic/profile`: Professional workshop dossier editor with workshop name, address, phone, experience years, service perimeter, technical specializations tag manager, professional certifications tag manager, workshop bio, and sensitive trade license governance (modifying resets status to `PENDING` and triggers an immutable administrative audit log).
+  - Role-guarded routing: Customers redirected to `/customer/home`, Admins to `/admin/dashboard`.
+  - Created automated Playwright test suite `frontend/test/mechanic-experience.e2e.mjs` (13 / 13 checks passing 100% green).
 - [ ] **Step 5: Interactive 3D Automotive Hologram (8 Selectable Subsystems).**
 - [ ] **Step 6: Role Separation Navigation & Public Landing Gateways.**
 - [ ] **Step 7: Full Regression & Verification.**

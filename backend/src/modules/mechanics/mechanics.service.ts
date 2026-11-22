@@ -97,6 +97,13 @@ export class MechanicsService {
       });
     }
 
+    if (dto.phone !== undefined) {
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: { phone: dto.phone.trim() || null },
+      });
+    }
+
     return this.prisma.mechanicProfile.update({
       where: { id: profile.id },
       data: {

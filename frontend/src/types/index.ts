@@ -129,3 +129,27 @@ export interface BreakdownReport {
     }>;
   };
 }
+
+export interface MechanicEarnings {
+  totalRevenue: number;
+  totalLabor: number;
+  totalParts: number;
+  totalDiagnostic: number;
+  completedJobsCount: number;
+  averageJobValue: number;
+  recentPayoutRecords: Array<{
+    requestId: string;
+    completedAt: string;
+    breakdownCategory: string;
+    vehicle?: {
+      make: string;
+      model: string;
+      year: number;
+      licensePlate: string;
+    } | null;
+    diagnosticQuote: number;
+    laborCost: number;
+    partsCost: number;
+    totalAmount: number;
+  }>;
+}

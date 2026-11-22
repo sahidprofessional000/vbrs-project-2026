@@ -13,6 +13,11 @@ export class UpdateMechanicProfileDto {
   @IsString()
   workshopAddress?: string;
 
+  @ApiPropertyOptional({ example: '+1 (555) 234-5678', description: 'Technician primary dispatch phone number' })
+  @IsOptional()
+  @IsString()
+  phone?: string;
+
   @ApiPropertyOptional({ example: 25.0, description: 'Service operational boundary radius in km (1 to 100)' })
   @IsOptional()
   @Type(() => Number)
