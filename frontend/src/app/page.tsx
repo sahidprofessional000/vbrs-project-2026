@@ -12,6 +12,7 @@ import {
   Clock, 
   ArrowUpRight 
 } from 'lucide-react';
+import { VehicleHero3D } from '@/components/hero/vehicle-hero-3d';
 
 export default function EditorialLandingPage() {
   return (
@@ -83,33 +84,9 @@ export default function EditorialLandingPage() {
                 </div>
               </div>
 
-              {/* Cinematic Automotive Photography Frame (Right: 6 cols - Proportional Expansion) */}
+              {/* 3D Realtime Automotive Hero Showcase (Right: 6 cols - Proportional Expansion) */}
               <div className="lg:col-span-6">
-                <div className="relative border border-divider p-2 bg-graphite/40 shadow-elevated">
-                  <div className="relative aspect-[4/3] sm:aspect-[16/11] xl:aspect-[16/11] overflow-hidden bg-carbon">
-                    <img
-                      src="https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=2000&q=85"
-                      alt="Nighttime roadside highway precision headlights"
-                      className="w-full h-full object-cover grayscale-[25%] contrast-[110%] brightness-[90%]"
-                    />
-                    
-                    {/* Architectural Technical Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-carbon/95 via-transparent to-transparent pointer-events-none" />
-
-                    <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between font-mono text-[11px] text-stone-muted">
-                      <div>
-                        <span className="text-porcelain uppercase block font-semibold tracking-wider">Incident Radar // Active</span>
-                        <span className="text-stone-dim">40.7128° N, 74.0060° W</span>
-                      </div>
-                      <div className="text-right">
-                        <span className="inline-flex items-center gap-2 text-sage-light">
-                          <span className="w-1.5 h-1.5 rounded-full bg-sage animate-pulse" />
-                          <span>STATION MONITOR ONLINE</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <VehicleHero3D />
               </div>
 
             </div>

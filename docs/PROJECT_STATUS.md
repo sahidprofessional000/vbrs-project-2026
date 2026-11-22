@@ -19,6 +19,7 @@
 - [x] **Mechanic Terminal (`/mechanic/portal`):** Live radar beaconing toggle, operating radius indicator, and incoming dispatch queue.
 - [x] **Admin Command Center (`/admin/dashboard`):** Real-time database latency and status indicators, technician verification queue, and municipal incident monitor.
 - [x] **Breakdown Reporting Screen (`/report-breakdown`):** Emergency intake wizard with hardware GPS coordinates, fault categorization, and roadside hazard severity levels.
+- [x] **Interactive 3D Vehicle Hero Experience (`/`):** Three.js + React Three Fiber + Drei realtime studio vehicle showcase with PBR clearcoat paint, Draco offline decoding, constrained orbit inspection, 4 architectural finish swatches, and automated Playwright E2E verification.
 
 ---
 
@@ -50,6 +51,15 @@ PASS test/auth-vehicles.e2e-spec.ts
 PASS src/common/haversine.spec.ts
   Haversine Great-Circle Proximity Engine (3 tests passed)
 
+PASS frontend/test/hero-3d.e2e.mjs
+  Interactive 3D Vehicle Showcase (Playwright Chrome E2E)
+    √ WebGL 2.0 Canvas Initialization (1 detected)
+    √ PBR Material Finish Selector (Obsidian Carbon, Safety Crimson, Alpine Slate, Chalk Porcelain)
+    √ Turntable Orbit Toggle Interaction
+    √ Studio Camera Reset Control
+    √ Damped Orbit Drag Controls
+    √ Real-time Telemetry Badges & Zero Console Errors
+
 HTTP 200 Route Verification:
   [200 OK] /
   [200 OK] /login
@@ -59,6 +69,8 @@ HTTP 200 Route Verification:
   [200 OK] /mechanic/portal
   [200 OK] /admin/dashboard
   [200 OK] /report-breakdown
+  [200 OK] /models/car.glb
+  [200 OK] /draco/draco_decoder.wasm
 
-Total Tests: 21 passed, 21 total (100% Green)
+Total Tests: 22 passed, 22 total (100% Green)
 ```

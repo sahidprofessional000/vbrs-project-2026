@@ -93,3 +93,26 @@ The color architecture is built strictly on deep warm carbons, tactile graphite 
   - Clean slate overlay (`bg-black/80 backdrop-blur-md`), bordered by `#303236`, interior in `#181A1D`.
 - **Map:**
   - Dark, restrained CartoDB Dark Matter / OSM custom monochrome styling.
+
+---
+
+## 5. Realtime 3D Vehicle Hero Experience
+
+- **Technology Stack:** Three.js, React Three Fiber (R3F v8), `@react-three/drei` (v9), Draco 3D Decoder (local WASM).
+- **Asset Provenance & License:**
+  - Binary glTF (`/models/car.glb`, 1.68 MB), Draco-compressed sports coupe model by **vicent091036**, curated by the Three.js team.
+  - License: **Creative Commons Attribution 4.0 International (CC-BY 4.0)** — Commercial & educational use permitted with attribution.
+  - 100% offline self-hosted assets in `/models/` and `/draco/` with zero external CDN dependencies.
+- **PBR Material Specification:**
+  - Clearcoat automotive paint: `MeshPhysicalMaterial` (clearcoat: 1.0, clearcoatRoughness: 0.04, metalness: 0.88, roughness: 0.28).
+  - Selectable architectural finishes: *Obsidian Carbon* (`#16181b`), *Safety Crimson* (`#8b1510`), *Alpine Slate* (`#202e29`), *Chalk Porcelain* (`#d2d0ca`).
+  - Physically based glass: transmission: 0.88, IOR: 1.52, roughness: 0.05.
+  - Machined alloy rims: metalness: 0.94, roughness: 0.18.
+  - Vulcanized rubber tires: metalness: 0.04, roughness: 0.88.
+- **Lighting & Studio Environment:**
+  - Procedural HDR lighting using Drei `<Lightformer>` banks (overhead softbox, dual horizon rim strips) rendered without downloading external HDRIs.
+  - Ground contact shadow: dynamic `<ContactShadows>` with soft diffusion (`#08080a`, blur: 1.6).
+  - Ambient studio floor: fine architectural hairline grid (`#26292d`).
+  - Camera: telephoto FOV (37°), damped OrbitControls with constrained polar elevation (no floor clipping, no upside-down inversion).
+  - WebGL capability detection with automatic graceful fallback to high-contrast automotive photography if GPU hardware acceleration is disabled.
+
