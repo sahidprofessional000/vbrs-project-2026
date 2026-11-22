@@ -357,13 +357,13 @@ export class AdminService {
       }
     }
 
-    const countCompleted = completedRequests.length || 1;
-    const avgDispatchLatencyMinutes = Number(
-      (totalDispatchLatencyMinutes / countCompleted).toFixed(1),
-    );
-    const avgServiceDurationMinutes = Number(
-      (totalServiceDurationMinutes / countCompleted).toFixed(1),
-    );
+    const countCompleted = completedRequests.length;
+    const avgDispatchLatencyMinutes = countCompleted > 0
+      ? Number((totalDispatchLatencyMinutes / countCompleted).toFixed(1))
+      : 0;
+    const avgServiceDurationMinutes = countCompleted > 0
+      ? Number((totalServiceDurationMinutes / countCompleted).toFixed(1))
+      : 0;
 
     // 6. Towing percentage
     const towingPercentage =
@@ -386,8 +386,8 @@ export class AdminService {
         towingPercentage,
       },
       responseTiming: {
-        avgDispatchLatencyMinutes: avgDispatchLatencyMinutes || 3.2,
-        avgServiceDurationMinutes: avgServiceDurationMinutes || 24.5,
+        avgDispatchLatencyMinutes,
+        avgServiceDurationMinutes,
       },
       categoryDistribution: categoryGroups.map((g) => ({
         category: g.category,
