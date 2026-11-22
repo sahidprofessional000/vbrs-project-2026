@@ -8,6 +8,7 @@ import { BreakdownsModule } from './modules/breakdowns/breakdowns.module';
 import { MechanicsModule } from './modules/mechanics/mechanics.module';
 import { ServiceRequestsModule } from './modules/service-requests/service-requests.module';
 import { EventsModule } from './modules/events/events.module';
+import { AdminModule } from './modules/admin/admin.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { EventsModule } from './modules/events/events.module';
     BreakdownsModule,
     MechanicsModule,
     ServiceRequestsModule,
+    AdminModule,
   ],
 })
 export class AppModule {}
