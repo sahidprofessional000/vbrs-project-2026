@@ -35,7 +35,7 @@
 | **M6** | Admin Center, Moderation & Analytics | Admin dashboard, mechanic verification desk, dispute manager, SQL analytics, audit log viewer | 🟢 **COMPLETED & AUDITED** | 128 Backend Tests + 9 Frontend E2E suites pass; Audit in `docs/MILESTONE_6_VERIFICATION.md` |
 | **M7** | Rule-Based Diagnosis & Review System | Expert failure diagnosis engine, customer review submission, mechanic reputation scoring | 🟢 **COMPLETED & AUDITED** | 142 Backend Tests + 10 Frontend E2E suites pass; Audit in `docs/MILESTONE_7_VERIFICATION.md` |
 | **M8** | Testing, Security Hardening & Documentation | Full regression, security hardening (OWASP headers & penetration tests), responsive multi-device audit, academic report & presentation | 🟢 **COMPLETED & AUDITED** | 159 Backend Tests + 11 Frontend E2E suites pass; Audit in `docs/MILESTONE_8_VERIFICATION.md` |
-| **EXP-UPGRADE** | Customer & Mechanic Experiences + 3D Hologram | Dedicated Customer (`/customer/home`, `/customer/profile`) & Mechanic (`/mechanic/home`, `/mechanic/profile`) portals, Saved Addresses, Earnings API, 3D Automotive Hologram with 8 Selectable Subsystems | 🟡 **IN PROGRESS (Steps 1, 2, 3 & 4 Complete)** | Safe migration deployed, 171 backend tests + customer & mechanic Playwright E2E passing (100% green) |
+| **EXP-UPGRADE** | Customer & Mechanic Experiences + 3D Hologram | Dedicated Customer (`/customer/home`, `/customer/profile`) & Mechanic (`/mechanic/home`, `/mechanic/profile`) portals, Saved Addresses, Earnings API, 3D Automotive Hologram with 8 Selectable Subsystems | 🟡 **IN PROGRESS (Steps 1, 2, 3, 4 & 5 Complete)** | Safe migration deployed, 171 backend tests + customer, mechanic & 3D hologram Playwright E2E passing (100% green) |
 
 ---
 
@@ -62,7 +62,21 @@
   - Built `/mechanic/profile`: Professional workshop dossier editor with workshop name, address, phone, experience years, service perimeter, technical specializations tag manager, professional certifications tag manager, workshop bio, and sensitive trade license governance (modifying resets status to `PENDING` and triggers an immutable administrative audit log).
   - Role-guarded routing: Customers redirected to `/customer/home`, Admins to `/admin/dashboard`.
   - Created automated Playwright test suite `frontend/test/mechanic-experience.e2e.mjs` (13 / 13 checks passing 100% green).
-- [ ] **Step 5: Interactive 3D Automotive Hologram (8 Selectable Subsystems).**
+- [x] **Step 5: Interactive 3D Automotive Hologram (8 Selectable Subsystems):**
+  - Built `frontend/src/components/hologram/inspection-terminal.tsx`: Complete Three.js, React Three Fiber, and Drei CAD engineering digital twin inspection station embedded directly into `/mechanic/home`.
+  - Implemented **8 genuinely selectable functional mechanical subsystem assemblies**:
+    1. *Engine Assembly* (V8 block, cylinder heads, red valve covers, 8-runner intake plenum, harmonic balancer, serpentine pulleys)
+    2. *Battery Module* (Reinforced 12V AGM/HV enclosure, dual brass/lead terminal posts, high-voltage orange shielded conduits)
+    3. *Transmission & Transaxle* (7-speed DCT gearbox casing, bell housing, electronic differential hub, dual drive half-shafts with CV joints)
+    4. *Braking System* (4-corner carbon-ceramic cross-drilled rotor discs and Brembo-style aluminum monobloc calipers)
+    5. *Wheels and Tyres* (4-corner forged alloy rims, central locking lug nuts, and vulcanized rubber performance tyres)
+    6. *Suspension Subsystem* (4-corner magnetorheological fluid adaptive dampers, hard chrome piston rods, helical coil springs, top strut hats)
+    7. *Cooling System* (Aluminum dual-pass crossflow radiator core with cooling fins, end tanks, dual electric suction fans with shroud)
+    8. *Electrical System* (Bosch Motronic ECU with aluminum heatsink fins, multi-pin harness connector, power distribution fuse/relay box with translucent cover, braided wiring loom)
+  - Interactive View Modes: **Standard CAD**, **X-Ray Hologram** (translucent body panels), **Exploded View** (radial subsystem displacement), and **Isolated Subsystem**.
+  - Contextual Engineering Panel: Displays component specifications, observed failure symptoms, SAE Diagnostic Trouble Codes (e.g., `P0300`, `P0562`, `P0700`, `C0035`, `C0750`, `C1030`, `P0117`, `U0100`), field diagnostic triage procedures, and authorized repair service quotes.
+  - Zero-budget asset licensing documented in `frontend/public/models/SUBSYSTEMS_LICENSE.md`.
+  - Automated Playwright E2E verification in `frontend/test/hologram-3d.e2e.mjs` passing 100%, generating high-resolution verification screenshots (`screenshot-3d-hologram.png` and `screenshot-3d-exploded.png`).
 - [ ] **Step 6: Role Separation Navigation & Public Landing Gateways.**
 - [ ] **Step 7: Full Regression & Verification.**
 

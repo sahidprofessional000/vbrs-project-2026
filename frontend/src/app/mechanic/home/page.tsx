@@ -8,6 +8,7 @@ import { Navbar } from '@/components/shared/navbar';
 import { api } from '@/lib/api';
 import { io, Socket } from 'socket.io-client';
 import { MechanicEarnings } from '@/types';
+import { InspectionTerminal } from '@/components/hologram/inspection-terminal';
 import {
   Wrench,
   Radio,
@@ -626,65 +627,10 @@ export default function MechanicHomePage() {
           </div>
 
           {/* ================================================================= */}
-          {/* 4. UPCOMING 3D AUTOMOTIVE INSPECTION TERMINAL (STEP 5 ENTRY POINT) */}
+          {/* 4. INTERACTIVE 3D AUTOMOTIVE INSPECTION TERMINAL (DIGITAL TWIN)    */}
           {/* ================================================================= */}
-          <div
-            id="inspection-terminal"
-            className="p-8 border border-divider/80 bg-gradient-to-r from-graphite via-carbon to-elevated rounded-sm relative overflow-hidden"
-          >
-            <div className="relative z-10 space-y-5">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-elevated border border-divider text-[11px] font-mono uppercase tracking-wider text-porcelain">
-                  <Box className="w-3.5 h-3.5 text-stone-muted" />
-                  <span>Automotive Engineering Digital Twin</span>
-                </div>
-
-                <span className="text-[10px] font-mono uppercase tracking-widest text-stone-muted">
-                  8 Independent Assemblies • CAD Dissection
-                </span>
-              </div>
-
-              <div className="max-w-2xl space-y-2">
-                <h2 className="text-xl sm:text-2xl font-medium tracking-tight text-porcelain">
-                  Interactive 3D Engineering Inspection Terminal
-                </h2>
-                <p className="text-xs sm:text-sm text-stone-muted leading-relaxed">
-                  Precision digital twin diagnostic environment. Isolate and inspect eight mechanical subsystems: Engine Block, High-Voltage Battery Pack, Transmission Casing, Ventilated Brakes, Wheels & Tyres, Suspension Coilovers, Aluminum Radiator Core, and Electrical Harness.
-                </p>
-              </div>
-
-              {/* 8 Selectable Subsystem Pills */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2">
-                {[
-                  { id: 'engine', name: '1. Engine Block' },
-                  { id: 'battery', name: '2. Battery Module' },
-                  { id: 'transmission', name: '3. Transmission' },
-                  { id: 'brakes', name: '4. Braking System' },
-                  { id: 'wheels', name: '5. Wheels & Tyres' },
-                  { id: 'suspension', name: '6. Suspension Struts' },
-                  { id: 'cooling', name: '7. Radiator Cooling' },
-                  { id: 'electrical', name: '8. Electrical Harness' },
-                ].map((item) => (
-                  <div
-                    key={item.id}
-                    className="p-2.5 rounded-sm bg-carbon/70 border border-divider/60 text-xs font-mono text-stone-muted flex items-center gap-2"
-                  >
-                    <Layers className="w-3.5 h-3.5 text-stone-dim shrink-0" />
-                    <span className="truncate">{item.name}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="pt-2 flex items-center gap-3">
-                <div className="px-4 py-2 rounded-sm bg-elevated border border-divider text-[11px] font-mono uppercase tracking-wider text-stone-muted flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-forest animate-pulse" />
-                  <span>3D CAD Engine Active</span>
-                </div>
-                <span className="text-xs font-mono text-stone-dim">
-                  Interactive Raycast Selection & SAE Fault Code Diagnostics
-                </span>
-              </div>
-            </div>
+          <div id="inspection-terminal" className="space-y-4">
+            <InspectionTerminal />
           </div>
 
           {/* ================================================================= */}
