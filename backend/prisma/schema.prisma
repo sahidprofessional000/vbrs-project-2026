@@ -1,0 +1,354 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  CUSTOMER
+  MECHANIC
+  ADMIN
+}
+
+enum PowertrainType {
+  PETROL
+  DIESEL
+  ELECTRIC
+  HYBRID
+  CNG
+}
+
+enum BreakdownCategory {
+  ENGINE_FAILURE
+  TRANSMISSION_ISSUE
+  FLAT_TIRE_WHEEL
+  BATTERY_DEAD_ELECTRICAL
+  BRAKE_SYSTEM_FAILURE
+  OVERHEATING_COOLANT
+  FUEL_EMPTY_OR_CONTAMINATED
+  LOCKOUT_KEY_LOST
+  COLLISION_ACCIDENT
+  OTHER_UNKNOWN
+}
+
+enum SeverityLevel {
+  LOW
+  MEDIUM
+  CRITICAL
+}
+
+enum VerificationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum AvailabilityStatus {
+  OFFLINE
+  AVAILABLE
+  ON_JOB
+}
+
+enum ServiceRequestStatus {
+  SUBMITTED
+  SEARCHING
+  ASSIGNED
+  ACCEPTED
+  EN_ROUTE
+  ARRIVED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum ComplaintStatus {
+  PENDING
+  INVESTIGATING
+  RESOLVED
+  DISMISSED
+}
+
+enum NotificationType {
+  REQUEST_UPDATE
+  DISPATCH_OFFER
+  ASSIGNMENT
+  COMPLETION
+  ADMIN_ALERT
+  GENERAL
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  fullName     String
+  phone        String?
+  role         Role     @default(CUSTOMER)
+  avatarUrl    String?
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  vehicles             Vehicle[]
+  mechanicProfile      MechanicProfile?
+  breakdownReports     BreakdownReport[]
+  customerRequests     ServiceRequest[]        @relation("CustomerRequests")
+  reviewsGiven         Review[]                @relation("ReviewsGiven")
+  complaintsFiled      Complaint[]             @relation("ComplaintsFiled")
+  complaintsAgainst    Complaint[]             @relation("ComplaintsAgainst")
+  notifications        Notification[]
+  auditLogs            AuditLog[]
+  refreshTokens        RefreshToken[]
+  statusHistoryEntries ServiceStatusHistory[]
+
+  @@index([email])
+  @@index([role])
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid())
+  tokenHash String    @unique
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+}
+
+model Vehicle {
+  id           String         @id @default(uuid())
+  userId       String
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  make         String
+  model        String
+  year         Int
+  licensePlate String
+  vin          String?
+  color        String?
+  powertrain   PowertrainType @default(PETROL)
+  isDefault    Boolean        @default(false)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  breakdownReports BreakdownReport[]
+
+  @@index([userId])
+  @@index([licensePlate])
+}
+
+model MechanicProfile {
+  id                 String             @id @default(uuid())
+  userId             String             @unique
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workshopName       String?
+  tradeLicenseNumber String?
+  experienceYears    Int                @default(0)
+  verificationStatus VerificationStatus @default(PENDING)
+  verificationNotes  String?
+  availabilityStatus AvailabilityStatus @default(OFFLINE)
+  operatingRadiusKm  Float              @default(25.0)
+  ratingAverage      Float              @default(0.0)
+  totalReviews       Int                @default(0)
+  totalJobsCompleted Int                @default(0)
+  documentUrl        String?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  services         MechanicService[]
+  currentLocation  MechanicLocation?
+  assignedRequests ServiceRequest[]  @relation("MechanicRequests")
+  reviews          Review[]
+
+  @@index([verificationStatus])
+  @@index([availabilityStatus])
+  @@index([ratingAverage])
+}
+
+model MechanicService {
+  id              String            @id @default(uuid())
+  mechanicId      String
+  mechanic        MechanicProfile   @relation(fields: [mechanicId], references: [id], onDelete: Cascade)
+  category        BreakdownCategory
+  priceEstimateMin Float?
+  priceEstimateMax Float?
+  description     String?
+  createdAt       DateTime          @default(now())
+
+  @@index([mechanicId, category])
+}
+
+model MechanicLocation {
+  id         String          @id @default(uuid())
+  mechanicId String          @unique
+  mechanic   MechanicProfile @relation(fields: [mechanicId], references: [id], onDelete: Cascade)
+  latitude   Float
+  longitude  Float
+  heading    Float?
+  speed      Float?
+  accuracy   Float?
+  updatedAt  DateTime        @updatedAt
+
+  @@index([latitude, longitude])
+}
+
+model BreakdownReport {
+  id             String            @id @default(uuid())
+  customerId     String
+  customer       User              @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  vehicleId      String?
+  vehicle        Vehicle?          @relation(fields: [vehicleId], references: [id], onDelete: SetNull)
+  category       BreakdownCategory
+  severity       SeverityLevel     @default(MEDIUM)
+  description    String
+  latitude       Float
+  longitude      Float
+  addressText    String?
+  ruleDiagnosis  String?
+  requiresTowing Boolean           @default(false)
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  images         ReportImage[]
+  serviceRequest ServiceRequest?
+
+  @@index([customerId])
+  @@index([category])
+  @@index([latitude, longitude])
+  @@index([createdAt])
+}
+
+model ReportImage {
+  id        String          @id @default(uuid())
+  reportId  String
+  report    BreakdownReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  filePath  String
+  fileName  String
+  fileSize  Int
+  mimeType  String
+  createdAt DateTime        @default(now())
+
+  @@index([reportId])
+}
+
+model ServiceRequest {
+  id                 String               @id @default(uuid())
+  breakdownReportId  String               @unique
+  breakdownReport    BreakdownReport      @relation(fields: [breakdownReportId], references: [id], onDelete: Cascade)
+  customerId         String
+  customer           User                 @relation("CustomerRequests", fields: [customerId], references: [id], onDelete: Cascade)
+  mechanicId         String?
+  mechanic           MechanicProfile?     @relation("MechanicRequests", fields: [mechanicId], references: [id], onDelete: SetNull)
+  currentStatus      ServiceRequestStatus @default(SUBMITTED)
+  agreedQuote        Float?
+  resolutionNotes    String?
+  cancellationReason String?
+  assignedAt         DateTime?
+  acceptedAt         DateTime?
+  enRouteAt          DateTime?
+  arrivedAt          DateTime?
+  completedAt        DateTime?
+  cancelledAt        DateTime?
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+
+  statusHistory ServiceStatusHistory[]
+  review        Review?
+  complaints    Complaint[]
+
+  @@index([currentStatus])
+  @@index([customerId])
+  @@index([mechanicId])
+  @@index([createdAt])
+}
+
+model ServiceStatusHistory {
+  id               String               @id @default(uuid())
+  serviceRequestId String
+  serviceRequest   ServiceRequest       @relation(fields: [serviceRequestId], references: [id], onDelete: Cascade)
+  fromStatus       ServiceRequestStatus?
+  toStatus         ServiceRequestStatus
+  changedById      String?
+  changedBy        User?                @relation(fields: [changedById], references: [id], onDelete: SetNull)
+  notes            String?
+  timestamp        DateTime             @default(now())
+
+  @@index([serviceRequestId])
+  @@index([timestamp])
+}
+
+model Review {
+  id                    String          @id @default(uuid())
+  serviceRequestId      String          @unique
+  serviceRequest        ServiceRequest  @relation(fields: [serviceRequestId], references: [id], onDelete: Cascade)
+  customerId            String
+  customer              User            @relation("ReviewsGiven", fields: [customerId], references: [id], onDelete: Cascade)
+  mechanicId            String
+  mechanic              MechanicProfile @relation(fields: [mechanicId], references: [id], onDelete: Cascade)
+  rating                Int
+  comment               String?
+  timelinessRating      Int?
+  costFairnessRating    Int?
+  professionalismRating Int?
+  createdAt             DateTime        @default(now())
+
+  @@index([mechanicId])
+  @@index([rating])
+}
+
+model Complaint {
+  id               String          @id @default(uuid())
+  serviceRequestId String
+  serviceRequest   ServiceRequest  @relation(fields: [serviceRequestId], references: [id], onDelete: Cascade)
+  filedById        String
+  filedBy          User            @relation("ComplaintsFiled", fields: [filedById], references: [id], onDelete: Cascade)
+  targetUserId     String?
+  targetUser       User?           @relation("ComplaintsAgainst", fields: [targetUserId], references: [id], onDelete: SetNull)
+  subject          String
+  description      String
+  status           ComplaintStatus @default(PENDING)
+  resolutionNotes  String?
+  resolvedAt       DateTime?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  @@index([status])
+  @@index([filedById])
+  @@index([serviceRequestId])
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  type      NotificationType @default(GENERAL)
+  payload   Json?
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  @@index([userId, isRead])
+  @@index([createdAt])
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action     String
+  entityName String
+  entityId   String?
+  details    Json?
+  ipAddress  String?
+  userAgent  String?
+  timestamp  DateTime @default(now())
+
+  @@index([action])
+  @@index([entityName])
+  @@index([timestamp])
+}

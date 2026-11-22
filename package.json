@@ -1,0 +1,25 @@
+{
+  "name": "vehicle-breakdown-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Enterprise-grade Vehicle Breakdown Assistance Platform",
+  "scripts": {
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose down",
+    "db:logs": "docker compose logs -f postgres",
+    "backend:install": "cd backend && npm install",
+    "frontend:install": "cd frontend && npm install",
+    "install:all": "npm run backend:install && npm run frontend:install",
+    "backend:dev": "cd backend && npm run start:dev",
+    "frontend:dev": "cd frontend && npm run dev",
+    "prisma:generate": "cd backend && npx prisma generate",
+    "prisma:migrate": "cd backend && npx prisma migrate dev",
+    "prisma:seed": "cd backend && npx prisma db seed",
+    "prisma:studio": "cd backend && npx prisma studio",
+    "test:backend": "cd backend && npm run test",
+    "test:e2e": "cd backend && npm run test:e2e"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
