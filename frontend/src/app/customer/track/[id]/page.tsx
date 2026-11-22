@@ -29,7 +29,8 @@ import {
   Eye,
   Check,
   AlertTriangle,
-  X
+  X,
+  Star
 } from 'lucide-react';
 
 // Dynamic import for Leaflet Tracking Map
@@ -58,6 +59,16 @@ export default function CustomerTrackingPage() {
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [cancelReason, setCancelReason] = useState('');
   const [isCancelling, setIsCancelling] = useState(false);
+
+  // Milestone 7: Customer Rating & Review state
+  const [existingReview, setExistingReview] = useState<any | null>(null);
+  const [reviewRating, setReviewRating] = useState<number>(5);
+  const [reviewComment, setReviewComment] = useState<string>('');
+  const [timelinessScore, setTimelinessScore] = useState<number>(5);
+  const [costFairnessScore, setCostFairnessScore] = useState<number>(5);
+  const [professionalismScore, setProfessionalismScore] = useState<number>(5);
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
+  const [reviewSuccessMessage, setReviewSuccessMessage] = useState<string | null>(null);
 
   // Socket reference
   const socketRef = useRef<Socket | null>(null);
@@ -185,6 +196,39 @@ export default function CustomerTrackingPage() {
       alert(`Cancellation failed: ${err.message || 'Server error'}`);
     } finally {
       setIsCancelling(false);
+    }
+  };
+
+  // Milestone 7: Fetch existing review when COMPLETED
+  useEffect(() => {
+    if (trackingData?.currentStatus === 'COMPLETED' && requestId) {
+      api.get<any>(`/reviews/request/${requestId}`)
+        .then((res) => {
+          if (res) setExistingReview(res);
+        })
+        .catch((err) => console.log('No review filed yet:', err.message));
+    }
+  }, [trackingData?.currentStatus, requestId]);
+
+  // Milestone 7: Handle Customer Review Submission
+  const handleSubmitReview = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmittingReview(true);
+    try {
+      const res = await api.post<any>('/reviews', {
+        serviceRequestId: requestId,
+        rating: reviewRating,
+        comment: reviewComment.trim() || undefined,
+        timelinessRating: timelinessScore,
+        costFairnessRating: costFairnessScore,
+        professionalismRating: professionalismScore,
+      });
+      setExistingReview(res.review);
+      setReviewSuccessMessage('Review verified and submitted to municipal ledger.');
+    } catch (err: any) {
+      alert(`Review submission failed: ${err.message || 'Server error'}`);
+    } finally {
+      setIsSubmittingReview(false);
     }
   };
 
@@ -462,6 +506,179 @@ export default function CustomerTrackingPage() {
                   </div>
                 )}
               </div>
+            )}
+
+            {/* MILESTONE 7: CUSTOMER RATING & REVIEW CARD (SHOWN WHEN COMPLETED) */}
+            {trackingData.currentStatus === 'COMPLETED' && (
+              existingReview ? (
+                <div className="border border-divider bg-graphite p-6 space-y-4 shadow-architectural">
+                  <div className="flex items-center justify-between pb-3 border-b border-divider/60">
+                    <div className="space-y-0.5">
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-stone-dim">
+                        Verified Service Evaluation
+                      </span>
+                      <h3 className="text-base font-medium text-porcelain">Customer Review Registered</h3>
+                    </div>
+                    <span className="px-2.5 py-1 border border-sage/40 text-sage-light text-xs font-mono uppercase bg-sage-subtle">
+                      ★ {existingReview.rating}.0 / 5.0 VERIFIED
+                    </span>
+                  </div>
+
+                  <div className="p-4 bg-carbon border border-divider space-y-2">
+                    <div className="flex items-center gap-1.5 text-ochre text-sm">
+                      {[1, 2, 3, 4, 5].map((s) => (
+                        <Star
+                          key={s}
+                          className={`w-4 h-4 ${s <= existingReview.rating ? 'fill-ochre text-ochre' : 'text-stone-dim'}`}
+                        />
+                      ))}
+                      <span className="font-mono text-xs text-porcelain ml-2">{existingReview.rating} out of 5 Stars</span>
+                    </div>
+                    {existingReview.comment && (
+                      <p className="text-xs text-stone-muted font-normal italic pt-1">
+                        &ldquo;{existingReview.comment}&rdquo;
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-2 font-mono text-[11px] text-stone-dim">
+                    <div className="p-2 bg-carbon border border-divider/60 text-center">
+                      <span className="block text-[10px] uppercase text-stone-dim">Timeliness</span>
+                      <span className="text-porcelain font-medium">{existingReview.timelinessRating ? `${existingReview.timelinessRating}/5` : 'N/A'}</span>
+                    </div>
+                    <div className="p-2 bg-carbon border border-divider/60 text-center">
+                      <span className="block text-[10px] uppercase text-stone-dim">Pricing Fairness</span>
+                      <span className="text-porcelain font-medium">{existingReview.costFairnessRating ? `${existingReview.costFairnessRating}/5` : 'N/A'}</span>
+                    </div>
+                    <div className="p-2 bg-carbon border border-divider/60 text-center">
+                      <span className="block text-[10px] uppercase text-stone-dim">Professionalism</span>
+                      <span className="text-porcelain font-medium">{existingReview.professionalismRating ? `${existingReview.professionalismRating}/5` : 'N/A'}</span>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="border border-divider bg-graphite p-6 space-y-5 shadow-architectural">
+                  <div className="flex items-center justify-between pb-3 border-b border-divider/60">
+                    <div className="space-y-0.5">
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-stone-dim">
+                        Post-Operation Feedback
+                      </span>
+                      <h3 className="text-base font-medium text-porcelain">Rate Roadside Assistance Experience</h3>
+                    </div>
+                    <span className="text-xs font-mono text-ochre uppercase">PENDING EVALUATION</span>
+                  </div>
+
+                  {reviewSuccessMessage ? (
+                    <div className="p-4 bg-sage-subtle border border-sage/40 text-xs font-mono text-sage-light flex items-center gap-2">
+                      <Check className="w-4 h-4 text-sage-light" />
+                      <span>{reviewSuccessMessage}</span>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleSubmitReview} className="space-y-4">
+                      <div>
+                        <label className="block text-[11px] font-mono uppercase tracking-wider text-stone-muted mb-2">
+                          Overall Technician Performance Rating (1–5 Stars)
+                        </label>
+                        <div className="flex items-center gap-2">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <button
+                              type="button"
+                              key={star}
+                              onClick={() => setReviewRating(star)}
+                              className="p-1 text-stone-dim hover:text-ochre transition-colors"
+                            >
+                              <Star
+                                className={`w-6 h-6 transition-all ${
+                                  star <= reviewRating ? 'fill-ochre text-ochre' : 'text-stone-dim hover:text-stone-muted'
+                                }`}
+                              />
+                            </button>
+                          ))}
+                          <span className="font-mono text-xs text-porcelain ml-2">{reviewRating} of 5 Stars</span>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-3">
+                        <div>
+                          <label className="block text-[10px] font-mono uppercase tracking-wider text-stone-dim mb-1">
+                            Timeliness
+                          </label>
+                          <select
+                            value={timelinessScore}
+                            onChange={(e) => setTimelinessScore(Number(e.target.value))}
+                            className="w-full px-2.5 py-1.5 bg-carbon border border-divider text-porcelain text-xs font-mono focus:outline-none focus:border-stone-muted"
+                          >
+                            {[5, 4, 3, 2, 1].map((n) => (
+                              <option key={n} value={n}>{n} Stars</option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-[10px] font-mono uppercase tracking-wider text-stone-dim mb-1">
+                            Pricing Fairness
+                          </label>
+                          <select
+                            value={costFairnessScore}
+                            onChange={(e) => setCostFairnessScore(Number(e.target.value))}
+                            className="w-full px-2.5 py-1.5 bg-carbon border border-divider text-porcelain text-xs font-mono focus:outline-none focus:border-stone-muted"
+                          >
+                            {[5, 4, 3, 2, 1].map((n) => (
+                              <option key={n} value={n}>{n} Stars</option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-[10px] font-mono uppercase tracking-wider text-stone-dim mb-1">
+                            Professionalism
+                          </label>
+                          <select
+                            value={professionalismScore}
+                            onChange={(e) => setProfessionalismScore(Number(e.target.value))}
+                            className="w-full px-2.5 py-1.5 bg-carbon border border-divider text-porcelain text-xs font-mono focus:outline-none focus:border-stone-muted"
+                          >
+                            {[5, 4, 3, 2, 1].map((n) => (
+                              <option key={n} value={n}>{n} Stars</option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-mono uppercase tracking-wider text-stone-muted mb-1.5">
+                          Qualitative Service Comments & Review
+                        </label>
+                        <textarea
+                          rows={3}
+                          value={reviewComment}
+                          onChange={(e) => setReviewComment(e.target.value)}
+                          placeholder="e.g. Technician arrived swiftly, conducted diagnostics with clear communication, and resolved the issue efficiently."
+                          className="w-full px-3 py-2 bg-carbon border border-divider text-porcelain placeholder-stone-dim text-xs font-sans focus:outline-none focus:border-stone-muted"
+                        />
+                      </div>
+
+                      <button
+                        type="submit"
+                        disabled={isSubmittingReview}
+                        className="w-full py-2.5 bg-porcelain hover:bg-porcelain-dim text-carbon font-mono text-xs uppercase tracking-wider font-semibold transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                      >
+                        {isSubmittingReview ? (
+                          <>
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                            <span>Recording Review...</span>
+                          </>
+                        ) : (
+                          <>
+                            <CheckCircle2 className="w-3.5 h-3.5 text-sage" />
+                            <span>Submit Official Rating & Review</span>
+                          </>
+                        )}
+                      </button>
+                    </form>
+                  )}
+                </div>
+              )
             )}
 
           </div>

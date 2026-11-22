@@ -329,6 +329,17 @@ export default function ReportBreakdownPage() {
 
             </div>
 
+            {/* Preliminary Diagnostic Advisory & Critical Safety Disclaimer */}
+            <div className="p-4 border border-ochre/40 bg-ochre-subtle font-mono text-xs space-y-1.5">
+              <div className="flex items-center gap-2 text-ochre font-semibold uppercase text-[11px]">
+                <AlertTriangle className="w-4 h-4 shrink-0" />
+                <span>Preliminary Algorithmic Suggestion // Safety Notice</span>
+              </div>
+              <p className="text-stone-dim text-[11px] font-sans leading-relaxed">
+                PRELIMINARY ADVISORY ONLY: Diagnostic assessments are preliminary suggestions based on driver-reported symptoms and do NOT constitute guaranteed mechanical diagnoses. Vehicle systems must be inspected on-site by a certified technician before operation.
+              </p>
+            </div>
+
             {/* Description & Severity Summary */}
             <div className="p-5 bg-carbon border border-divider space-y-2">
               <span className="text-[10px] font-mono uppercase tracking-widest text-stone-dim block">

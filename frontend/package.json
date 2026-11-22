@@ -15,7 +15,8 @@
     "test:mechanic": "node test/mechanic-portal.e2e.mjs",
     "test:rollback": "node test/mechanic-conflict-rollback.e2e.mjs",
     "test:tracking": "node test/service-tracking.e2e.mjs",
-    "test:admin": "node test/admin-portal.e2e.mjs"
+    "test:admin": "node test/admin-portal.e2e.mjs",
+    "test:reviews": "node test/reviews-reputation.e2e.mjs"
   },
   "dependencies": {
     "@react-three/drei": "9.122.0",
