@@ -2,7 +2,7 @@
 
 **Project:** Vehicle Breakdown Reporting System (VBRS)  
 **Last Updated:** 2026-11-22  
-**Overall Completion:** 50% (Milestone 1, Milestone 2 & Milestone 3 COMPLETED & VERIFIED; Architectural Redesign COMPLETE)
+**Overall Completion:** 65% (Milestones 1, 2, 3 & 4 COMPLETED & AUDITED; Architectural Redesign COMPLETE)
 
 ---
 
@@ -30,8 +30,8 @@
 | **M1** | Foundation, Architecture & Design System | Architecture blueprint, SRS, database schema, NestJS + Next.js init, Local Postgres, design tokens | 🟢 **COMPLETED & VERIFIED** | Local DB running, Prisma migrated, Swagger online at `/api/docs`, Next.js build passes |
 | **M2** | Authentication, RBAC, Profiles & Vehicles | JWT auth, refresh token rotation, role guards, profile management, customer vehicle garage CRUD | 🟢 **COMPLETED & AUDITED** | 52/52 Backend Tests + 4 Frontend E2E suites pass; Audit in `docs/MILESTONE_2_VERIFICATION.md` |
 | **M3** | Breakdown Reporting & Location Capture | Breakdown wizard, Leaflet map with GPS & pin fallback, multi-image upload with validation | 🟢 **COMPLETED & AUDITED** | 77 Backend Tests + 5 Frontend E2E suites pass; Audit in `docs/MILESTONE_3_VERIFICATION.md` |
-| **M4** | Mechanic Portal & Geospatial Discovery | Mechanic profile, verification docs, availability toggle, Haversine proximity query engine | 🟡 **Ready for Next Milestone** | Mechanic coordinate stream tested, radial search returns ordered results |
-| **M5** | Service Lifecycle, WebSockets & Tracking | State machine engine, Socket.IO rooms, live status progression, en-route driver map tracking | ⚪ Pending | Bidirectional events verified, state transitions strictly validated |
+| **M4** | Mechanic Portal & Geospatial Discovery | Mechanic profile, verification docs, availability toggle, Haversine proximity query engine | 🟢 **COMPLETED & AUDITED** | 94 Backend Tests + 6 Frontend E2E suites pass; Audit in `docs/MILESTONE_4_VERIFICATION.md` |
+| **M5** | Service Lifecycle, WebSockets & Tracking | State machine engine, Socket.IO rooms, live status progression, en-route driver map tracking | 🟡 **Ready for Next Milestone** | Bidirectional events verified, state transitions strictly validated |
 | **M6** | Admin Center, Moderation & Analytics | Admin dashboard, mechanic verification desk, dispute manager, SQL analytics, audit log viewer | ⚪ Pending | Verification workflow verified, analytics charts rendering live data |
 | **M7** | Rule-Based Diagnosis & Review System | Expert failure diagnosis engine, customer review submission, mechanic reputation scoring | ⚪ Pending | Diagnostic rules tested against test vectors, rating recalculation verified |
 | **M8** | Testing, Security Hardening & Documentation | Unit/E2E test suite (Vitest + Playwright), security audit, academic documentation, demo preparation | ⚪ Pending | All automated tests passing, 0 high-severity security findings |
@@ -43,11 +43,12 @@
 ```
 PASS src/common/haversine.spec.ts (3 passed)
 PASS test/app.e2e-spec.ts (1 passed)
+PASS test/mechanics-discovery.e2e-spec.ts (17 passed)
 PASS test/breakdowns.e2e-spec.ts (11 passed)
 PASS test/auth-vehicles.e2e-spec.ts (18 passed)
 PASS test/m3-edge-cases.e2e-spec.ts (14 passed)
 PASS test/milestone-2-audit.e2e-spec.ts (31 passed)
-Total Backend Tests: 77 passed, 77 total (100% Green)
+Total Backend Tests: 94 passed, 94 total (100% Green)
 
 PASS frontend/test/hero-3d.e2e.mjs
   Interactive 3D Vehicle Showcase (Playwright Chrome E2E)
@@ -91,6 +92,14 @@ PASS frontend/test/m3-edge-cases.e2e.mjs
     √ Client-side rejection of disallowed format (.txt) verified
     √ Incident submission with manual coordinates verified
 
+PASS frontend/test/mechanic-portal.e2e.mjs
+  Mechanic Portal & Proximity Discovery Suite (Playwright Chrome E2E)
+    √ Live verified technician credentials & telemetry verified
+    √ Availability toggling (Online vs Standby) with optimistic UI verified
+    √ Offline dispatch isolation verified
+    √ Inbound dispatches queue within operational boundary verified
+    √ Atomic dispatch claim and transition to Active On-Job Assignment verified
+
 HTTP 200 Route Verification:
   [200 OK] /
   [200 OK] /login
@@ -107,5 +116,5 @@ HTTP 200 Route Verification:
   [200 OK] /images/vehicle-rear.jpg
   [200 OK] /images/hero-fallback.jpg
 
-Total Tests: 77 Backend + 5 Frontend E2E Suites Passed (100% Green)
+Total Tests: 94 Backend + 6 Frontend E2E Suites Passed (100% Green)
 ```

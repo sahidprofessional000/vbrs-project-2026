@@ -7,6 +7,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateBreakdownDto } from './dto/create-breakdown.dto';
 import { BreakdownTriageService } from './breakdown-triage.service';
+import { EventsGateway } from '../events/events.gateway';
 import { ServiceRequestStatus, SeverityLevel } from '@prisma/client';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -16,6 +17,7 @@ export class BreakdownsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly triageService: BreakdownTriageService,
+    private readonly eventsGateway: EventsGateway,
   ) {}
 
   /**
@@ -123,7 +125,10 @@ export class BreakdownsService {
       return report;
     });
 
-    return this.findOne(result.id, customerId, false);
+    const finalReport = await this.findOne(result.id, customerId, false);
+    // Broadcast newly filed incident to active online mechanics
+    this.eventsGateway.broadcastNewDispatch(finalReport);
+    return finalReport;
   }
 
   /**
