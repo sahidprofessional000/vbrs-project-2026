@@ -6,6 +6,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { VehiclesModule } from './modules/vehicles/vehicles.module';
 import { BreakdownsModule } from './modules/breakdowns/breakdowns.module';
 import { MechanicsModule } from './modules/mechanics/mechanics.module';
+import { ServiceRequestsModule } from './modules/service-requests/service-requests.module';
 import { EventsModule } from './modules/events/events.module';
 
 @Module({
@@ -21,6 +22,7 @@ import { EventsModule } from './modules/events/events.module';
     VehiclesModule,
     BreakdownsModule,
     MechanicsModule,
+    ServiceRequestsModule,
   ],
 })
 export class AppModule {}

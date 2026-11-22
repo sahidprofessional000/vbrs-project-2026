@@ -13,19 +13,26 @@ import {
   Compass, 
   CheckCircle2, 
   Plus, 
-  ChevronRight 
+  ChevronRight,
+  Navigation,
+  Radio
 } from 'lucide-react';
 
 export default function CustomerDashboardPage() {
   const { user } = useAuth();
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [activeRequest, setActiveRequest] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function loadData() {
       try {
-        const vList = await api.get<Vehicle[]>('/vehicles');
+        const [vList, active] = await Promise.all([
+          api.get<Vehicle[]>('/vehicles'),
+          api.get<any>('/service-requests/active').catch(() => null),
+        ]);
         setVehicles(vList);
+        setActiveRequest(active);
       } catch (err) {
         console.error('Failed to load dashboard data:', err);
       } finally {
@@ -61,6 +68,33 @@ export default function CustomerDashboardPage() {
           <span>Report Roadside Breakdown</span>
         </Link>
       </div>
+
+      {/* Active Incident Warning / Tracking Link */}
+      {activeRequest && (
+        <div className="border border-crimson/50 bg-crimson/10 p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 animate-fadeIn">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-crimson animate-pulse" />
+              <span className="text-[10px] font-mono uppercase tracking-widest text-crimson font-bold">
+                Active Incident In Progress // Milestone: {activeRequest.currentStatus}
+              </span>
+            </div>
+            <div className="text-sm font-medium text-porcelain">
+              {activeRequest.breakdownReport?.category} • {activeRequest.breakdownReport?.addressText || 'OpenStreetMap Pinpoint Recorded'}
+            </div>
+            <div className="text-xs text-stone-muted font-mono">
+              {activeRequest.mechanic ? `Assigned Technician: ${activeRequest.mechanic.workshopName}` : 'Awaiting Technician Claim'}
+            </div>
+          </div>
+          <Link
+            href={`/customer/track/${activeRequest.serviceRequestId || activeRequest.breakdownReportId}`}
+            className="px-6 py-3 bg-crimson hover:bg-crimson-hover text-porcelain font-mono text-xs uppercase tracking-wider font-semibold flex items-center justify-center gap-2 transition-colors shrink-0"
+          >
+            <Navigation className="w-3.5 h-3.5" />
+            <span>Open Live Radar Tracking →</span>
+          </Link>
+        </div>
+      )}
 
       {/* Primary Vehicle Operational Status */}
       <div className="border border-divider bg-graphite p-8">

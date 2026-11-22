@@ -2,7 +2,7 @@
 
 **Project:** Vehicle Breakdown Reporting System (VBRS)  
 **Last Updated:** 2026-11-22  
-**Overall Completion:** 65% (Milestones 1, 2, 3 & 4 COMPLETED & AUDITED; Architectural Redesign COMPLETE)
+**Overall Completion:** 75% (Milestones 1, 2, 3, 4 & 5 COMPLETED & AUDITED; Architectural Redesign COMPLETE)
 
 ---
 
@@ -31,8 +31,8 @@
 | **M2** | Authentication, RBAC, Profiles & Vehicles | JWT auth, refresh token rotation, role guards, profile management, customer vehicle garage CRUD | 🟢 **COMPLETED & AUDITED** | 52/52 Backend Tests + 4 Frontend E2E suites pass; Audit in `docs/MILESTONE_2_VERIFICATION.md` |
 | **M3** | Breakdown Reporting & Location Capture | Breakdown wizard, Leaflet map with GPS & pin fallback, multi-image upload with validation | 🟢 **COMPLETED & AUDITED** | 77 Backend Tests + 5 Frontend E2E suites pass; Audit in `docs/MILESTONE_3_VERIFICATION.md` |
 | **M4** | Mechanic Portal & Geospatial Discovery | Mechanic profile, verification docs, availability toggle, Haversine proximity query engine | 🟢 **COMPLETED & AUDITED** | 94 Backend Tests + 7 Frontend E2E suites pass; Audit in `docs/MILESTONE_4_VERIFICATION.md` |
-| **M5** | Service Lifecycle, WebSockets & Tracking | State machine engine, Socket.IO rooms, live status progression, en-route driver map tracking | 🟡 **Ready for Next Milestone** | Bidirectional events verified, state transitions strictly validated |
-| **M6** | Admin Center, Moderation & Analytics | Admin dashboard, mechanic verification desk, dispute manager, SQL analytics, audit log viewer | ⚪ Pending | Verification workflow verified, analytics charts rendering live data |
+| **M5** | Service Lifecycle, WebSockets & Tracking | State machine engine, Socket.IO rooms, live status progression, en-route driver map tracking | 🟢 **COMPLETED & AUDITED** | 115 Backend Tests + 8 Frontend E2E suites pass; Audit in `docs/MILESTONE_5_VERIFICATION.md` |
+| **M6** | Admin Center, Moderation & Analytics | Admin dashboard, mechanic verification desk, dispute manager, SQL analytics, audit log viewer | 🟡 **Ready for Next Milestone** | Verification workflow verified, analytics charts rendering live data |
 | **M7** | Rule-Based Diagnosis & Review System | Expert failure diagnosis engine, customer review submission, mechanic reputation scoring | ⚪ Pending | Diagnostic rules tested against test vectors, rating recalculation verified |
 | **M8** | Testing, Security Hardening & Documentation | Unit/E2E test suite (Vitest + Playwright), security audit, academic documentation, demo preparation | ⚪ Pending | All automated tests passing, 0 high-severity security findings |
 
@@ -43,12 +43,13 @@
 ```
 PASS src/common/haversine.spec.ts (3 passed)
 PASS test/app.e2e-spec.ts (1 passed)
-PASS test/mechanics-discovery.e2e-spec.ts (17 passed)
 PASS test/breakdowns.e2e-spec.ts (11 passed)
 PASS test/auth-vehicles.e2e-spec.ts (18 passed)
+PASS test/mechanics-discovery.e2e-spec.ts (17 passed)
 PASS test/m3-edge-cases.e2e-spec.ts (14 passed)
+PASS test/service-lifecycle.e2e-spec.ts (21 passed)
 PASS test/milestone-2-audit.e2e-spec.ts (31 passed)
-Total Backend Tests: 94 passed, 94 total (100% Green)
+Total Backend Tests: 115 passed (112 E2E + 3 Unit), 115 total (100% Green)
 
 PASS frontend/test/hero-3d.e2e.mjs
   Interactive 3D Vehicle Showcase (Playwright Chrome E2E)
@@ -107,12 +108,21 @@ PASS frontend/test/mechanic-conflict-rollback.e2e.mjs
     √ Queue state accurately restored to prior state after failure
     √ Active on-job assignment state prevented on conflict
 
+PASS frontend/test/service-tracking.e2e.mjs
+  Service Lifecycle & Real-Time Tracking Suite (Playwright Chrome Dual-Browser E2E)
+    √ Complete customer-to-mechanic lifecycle across isolated browser contexts
+    √ Milestone progression verified: SUBMITTED -> ACCEPTED -> EN_ROUTE -> ARRIVED -> IN_PROGRESS -> COMPLETED
+    √ Interactive Leaflet Dual-Marker tracking map and status milestone stepper
+    √ Work order quotation recording ($260) and WebSocket room event broadcast
+    √ Technician availability release back to AVAILABLE verified
+
 HTTP 200 Route Verification:
   [200 OK] /
   [200 OK] /login
   [200 OK] /register
   [200 OK] /customer/vehicles
   [200 OK] /customer/dashboard
+  [200 OK] /customer/track/[id]
   [200 OK] /mechanic/portal
   [200 OK] /admin/dashboard
   [200 OK] /report-breakdown
@@ -123,5 +133,5 @@ HTTP 200 Route Verification:
   [200 OK] /images/vehicle-rear.jpg
   [200 OK] /images/hero-fallback.jpg
 
-Total Tests: 94 Backend + 7 Frontend E2E Suites Passed (100% Green)
+Total Tests: 115 Backend + 8 Frontend E2E Suites Passed (100% Green)
 ```

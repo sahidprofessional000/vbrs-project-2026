@@ -379,6 +379,13 @@ export default function ReportBreakdownPage() {
             {/* Action Buttons */}
             <div className="pt-4 flex flex-wrap items-center gap-4 border-t border-divider/60">
               <Link
+                href={`/customer/track/${submittedReport.serviceRequest?.id || submittedReport.id}`}
+                className="px-6 py-3 bg-crimson hover:bg-crimson-hover text-porcelain font-mono text-xs uppercase tracking-wider font-semibold transition-colors flex items-center gap-2"
+              >
+                <Navigation className="w-3.5 h-3.5" />
+                <span>Live Track Field Response →</span>
+              </Link>
+              <Link
                 href="/customer/vehicles"
                 className="px-6 py-3 bg-porcelain text-carbon font-mono text-xs uppercase tracking-wider font-medium hover:bg-porcelain-dim transition-colors"
               >

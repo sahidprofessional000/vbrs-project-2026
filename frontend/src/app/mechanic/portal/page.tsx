@@ -87,6 +87,17 @@ export default function MechanicPortalPage() {
     message: string;
   } | null>(null);
 
+  // Active Assignment Lifecycle States
+  const [isAdvancingStatus, setIsAdvancingStatus] = useState(false);
+  const [showQuoteForm, setShowQuoteForm] = useState(false);
+  const [quoteInput, setQuoteInput] = useState({
+    diagnosticQuote: '65',
+    laborCost: '120',
+    partsCost: '75',
+    notes: 'Diagnostic inspection and repairs conducted.',
+  });
+  const [resolutionNotes, setResolutionNotes] = useState('Service completed. Vehicle operation verified.');
+
   // 1. Fetch live mechanic profile & dispatches on mount
   useEffect(() => {
     async function loadMechanicTerminal() {
@@ -101,9 +112,11 @@ export default function MechanicPortalPage() {
           setLongitude(data.currentLocation.longitude);
         }
 
-        // Check if mechanic is currently on an active job
-        if (data.availabilityStatus === 'ON_JOB') {
-          // Could load active job details
+        // Check if mechanic is currently on an active job or available for dispatches
+        const activeMission = await api.get<any>('/service-requests/active').catch(() => null);
+        if (activeMission) {
+          setActiveJob(activeMission);
+          setIsOnline(false);
         } else if (data.availabilityStatus === 'AVAILABLE') {
           const queue = await api.get<DispatchItem[]>('/mechanic/dispatches');
           setDispatches(queue);
@@ -283,6 +296,74 @@ export default function MechanicPortalPage() {
     showNotification('warning', 'Dispatch offer declined and dismissed from local radar.');
   };
 
+  // Advance Service Lifecycle State Machine (EN_ROUTE -> ARRIVED -> IN_PROGRESS -> COMPLETED)
+  const handleAdvanceStatus = async (toStatus: string, notes?: string, resNotes?: string) => {
+    if (!activeJob) return;
+    const reqId = activeJob.serviceRequestId || activeJob.id;
+    setIsAdvancingStatus(true);
+
+    try {
+      const updated = await api.patch<any>(`/service-requests/${reqId}/status`, {
+        status: toStatus,
+        notes: notes || `Technician transitioned status to ${toStatus}`,
+        resolutionNotes: resNotes,
+      });
+
+      if (toStatus === 'COMPLETED') {
+        setActiveJob(null);
+        setIsOnline(true);
+        showNotification('success', 'Service finalized successfully. Technician returned to AVAILABLE.');
+        // Refresh profile stats
+        const prof = await api.get<any>('/mechanic/profile');
+        setProfile(prof);
+      } else {
+        setActiveJob(updated);
+        showNotification('success', `Milestone Advanced: Status is now ${toStatus}.`);
+      }
+    } catch (err: any) {
+      showNotification('error', `Failed to advance status: ${err.message || 'Server error'}`);
+    } finally {
+      setIsAdvancingStatus(false);
+    }
+  };
+
+  // Submit Diagnostic & Parts Quote
+  const handleSubmitQuote = async () => {
+    if (!activeJob) return;
+    const reqId = activeJob.serviceRequestId || activeJob.id;
+
+    try {
+      const updated = await api.post<any>(`/service-requests/${reqId}/quote`, {
+        diagnosticQuote: Number(quoteInput.diagnosticQuote) || 0,
+        laborCost: Number(quoteInput.laborCost) || 0,
+        partsCost: Number(quoteInput.partsCost) || 0,
+        notes: quoteInput.notes,
+      });
+      setActiveJob(updated);
+      setShowQuoteForm(false);
+      showNotification('success', 'Diagnostic quotation and work order recorded successfully.');
+    } catch (err: any) {
+      showNotification('error', `Failed to record quote: ${err.message || 'Server error'}`);
+    }
+  };
+
+  // Abort / Cancel Active Assignment
+  const handleAbortAssignment = async () => {
+    if (!activeJob) return;
+    const reason = prompt('Please enter explicit cancellation / abort reason:');
+    if (!reason || !reason.trim()) return;
+
+    const reqId = activeJob.serviceRequestId || activeJob.id;
+    try {
+      await api.post<any>(`/service-requests/${reqId}/cancel`, { reason: reason.trim() });
+      setActiveJob(null);
+      setIsOnline(true);
+      showNotification('warning', 'Assignment aborted and cancelled. Terminal returned to AVAILABLE.');
+    } catch (err: any) {
+      showNotification('error', `Failed to cancel assignment: ${err.message || 'Server error'}`);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-carbon text-porcelain flex flex-col selection:bg-porcelain selection:text-carbon">
       <Navbar />
@@ -451,38 +532,42 @@ export default function MechanicPortalPage() {
 
             {/* Active On-Job Card (If claimed) */}
             {activeJob && (
-              <div className="border border-sage/60 bg-elevated p-6 space-y-4 animate-fadeIn shadow-architectural">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-sage animate-ping" />
-                  <span className="text-[11px] font-mono uppercase tracking-widest text-sage-light font-semibold">
-                    Active On-Job Assignment
+              <div className="border border-sage/60 bg-elevated p-6 space-y-5 animate-fadeIn shadow-architectural">
+                <div className="flex items-center justify-between pb-3 border-b border-divider/60">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-sage animate-ping" />
+                    <span className="text-[11px] font-mono uppercase tracking-widest text-sage-light font-semibold">
+                      Active On-Job Assignment
+                    </span>
+                  </div>
+                  <span className="px-2.5 py-0.5 bg-carbon border border-sage/40 text-sage-light font-mono text-xs uppercase font-semibold">
+                    {activeJob.currentStatus || 'ACCEPTED'}
                   </span>
                 </div>
 
                 <div className="space-y-1">
                   <div className="text-base font-medium text-porcelain">
-                    En Route to Breakdown Site
+                    Incident ID: {(activeJob.serviceRequestId || activeJob.id)?.substring(0, 10).toUpperCase()}
                   </div>
                   <div className="text-xs font-mono text-stone-muted">
-                    Request ID: {activeJob.id?.substring(0, 8).toUpperCase()}
+                    Motorist: <strong className="text-porcelain font-normal">{activeJob.breakdownReport?.customer?.fullName || activeJob.customerName || 'Motorist'}</strong>
                   </div>
                 </div>
 
+                {/* Automobile & Location Details */}
                 <div className="p-4 bg-carbon border border-divider text-xs font-mono space-y-2">
-                  <div className="flex items-center justify-between text-stone-muted">
-                    <span>Motorist:</span>
-                    <span className="text-porcelain">{activeJob.breakdownReport?.customer?.fullName || 'Motorist'}</span>
-                  </div>
                   <div className="flex items-center justify-between text-stone-muted">
                     <span>Vehicle:</span>
                     <span className="text-porcelain">
-                      {activeJob.breakdownReport?.vehicle?.year} {activeJob.breakdownReport?.vehicle?.make} {activeJob.breakdownReport?.vehicle?.model}
+                      {activeJob.breakdownReport?.vehicle
+                        ? `${activeJob.breakdownReport.vehicle.year} ${activeJob.breakdownReport.vehicle.make} ${activeJob.breakdownReport.vehicle.model}`
+                        : 'Manual Entry'}
                     </span>
                   </div>
                   <div className="flex items-center justify-between text-stone-muted">
-                    <span>Plate:</span>
+                    <span>License Plate:</span>
                     <span className="text-porcelain font-semibold">
-                      {activeJob.breakdownReport?.vehicle?.licensePlate || 'N/A'}
+                      {activeJob.breakdownReport?.vehicle?.licensePlate || activeJob.licensePlate || 'N/A'}
                     </span>
                   </div>
                   <div className="flex items-center justify-between text-stone-muted">
@@ -491,29 +576,167 @@ export default function MechanicPortalPage() {
                       {activeJob.breakdownReport?.latitude?.toFixed(4)}, {activeJob.breakdownReport?.longitude?.toFixed(4)}
                     </span>
                   </div>
+                  <div className="flex items-center justify-between text-stone-muted">
+                    <span>Address Text:</span>
+                    <span className="text-porcelain truncate max-w-[180px]">
+                      {activeJob.breakdownReport?.addressText || 'OpenStreetMap Pin'}
+                    </span>
+                  </div>
                 </div>
 
-                <div className="flex gap-3 pt-1">
-                  <a
-                    href={`https://www.openstreetmap.org/?mlat=${activeJob.breakdownReport?.latitude}&mlon=${activeJob.breakdownReport?.longitude}#map=16/${activeJob.breakdownReport?.latitude}/${activeJob.breakdownReport?.longitude}`}
+                {/* Milestone Progression Action Controls */}
+                <div className="space-y-3 pt-2">
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-stone-dim block">
+                    Service Lifecycle Milestone Controls
+                  </span>
+
+                  {activeJob.currentStatus === 'ACCEPTED' && (
+                    <button
+                      type="button"
+                      disabled={isAdvancingStatus}
+                      onClick={() => handleAdvanceStatus('EN_ROUTE', 'Technician departed base en route to incident site.')}
+                      className="w-full py-3 bg-sage hover:bg-sage/90 text-porcelain font-mono text-xs uppercase tracking-wider font-semibold transition-colors flex items-center justify-center gap-2"
+                    >
+                      <Navigation className="w-3.5 h-3.5" />
+                      <span>{isAdvancingStatus ? 'Updating...' : 'Start En-Route Dispatch →'}</span>
+                    </button>
+                  )}
+
+                  {activeJob.currentStatus === 'EN_ROUTE' && (
+                    <button
+                      type="button"
+                      disabled={isAdvancingStatus}
+                      onClick={() => handleAdvanceStatus('ARRIVED', 'Technician arrived on scene at incident coordinates.')}
+                      className="w-full py-3 bg-sage hover:bg-sage/90 text-porcelain font-mono text-xs uppercase tracking-wider font-semibold transition-colors flex items-center justify-center gap-2"
+                    >
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      <span>{isAdvancingStatus ? 'Updating...' : 'Mark Arrived on Scene →'}</span>
+                    </button>
+                  )}
+
+                  {activeJob.currentStatus === 'ARRIVED' && (
+                    <div className="space-y-3">
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setShowQuoteForm(!showQuoteForm)}
+                          className="flex-1 py-2.5 bg-carbon border border-divider hover:border-porcelain text-porcelain font-mono text-xs uppercase tracking-wider transition-colors"
+                        >
+                          {showQuoteForm ? 'Hide Work Order Form' : 'Input Diagnostic Quote'}
+                        </button>
+                        <button
+                          type="button"
+                          disabled={isAdvancingStatus}
+                          onClick={() => handleAdvanceStatus('IN_PROGRESS', 'Beginning diagnostic disassembly and component servicing.')}
+                          className="flex-1 py-2.5 bg-sage hover:bg-sage/90 text-porcelain font-mono text-xs uppercase tracking-wider font-semibold transition-colors"
+                        >
+                          {isAdvancingStatus ? 'Updating...' : 'Begin Repair Work →'}
+                        </button>
+                      </div>
+
+                      {/* Diagnostic Quotation Form */}
+                      {showQuoteForm && (
+                        <div className="p-4 bg-carbon border border-divider space-y-3 animate-fadeIn text-xs font-mono">
+                          <div className="grid grid-cols-3 gap-2">
+                            <div>
+                              <span className="text-[10px] text-stone-dim uppercase">Diagnostic ($)</span>
+                              <input
+                                type="number"
+                                value={quoteInput.diagnosticQuote}
+                                onChange={(e) => setQuoteInput((prev) => ({ ...prev, diagnosticQuote: e.target.value }))}
+                                className="w-full p-2 bg-graphite border border-divider text-porcelain text-xs font-mono mt-1"
+                              />
+                            </div>
+                            <div>
+                              <span className="text-[10px] text-stone-dim uppercase">Labor ($)</span>
+                              <input
+                                type="number"
+                                value={quoteInput.laborCost}
+                                onChange={(e) => setQuoteInput((prev) => ({ ...prev, laborCost: e.target.value }))}
+                                className="w-full p-2 bg-graphite border border-divider text-porcelain text-xs font-mono mt-1"
+                              />
+                            </div>
+                            <div>
+                              <span className="text-[10px] text-stone-dim uppercase">Parts ($)</span>
+                              <input
+                                type="number"
+                                value={quoteInput.partsCost}
+                                onChange={(e) => setQuoteInput((prev) => ({ ...prev, partsCost: e.target.value }))}
+                                className="w-full p-2 bg-graphite border border-divider text-porcelain text-xs font-mono mt-1"
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <span className="text-[10px] text-stone-dim uppercase">Work Order Notes</span>
+                            <input
+                              type="text"
+                              value={quoteInput.notes}
+                              onChange={(e) => setQuoteInput((prev) => ({ ...prev, notes: e.target.value }))}
+                              className="w-full p-2 bg-graphite border border-divider text-porcelain text-xs font-sans mt-1"
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            onClick={handleSubmitQuote}
+                            className="w-full py-2 bg-porcelain text-carbon font-mono text-xs uppercase tracking-wider font-semibold hover:bg-porcelain-dim transition-colors"
+                          >
+                            Save & Broadcast Work Order
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {activeJob.currentStatus === 'IN_PROGRESS' && (
+                    <div className="space-y-3">
+                      <div>
+                        <span className="text-[10px] font-mono text-stone-dim uppercase">Resolution Summary</span>
+                        <input
+                          type="text"
+                          value={resolutionNotes}
+                          onChange={(e) => setResolutionNotes(e.target.value)}
+                          placeholder="e.g. Cleared DTC codes, replaced battery, vehicle verified."
+                          className="w-full p-2 bg-carbon border border-divider text-porcelain text-xs font-sans mt-1"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        disabled={isAdvancingStatus}
+                        onClick={() => handleAdvanceStatus('COMPLETED', 'Service finished successfully.', resolutionNotes)}
+                        className="w-full py-3 bg-sage hover:bg-sage/90 text-porcelain font-mono text-xs uppercase tracking-wider font-semibold transition-colors flex items-center justify-center gap-2"
+                      >
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        <span>{isAdvancingStatus ? 'Finalizing...' : 'Complete Job & Finalize Work Order'}</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Secondary Action Links */}
+                <div className="flex flex-wrap gap-2 pt-2 border-t border-divider/60 font-mono text-xs">
+                  <Link
+                    href={`/customer/track/${activeJob.serviceRequestId || activeJob.id}`}
                     target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 py-2.5 bg-porcelain text-carbon font-mono text-xs uppercase tracking-wider font-medium text-center hover:bg-porcelain-dim transition-colors"
+                    className="flex-1 py-2 bg-carbon border border-divider hover:border-porcelain text-stone-muted hover:text-porcelain text-center uppercase tracking-wider transition-colors"
                   >
-                    Open Navigation
-                  </a>
+                    Open Live Radar
+                  </Link>
                   <button
                     type="button"
-                    onClick={() => {
-                      setActiveJob(null);
-                      setIsOnline(true);
-                      showNotification('success', 'Job completed. Terminal returned to AVAILABLE status.');
-                    }}
-                    className="px-4 py-2.5 border border-divider hover:border-stone-muted font-mono text-xs uppercase tracking-wider text-stone-muted hover:text-porcelain transition-colors"
+                    onClick={handleBeaconGPS}
+                    className="px-3 py-2 bg-carbon border border-divider hover:border-porcelain text-stone-muted hover:text-porcelain uppercase tracking-wider transition-colors"
                   >
-                    Complete Job
+                    Transmit GPS
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleAbortAssignment}
+                    className="px-3 py-2 bg-carbon border border-crimson/50 hover:border-crimson text-crimson uppercase tracking-wider transition-colors"
+                  >
+                    Abort
                   </button>
                 </div>
+
               </div>
             )}
 

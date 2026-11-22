@@ -245,12 +245,17 @@ model ServiceRequest {
   mechanic           MechanicProfile?     @relation("MechanicRequests", fields: [mechanicId], references: [id], onDelete: SetNull)
   currentStatus      ServiceRequestStatus @default(SUBMITTED)
   agreedQuote        Float?
+  diagnosticQuote    Float?
+  laborCost          Float?
+  partsCost          Float?
   resolutionNotes    String?
   cancellationReason String?
+  locationConsent    Boolean              @default(true)
   assignedAt         DateTime?
   acceptedAt         DateTime?
   enRouteAt          DateTime?
   arrivedAt          DateTime?
+  inProgressAt       DateTime?
   completedAt        DateTime?
   cancelledAt        DateTime?
   createdAt          DateTime             @default(now())
