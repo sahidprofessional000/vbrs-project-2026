@@ -4,43 +4,63 @@
 
 @layer base {
   :root {
-    --bg-primary: #0b0f17;
-    --bg-surface: #111827;
-    --text-primary: #f8fafc;
+    --bg-carbon: #111214;
+    --bg-graphite: #181A1D;
+    --bg-elevated: #202327;
+    --text-porcelain: #F0EEE8;
+    --text-muted: #A5A39D;
+    --border-divider: #303236;
   }
 
   body {
-    background-color: #0b0f17;
-    color: #f8fafc;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #111214;
+    color: #F0EEE8;
+    font-family: 'Inter', 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #F0EEE8;
+    letter-spacing: -0.025em;
+    font-weight: 500;
   }
 }
 
-/* Custom scrollbars */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* Hairline border utility */
+.border-hairline {
+  border: 1px solid #303236;
 }
 
-::-webkit-scrollbar-track {
-  background: #0b0f17;
+.border-hairline-subtle {
+  border: 1px solid #25282C;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #334155;
-}
-
-/* Leaflet Container Fixes */
+/* Leaflet Container Styling */
 .leaflet-container {
   width: 100%;
   height: 100%;
-  border-radius: 0.75rem;
+  background: #111214;
   z-index: 10;
+}
+
+/* Minimalist scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111214;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #25282C;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #303236;
 }

@@ -5,13 +5,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/auth-context';
 import { 
-  ShieldAlert, 
   Car, 
   Wrench, 
   LayoutDashboard, 
   LogOut, 
-  User as UserIcon,
-  ChevronDown
+  ArrowUpRight,
+  Shield
 } from 'lucide-react';
 
 export function Navbar() {
@@ -22,125 +21,136 @@ export function Navbar() {
     if (!user) return '/';
     if (user.role === 'ADMIN') return '/admin/dashboard';
     if (user.role === 'MECHANIC') return '/mechanic/portal';
-    return '/customer/dashboard';
+    return '/customer/vehicles';
   };
 
   return (
-    <header className="border-b border-slate-800 bg-slate-950/90 backdrop-blur-md sticky top-0 z-40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        {/* Brand */}
-        <div className="flex items-center gap-6">
-          <Link href={getPortalLink()} className="flex items-center gap-3 group">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-600 to-amber-600 flex items-center justify-center shadow-md shadow-rose-950/40 group-hover:scale-105 transition-transform">
-              <ShieldAlert className="w-5 h-5 text-white" />
+    <header className="border-b border-divider/60 bg-carbon/90 backdrop-blur-md sticky top-0 z-40">
+      <div className="max-w-7xl mx-auto px-6 lg:px-10 h-18 flex items-center justify-between">
+        {/* Brand Lockup: Leica / Bang & Olufsen typography */}
+        <div className="flex items-center gap-10">
+          <Link href={getPortalLink()} className="flex items-center gap-3.5 group">
+            <div className="w-8 h-8 rounded-sm bg-graphite border border-divider flex items-center justify-center text-porcelain font-mono font-medium text-xs tracking-wider group-hover:border-divider-strong transition-colors">
+              VB
             </div>
             <div>
-              <span className="font-bold tracking-tight text-white">VBRS</span>
-              <span className="text-[10px] text-slate-400 block -mt-1 font-mono tracking-wider">RESCUE RADAR</span>
+              <span className="font-medium tracking-tight text-sm text-porcelain block">VBRS</span>
+              <span className="text-[10px] text-stone-dim block font-mono tracking-widest uppercase">
+                Automotive Assistance
+              </span>
             </div>
           </Link>
 
-          {/* Nav Links */}
-          {user && (
-            <nav className="hidden md:flex items-center gap-1 text-sm font-medium">
-              {user.role === 'CUSTOMER' && (
-                <>
-                  <Link
-                    href="/customer/vehicles"
-                    className={`px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 ${
-                      pathname === '/customer/vehicles'
-                        ? 'bg-slate-850 text-white'
-                        : 'text-slate-400 hover:text-white hover:bg-slate-900'
-                    }`}
-                  >
-                    <Car className="w-4 h-4 text-sky-400" />
-                    <span>My Garage</span>
-                  </Link>
+          {/* Editorial Navigation Links */}
+          <nav className="hidden md:flex items-center gap-7 text-xs font-mono tracking-wider uppercase">
+            <Link
+              href="/"
+              className={`transition-colors py-1 ${
+                pathname === '/'
+                  ? 'text-porcelain border-b border-porcelain'
+                  : 'text-stone-muted hover:text-porcelain'
+              }`}
+            >
+              Overview
+            </Link>
 
-                  <Link
-                    href="/report-breakdown"
-                    className="px-3 py-1.5 rounded-lg text-rose-400 hover:text-rose-300 hover:bg-rose-950/30 transition-colors flex items-center gap-1.5 font-semibold"
-                  >
-                    <ShieldAlert className="w-4 h-4" />
-                    <span>Report Breakdown</span>
-                  </Link>
-                </>
-              )}
-
-              {user.role === 'MECHANIC' && (
+            {user?.role === 'CUSTOMER' && (
+              <>
                 <Link
-                  href="/mechanic/portal"
-                  className="px-3 py-1.5 rounded-lg text-amber-400 hover:bg-amber-950/30 transition-colors flex items-center gap-1.5 font-medium"
+                  href="/customer/vehicles"
+                  className={`transition-colors py-1 ${
+                    pathname === '/customer/vehicles'
+                      ? 'text-porcelain border-b border-porcelain'
+                      : 'text-stone-muted hover:text-porcelain'
+                  }`}
                 >
-                  <Wrench className="w-4 h-4" />
-                  <span>Dispatch Terminal</span>
+                  My Garage
                 </Link>
-              )}
 
-              {user.role === 'ADMIN' && (
                 <Link
-                  href="/admin/dashboard"
-                  className="px-3 py-1.5 rounded-lg text-indigo-400 hover:bg-indigo-950/30 transition-colors flex items-center gap-1.5 font-medium"
+                  href="/report-breakdown"
+                  className="text-crimson hover:text-crimson-hover transition-colors py-1 flex items-center gap-1"
                 >
-                  <LayoutDashboard className="w-4 h-4" />
-                  <span>Command Center</span>
+                  <span>Request Rescue</span>
                 </Link>
-              )}
-            </nav>
-          )}
+              </>
+            )}
+
+            {user?.role === 'MECHANIC' && (
+              <Link
+                href="/mechanic/portal"
+                className={`transition-colors py-1 ${
+                  pathname === '/mechanic/portal'
+                    ? 'text-porcelain border-b border-porcelain'
+                    : 'text-stone-muted hover:text-porcelain'
+                }`}
+              >
+                Dispatch Terminal
+              </Link>
+            )}
+
+            {user?.role === 'ADMIN' && (
+              <Link
+                href="/admin/dashboard"
+                className={`transition-colors py-1 ${
+                  pathname === '/admin/dashboard'
+                    ? 'text-porcelain border-b border-porcelain'
+                    : 'text-stone-muted hover:text-porcelain'
+                }`}
+              >
+                Control Desk
+              </Link>
+            )}
+
+            <a
+              href="http://localhost:4000/api/docs"
+              target="_blank"
+              rel="noreferrer"
+              className="text-stone-muted hover:text-porcelain transition-colors flex items-center gap-1"
+            >
+              <span>API Reference</span>
+              <ArrowUpRight className="w-3 h-3 text-stone-dim" />
+            </a>
+          </nav>
         </div>
 
-        {/* User Account & Actions */}
-        <div className="flex items-center gap-4">
+        {/* User Session & Actions */}
+        <div className="flex items-center gap-5">
           {user ? (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               <div className="text-right hidden sm:block">
-                <div className="text-sm font-semibold text-white leading-tight">{user.fullName}</div>
-                <div className="text-xs font-mono text-slate-400 flex items-center gap-1.5 justify-end">
-                  <span
-                    className={`inline-block w-1.5 h-1.5 rounded-full ${
-                      user.role === 'ADMIN'
-                        ? 'bg-indigo-400'
-                        : user.role === 'MECHANIC'
-                        ? 'bg-amber-400'
-                        : 'bg-sky-400'
-                    }`}
-                  />
-                  <span>{user.role}</span>
+                <div className="text-xs font-medium text-porcelain tracking-tight">{user.fullName}</div>
+                <div className="text-[10px] font-mono text-stone-muted uppercase tracking-wider">
+                  {user.role}
                 </div>
               </div>
 
-              {user.avatarUrl ? (
-                <img
-                  src={user.avatarUrl}
-                  alt={user.fullName}
-                  className="w-9 h-9 rounded-full object-cover ring-2 ring-slate-800"
-                />
-              ) : (
-                <div className="w-9 h-9 rounded-full bg-slate-800 text-slate-300 flex items-center justify-center font-bold text-xs ring-2 ring-slate-700">
-                  {user.fullName.slice(0, 2).toUpperCase()}
-                </div>
-              )}
+              <div className="w-7 h-7 rounded-sm bg-elevated border border-divider text-porcelain flex items-center justify-center font-mono text-xs">
+                {user.fullName.slice(0, 1).toUpperCase()}
+              </div>
+
+              <div className="w-[1px] h-4 bg-divider" />
 
               <button
                 onClick={() => logout()}
                 title="Sign Out"
-                className="p-2 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-slate-900 border border-transparent hover:border-slate-800 transition-colors"
+                className="text-xs font-mono text-stone-muted hover:text-crimson transition-colors uppercase tracking-wider flex items-center gap-1.5"
               >
-                <LogOut className="w-4 h-4" />
+                <LogOut className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Sign Out</span>
               </button>
             </div>
           ) : (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4 text-xs font-mono tracking-wider uppercase">
               <Link
                 href="/login"
-                className="text-sm font-medium text-slate-300 hover:text-white px-3 py-2 rounded-lg hover:bg-slate-900 transition-colors"
+                className="text-stone-muted hover:text-porcelain transition-colors py-1"
               >
                 Sign In
               </Link>
               <Link
                 href="/register"
-                className="text-sm font-medium bg-sky-600 hover:bg-sky-500 text-white px-4 py-2 rounded-lg shadow-sm transition-all"
+                className="px-4 py-2 rounded-sm bg-porcelain text-carbon font-medium hover:bg-porcelain-dim transition-colors"
               >
                 Register
               </Link>

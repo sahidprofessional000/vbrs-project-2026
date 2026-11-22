@@ -10,31 +10,58 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        slate: {
-          750: "#243144",
-          850: "#172033",
-          950: "#0b0f17",
+        carbon: {
+          DEFAULT: "#111214",
+          subtle: "#15171A",
         },
-        emergency: {
-          DEFAULT: "#ef4444",
-          hover: "#dc2626",
-          subtle: "rgba(239, 68, 68, 0.12)",
+        graphite: {
+          DEFAULT: "#181A1D",
+          hover: "#22252A",
         },
-        automotive: {
-          sky: "#0284c7",
-          cyan: "#06b6d4",
-          amber: "#f59e0b",
-          emerald: "#10b981",
+        elevated: {
+          DEFAULT: "#202327",
+          hover: "#2A2E34",
+        },
+        porcelain: {
+          DEFAULT: "#F0EEE8",
+          dim: "#D8D5CD",
+        },
+        stone: {
+          muted: "#A5A39D",
+          dim: "#6C6B66",
+        },
+        divider: {
+          DEFAULT: "#303236",
+          subtle: "#25282C",
+          strong: "#484C52",
+        },
+        crimson: {
+          DEFAULT: "#D93829",
+          hover: "#C23123",
+          subtle: "rgba(217, 56, 41, 0.12)",
+        },
+        ochre: {
+          DEFAULT: "#C28B38",
+          subtle: "rgba(194, 139, 56, 0.12)",
+        },
+        sage: {
+          DEFAULT: "#2D8A58",
+          light: "#3FA26C",
+          subtle: "rgba(45, 138, 88, 0.12)",
         },
       },
       fontFamily: {
-        sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
+        sans: ["Inter", "Manrope", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
         mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
       },
       boxShadow: {
-        card: "0 4px 20px -2px rgba(0, 0, 0, 0.4)",
-        glowBlue: "0 0 15px rgba(56, 189, 248, 0.25)",
-        glowHazard: "0 0 15px rgba(239, 68, 68, 0.25)",
+        architectural: "0 1px 3px rgba(0, 0, 0, 0.4)",
+        elevated: "0 8px 30px -4px rgba(0, 0, 0, 0.5)",
+        modal: "0 24px 60px -12px rgba(0, 0, 0, 0.75)",
+      },
+      letterSpacing: {
+        tightest: "-0.035em",
+        tighter: "-0.025em",
       },
     },
   },

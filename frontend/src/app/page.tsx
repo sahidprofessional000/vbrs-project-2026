@@ -2,322 +2,292 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { Navbar } from '@/components/shared/navbar';
 import { 
-  ShieldAlert, 
-  Wrench, 
+  ArrowRight, 
   MapPin, 
+  Compass, 
   Radio, 
-  CheckCircle2, 
+  ShieldCheck, 
   Clock, 
-  Car, 
-  ArrowRight,
-  ShieldCheck,
-  Zap,
-  Activity,
-  Layers,
-  PhoneCall
+  ArrowUpRight 
 } from 'lucide-react';
 
-export default function LandingPage() {
+export default function EditorialLandingPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100">
-      {/* Top Navigation */}
-      <header className="border-b border-slate-850 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-600 to-amber-600 flex items-center justify-center shadow-lg shadow-rose-950/50">
-              <ShieldAlert className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <span className="font-bold tracking-tight text-lg text-white">VBRS</span>
-              <span className="text-xs text-slate-400 block -mt-1 font-mono tracking-wider">RESCUE RADAR</span>
-            </div>
-          </div>
+    <div className="min-h-screen bg-carbon text-porcelain flex flex-col selection:bg-porcelain selection:text-carbon">
+      <Navbar />
 
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
-            <a href="#how-it-works" className="hover:text-white transition-colors">How It Works</a>
-            <a href="#coverage" className="hover:text-white transition-colors">Network Map</a>
-            <a href="#architecture" className="hover:text-white transition-colors">Architecture</a>
-            <a href="http://localhost:4000/api/docs" target="_blank" rel="noreferrer" className="text-sky-400 hover:text-sky-300 transition-colors">Swagger API</a>
-          </nav>
-
-          <div className="flex items-center gap-3">
-            <Link 
-              href="/login" 
-              className="text-sm px-4 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 border border-transparent hover:border-slate-800 transition-all font-medium"
-            >
-              Sign In
-            </Link>
-            <Link 
-              href="/register" 
-              className="text-sm px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-medium shadow-sm transition-all"
-            >
-              Get Started
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      {/* Hero Section */}
       <main className="flex-1">
-        <section className="relative pt-20 pb-28 overflow-hidden">
-          {/* Subtle background glow */}
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-sky-600/10 blur-[130px] pointer-events-none rounded-full" />
-          <div className="absolute top-1/3 left-1/4 w-[300px] h-[300px] bg-rose-600/10 blur-[120px] pointer-events-none rounded-full" />
-
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            {/* Live Status Pill */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/90 border border-slate-800 text-xs font-mono text-emerald-400 mb-8 shadow-inner">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-              <span>RADAR ACTIVE: 100% OPEN-SOURCE & FREE TO USE</span>
-            </div>
-
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-tight">
-              Roadside Emergency Assistance <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-teal-300 to-amber-300">
-                Dispatched in Real-Time
-              </span>
-            </h1>
-
-            <p className="mt-6 text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto font-normal leading-relaxed">
-              Stranded with engine trouble, a flat tire, or a dead battery? VBRS instantly connects you with nearby certified mechanics using high-precision GPS and zero-cost open telemetry.
-            </p>
-
-            {/* Main Action CTAs */}
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
-              <Link
-                href="/report-breakdown"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-rose-600 hover:bg-rose-500 active:bg-rose-700 text-white font-semibold shadow-lg shadow-rose-950/40 transition-all text-base group"
-              >
-                <ShieldAlert className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                <span>Report Breakdown Now</span>
-              </Link>
-
-              <Link
-                href="/mechanic/portal"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-slate-850 hover:bg-slate-800 text-slate-200 border border-slate-700/80 font-medium transition-all text-base"
-              >
-                <Wrench className="w-5 h-5 text-sky-400" />
-                <span>Mechanic Terminal</span>
-              </Link>
-            </div>
-
-            {/* Quick Metrics Bar */}
-            <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto text-left">
-              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-850">
-                <div className="flex items-center gap-2 text-slate-400 text-xs font-mono uppercase tracking-wider">
-                  <Clock className="w-4 h-4 text-sky-400" />
-                  <span>Avg Dispatch</span>
+        {/* ================================================================= */}
+        {/* 1. CINEMATIC ASYMMETRIC HERO SECTION                              */}
+        {/* ================================================================= */}
+        <section className="relative border-b border-divider/60 pt-16 pb-24 lg:pt-24 lg:pb-32 overflow-hidden">
+          <div className="max-w-7xl mx-auto px-6 lg:px-10">
+            <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+              
+              {/* Editorial Typography Column (Left: 6 cols) */}
+              <div className="lg:col-span-6 space-y-8">
+                <div className="inline-flex items-center gap-3">
+                  <span className="w-1.5 h-1.5 rounded-full bg-crimson" />
+                  <span className="text-[11px] font-mono tracking-widest uppercase text-stone-muted">
+                    Automotive Emergency Dispatch Protocol
+                  </span>
                 </div>
-                <div className="text-2xl font-bold text-white mt-1">4.2 min</div>
-                <div className="text-xs text-slate-500 mt-0.5">Automated radial dispatch</div>
+
+                <div className="space-y-4">
+                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-medium tracking-tightest text-porcelain leading-[1.08]">
+                    Precision Roadside Rescue. <br />
+                    <span className="text-stone-muted font-normal">
+                      Zero Friction.
+                    </span>
+                  </h1>
+                  
+                  <p className="text-stone-muted text-base sm:text-lg leading-relaxed max-w-xl font-normal pt-2">
+                    An open-source assistance architecture bridging stranded drivers and certified field mechanics through high-accuracy spherical trigonometry and live telemetry.
+                  </p>
+                </div>
+
+                {/* Primary Restrained Call-to-Actions */}
+                <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
+                  <Link
+                    href="/login?redirect=/report-breakdown"
+                    className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-sm bg-crimson hover:bg-crimson-hover active:bg-crimson text-porcelain font-medium text-xs font-mono uppercase tracking-wider transition-colors"
+                  >
+                    <span>Request Emergency Assistance</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+
+                  <Link
+                    href="/login?role=MECHANIC"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-sm bg-graphite hover:bg-elevated text-stone-muted hover:text-porcelain border border-divider text-xs font-mono uppercase tracking-wider transition-colors"
+                  >
+                    <span>Mechanic Terminal</span>
+                  </Link>
+                </div>
+
+                {/* Editorial Telemetry Bar */}
+                <div className="pt-8 border-t border-divider/40 grid grid-cols-3 gap-6 text-left">
+                  <div>
+                    <div className="text-xl font-mono font-medium text-porcelain tracking-tight">4.2 min</div>
+                    <div className="text-[11px] font-mono text-stone-dim uppercase tracking-wider mt-0.5">Average Dispatch</div>
+                  </div>
+                  <div>
+                    <div className="text-xl font-mono font-medium text-porcelain tracking-tight">&lt; 50ms</div>
+                    <div className="text-[11px] font-mono text-stone-dim uppercase tracking-wider mt-0.5">Haversine Vector</div>
+                  </div>
+                  <div>
+                    <div className="text-xl font-mono font-medium text-porcelain tracking-tight">100%</div>
+                    <div className="text-[11px] font-mono text-stone-dim uppercase tracking-wider mt-0.5">ASE Vetted Network</div>
+                  </div>
+                </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-850">
-                <div className="flex items-center gap-2 text-slate-400 text-xs font-mono uppercase tracking-wider">
-                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                  <span>Verified Pros</span>
+              {/* Cinematic Automotive Photography Frame (Right: 6 cols) */}
+              <div className="lg:col-span-6">
+                <div className="relative border border-divider p-2 bg-graphite/40">
+                  <div className="relative aspect-[4/3] sm:aspect-[16/11] overflow-hidden bg-carbon">
+                    <img
+                      src="https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=1600&q=85"
+                      alt="Nighttime roadside highway precision headlights"
+                      className="w-full h-full object-cover grayscale-[25%] contrast-[110%] brightness-[90%]"
+                    />
+                    
+                    {/* Architectural Technical Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-carbon/90 via-transparent to-transparent pointer-events-none" />
+
+                    <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between font-mono text-[10px] text-stone-muted">
+                      <div>
+                        <span className="text-porcelain uppercase block font-semibold">Incident Radar // Active</span>
+                        <span className="text-stone-dim">40.7128° N, 74.0060° W</span>
+                      </div>
+                      <div className="text-right">
+                        <span className="inline-flex items-center gap-1.5 text-sage-light">
+                          <span className="w-1.5 h-1.5 rounded-full bg-sage animate-pulse" />
+                          <span>STATION MONITOR ONLINE</span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="text-2xl font-bold text-white mt-1">100%</div>
-                <div className="text-xs text-slate-500 mt-0.5">ASE & license vetted</div>
               </div>
 
-              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-850">
-                <div className="flex items-center gap-2 text-slate-400 text-xs font-mono uppercase tracking-wider">
-                  <MapPin className="w-4 h-4 text-amber-400" />
-                  <span>Haversine GIS</span>
-                </div>
-                <div className="text-2xl font-bold text-white mt-1">&lt; 50ms</div>
-                <div className="text-xs text-slate-500 mt-0.5">Zero-cost math formula</div>
-              </div>
-
-              <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-850">
-                <div className="flex items-center gap-2 text-slate-400 text-xs font-mono uppercase tracking-wider">
-                  <Radio className="w-4 h-4 text-indigo-400" />
-                  <span>Telemetry</span>
-                </div>
-                <div className="text-2xl font-bold text-white mt-1">WebSocket</div>
-                <div className="text-xs text-slate-500 mt-0.5">Real-time driver beaconing</div>
-              </div>
             </div>
           </div>
         </section>
 
-        {/* Portals Showcase Section */}
-        <section className="py-20 bg-slate-900/30 border-t border-slate-850" id="portals">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-16">
-              <h2 className="text-3xl font-bold tracking-tight text-white">Three Specialized Operational Hubs</h2>
-              <p className="mt-3 text-slate-400">
-                Built specifically for distressed drivers, field mechanics, and central fleet dispatchers.
+        {/* ================================================================= */}
+        {/* 2. ARCHITECTURAL PROTOCOL: HOW IT WORKS                           */}
+        {/* ================================================================= */}
+        <section className="py-24 border-b border-divider/60 bg-carbon">
+          <div className="max-w-7xl mx-auto px-6 lg:px-10">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-14 border-b border-divider/40">
+              <div className="space-y-2">
+                <span className="text-[11px] font-mono tracking-widest uppercase text-stone-dim">
+                  System Architecture
+                </span>
+                <h2 className="text-3xl font-medium tracking-tight text-porcelain">
+                  Roadside Incident Resolution Protocol
+                </h2>
+              </div>
+              <p className="text-sm font-normal text-stone-muted max-w-md">
+                Three deterministic stages designed to eliminate communication ambiguity during mechanical breakdown emergencies.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {/* Customer Hub Card */}
-              <div className="rounded-2xl bg-slate-900/80 border border-slate-800 p-7 flex flex-col justify-between hover:border-slate-700 transition-all group">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-sky-950/70 border border-sky-800/60 text-sky-400 flex items-center justify-center mb-5">
-                    <Car className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-white">Customer Portal</h3>
-                  <p className="text-slate-400 text-sm mt-2 leading-relaxed">
-                    Garage vehicle registry, one-touch breakdown submission, live en-route mechanic map tracking, and fair ratings.
-                  </p>
-                  <ul className="mt-5 space-y-2 text-xs text-slate-300">
-                    <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400" /> GPS and manual Leaflet pin-drop
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Multi-photo damage uploads
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Real-time status progression
-                    </li>
-                  </ul>
-                </div>
-                <div className="mt-8 pt-5 border-t border-slate-800/80">
-                  <Link 
-                    href="/customer/dashboard" 
-                    className="inline-flex items-center gap-2 text-sm font-medium text-sky-400 hover:text-sky-300 group-hover:translate-x-1 transition-all"
-                  >
-                    <span>Open Customer Portal</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
+            <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-divider/60 pt-6">
+              
+              {/* Step 1 */}
+              <div className="pt-8 md:pt-0 md:pr-10 space-y-4">
+                <div className="font-mono text-xs text-stone-dim">01 // INTAKE</div>
+                <h3 className="text-lg font-medium text-porcelain">Coordinate Pinpointing & Fault Categorization</h3>
+                <p className="text-sm text-stone-muted leading-relaxed font-normal">
+                  Immediate acquisition of device GPS coordinates paired with an interactive Leaflet fallback pin. The driver selects symptoms from a standardized automotive matrix with optional damage imagery.
+                </p>
+                <div className="pt-2 font-mono text-[11px] text-stone-dim flex items-center gap-2">
+                  <span className="w-1 h-1 bg-stone-muted rounded-full" />
+                  <span>Sub-second coordinate resolution</span>
                 </div>
               </div>
 
-              {/* Mechanic Terminal Card */}
-              <div className="rounded-2xl bg-slate-900/80 border border-slate-800 p-7 flex flex-col justify-between hover:border-slate-700 transition-all group">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-amber-950/70 border border-amber-800/60 text-amber-400 flex items-center justify-center mb-5">
-                    <Wrench className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-white">Mechanic Terminal</h3>
-                  <p className="text-slate-400 text-sm mt-2 leading-relaxed">
-                    On-duty availability toggle, audible incoming dispatch radar, roadside client navigation, and service milestone sign-offs.
-                  </p>
-                  <ul className="mt-5 space-y-2 text-xs text-slate-300">
-                    <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-amber-400" /> Live coordinate beacon streaming
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-amber-400" /> Configurable operating radius
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-amber-400" /> Accept/decline dispatch radar
-                    </li>
-                  </ul>
-                </div>
-                <div className="mt-8 pt-5 border-t border-slate-800/80">
-                  <Link 
-                    href="/mechanic/portal" 
-                    className="inline-flex items-center gap-2 text-sm font-medium text-amber-400 hover:text-amber-300 group-hover:translate-x-1 transition-all"
-                  >
-                    <span>Launch Mechanic Radar</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
+              {/* Step 2 */}
+              <div className="pt-8 md:pt-0 md:px-10 space-y-4">
+                <div className="font-mono text-xs text-stone-dim">02 // DISCOVERY</div>
+                <h3 className="text-lg font-medium text-porcelain">Haversine Great-Circle Proximity Calculation</h3>
+                <p className="text-sm text-stone-muted leading-relaxed font-normal">
+                  The backend executes pure trigonometric spherical distance calculations directly in PostgreSQL without proprietary mapping fees, querying active technicians within the configurable operational radius.
+                </p>
+                <div className="pt-2 font-mono text-[11px] text-stone-dim flex items-center gap-2">
+                  <span className="w-1 h-1 bg-stone-muted rounded-full" />
+                  <span>Zero paid third-party API dependencies</span>
                 </div>
               </div>
 
-              {/* Admin Command Center Card */}
-              <div className="rounded-2xl bg-slate-900/80 border border-slate-800 p-7 flex flex-col justify-between hover:border-slate-700 transition-all group">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-indigo-950/70 border border-indigo-800/60 text-indigo-400 flex items-center justify-center mb-5">
-                    <Activity className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-white">Admin Command Center</h3>
-                  <p className="text-slate-400 text-sm mt-2 leading-relaxed">
-                    Fleet-wide oversight, mechanic trade license verification desk, complaint arbitration, and real-time query analytics.
-                  </p>
-                  <ul className="mt-5 space-y-2 text-xs text-slate-300">
-                    <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-indigo-400" /> City-wide active breakdown map
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-indigo-400" /> Mechanic credential approval desk
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-indigo-400" /> Comprehensive audit logging
-                    </li>
-                  </ul>
-                </div>
-                <div className="mt-8 pt-5 border-t border-slate-800/80">
-                  <Link 
-                    href="/admin/dashboard" 
-                    className="inline-flex items-center gap-2 text-sm font-medium text-indigo-400 hover:text-indigo-300 group-hover:translate-x-1 transition-all"
-                  >
-                    <span>Access Admin Center</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
+              {/* Step 3 */}
+              <div className="pt-8 md:pt-0 md:pl-10 space-y-4">
+                <div className="font-mono text-xs text-stone-dim">03 // RESOLUTION</div>
+                <h3 className="text-lg font-medium text-porcelain">Bidirectional Telemetry & Service Sign-off</h3>
+                <p className="text-sm text-stone-muted leading-relaxed font-normal">
+                  Socket.IO WebSocket rooms stream the technician’s en-route position live to the customer’s terminal. State transitions are immutably logged until verified on-site service completion.
+                </p>
+                <div className="pt-2 font-mono text-[11px] text-stone-dim flex items-center gap-2">
+                  <span className="w-1 h-1 bg-sage-light rounded-full" />
+                  <span>Validated lifecycle state machine</span>
                 </div>
               </div>
+
             </div>
           </div>
         </section>
 
-        {/* Zero-Cost Architecture Highlight */}
-        <section className="py-20 border-t border-slate-850" id="architecture">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="rounded-3xl bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 p-8 sm:p-12">
-              <div className="grid lg:grid-cols-2 gap-10 items-center">
-                <div>
-                  <div className="inline-flex items-center gap-2 text-xs font-mono text-sky-400 uppercase tracking-widest bg-sky-950/60 px-3 py-1 rounded-full border border-sky-800/60 mb-4">
-                    <Zap className="w-3.5 h-3.5" /> Zero-Budget Engineering Guarantee
+        {/* ================================================================= */}
+        {/* 3. CRAFT & PHOTOGRAPHY EDITORIAL SECTION                          */}
+        {/* ================================================================= */}
+        <section className="py-24 border-b border-divider/60 bg-graphite/30">
+          <div className="max-w-7xl mx-auto px-6 lg:px-10">
+            <div className="grid lg:grid-cols-12 gap-12 items-center">
+              
+              <div className="lg:col-span-5 space-y-6">
+                <span className="text-[11px] font-mono tracking-widest uppercase text-stone-dim">
+                  Craft & Capability
+                </span>
+                <h2 className="text-3xl font-medium tracking-tight text-porcelain leading-tight">
+                  Engineered for Automotive Integrity
+                </h2>
+                <p className="text-sm text-stone-muted leading-relaxed font-normal">
+                  From flat tires and high-voltage electric powertrain faults to emergency flatbed winch extractions, every technician registered on the VBRS platform undergoes trade credential and master certification vetting before dispatch eligibility.
+                </p>
+
+                <div className="pt-4 space-y-3 font-mono text-xs text-stone-muted">
+                  <div className="flex items-center gap-3 pb-3 border-b border-divider/60">
+                    <span className="text-porcelain">01</span>
+                    <span className="text-porcelain font-sans font-medium">Mechanical Powertrain Diagnostics</span>
+                    <span className="ml-auto text-stone-dim">ICE & Hybrid</span>
                   </div>
-                  <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
-                    Engineered with 100% Free & Open-Source Software
-                  </h2>
-                  <p className="mt-4 text-slate-400 leading-relaxed">
-                    Designed to eliminate paid proprietary cloud services. All geospatial calculations, mapping, WebSocket messaging, and database operations run on standard local infrastructure without credit cards, subscriptions, or surprise bills.
-                  </p>
-
-                  <div className="mt-6 space-y-3">
-                    <div className="flex items-start gap-3">
-                      <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                      </div>
-                      <div className="text-sm text-slate-300">
-                        <strong className="text-white">Leaflet & OpenStreetMap:</strong> Zero-cost slippy map rendering with offline geometric grid fallback.
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                      </div>
-                      <div className="text-sm text-slate-300">
-                        <strong className="text-white">Mathematical Haversine Engine:</strong> Pure trigonometric great-circle distance queries directly in SQL.
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                      </div>
-                      <div className="text-sm text-slate-300">
-                        <strong className="text-white">Rule-Based Expert Diagnostics:</strong> Automated failure assessment and tow-truck triage without paid AI tokens.
-                      </div>
-                    </div>
+                  <div className="flex items-center gap-3 pb-3 border-b border-divider/60">
+                    <span className="text-porcelain">02</span>
+                    <span className="text-porcelain font-sans font-medium">High-Voltage EV Roadside Safe Triage</span>
+                    <span className="ml-auto text-stone-dim">400V - 800V</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-porcelain">03</span>
+                    <span className="text-porcelain font-sans font-medium">Heavy Flatbed & Winch Recovery</span>
+                    <span className="ml-auto text-stone-dim">Low-Clearance</span>
                   </div>
                 </div>
+              </div>
 
-                <div className="rounded-2xl bg-slate-950/90 border border-slate-800 p-6 font-mono text-xs text-slate-300 overflow-x-auto shadow-2xl">
-                  <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-800 text-slate-500">
-                    <span>SYSTEM_TOPOLOGY_VERIFIED</span>
-                    <span className="text-emerald-400">● LIVE</span>
+              <div className="lg:col-span-7">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="border border-divider p-1.5 bg-graphite/60">
+                    <img
+                      src="https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=800&q=80"
+                      alt="Mechanic inspecting vehicle engine bay"
+                      className="w-full aspect-[4/5] object-cover grayscale-[30%] contrast-[105%]"
+                    />
                   </div>
-                  <pre className="text-slate-300 leading-5">
-{`[Client Layer]     Next.js 14 App Router + Tailwind + Framer Motion
-[API Gateway]      NestJS 10 REST + Swagger Docs (/api/docs)
-[Realtime]         Socket.IO WebSockets (Port 4000)
-[Database]         PostgreSQL 16 (Port 5432)
-[ORM]              Prisma ORM 5.14 with 14 Modules
-[GIS / Mapping]    Leaflet.js + OSM Tiles (Zero Cost)
-[Proximity]        Haversine Great-Circle Trigonometry
-[Security]         bcrypt (12 rounds) + JWT (httpOnly Refresh)
-[Testing]          Vitest + Playwright End-to-End`}
-                  </pre>
+                  <div className="border border-divider p-1.5 bg-graphite/60 mt-8">
+                    <img
+                      src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80"
+                      alt="Automotive rear profile in dusk setting"
+                      className="w-full aspect-[4/5] object-cover grayscale-[20%] contrast-[110%]"
+                    />
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        {/* ================================================================= */}
+        {/* 4. NETWORK RADAR OVERVIEW                                         */}
+        {/* ================================================================= */}
+        <section className="py-24 border-b border-divider/60 bg-carbon">
+          <div className="max-w-7xl mx-auto px-6 lg:px-10">
+            <div className="border border-divider bg-graphite/50 p-8 sm:p-12">
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 pb-8 border-b border-divider/60">
+                <div>
+                  <span className="text-[11px] font-mono tracking-widest uppercase text-stone-dim block mb-1">
+                    Coverage Spectrum
+                  </span>
+                  <h2 className="text-2xl sm:text-3xl font-medium tracking-tight text-porcelain">
+                    Autonomous Dispatch Readiness
+                  </h2>
+                </div>
+
+                <div className="flex items-center gap-4 text-xs font-mono uppercase tracking-wider">
+                  <Link
+                    href="/customer/vehicles"
+                    className="px-5 py-2.5 rounded-sm bg-porcelain text-carbon font-medium hover:bg-porcelain-dim transition-colors"
+                  >
+                    Open My Garage
+                  </Link>
+                  <Link
+                    href="/login?role=MECHANIC"
+                    className="px-5 py-2.5 rounded-sm border border-divider text-stone-muted hover:text-porcelain transition-colors"
+                  >
+                    Mechanic Portal
+                  </Link>
+                </div>
+              </div>
+
+              <div className="pt-8 grid grid-cols-2 md:grid-cols-4 gap-6 font-mono text-xs">
+                <div>
+                  <div className="text-stone-dim uppercase">Active DB Engine</div>
+                  <div className="text-porcelain font-medium text-sm mt-1">PostgreSQL 18 Local</div>
+                </div>
+                <div>
+                  <div className="text-stone-dim uppercase">Distance Metric</div>
+                  <div className="text-porcelain font-medium text-sm mt-1">Great-Circle Haversine</div>
+                </div>
+                <div>
+                  <div className="text-stone-dim uppercase">Cost Model</div>
+                  <div className="text-porcelain font-medium text-sm mt-1">$0.00 / 100% FOSS</div>
+                </div>
+                <div>
+                  <div className="text-stone-dim uppercase">API Specification</div>
+                  <div className="text-porcelain font-medium text-sm mt-1">OpenAPI 3.0 (NestJS)</div>
                 </div>
               </div>
             </div>
@@ -325,21 +295,26 @@ export default function LandingPage() {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-slate-850 py-10 bg-slate-950 text-slate-500 text-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <ShieldAlert className="w-4 h-4 text-rose-500" />
-            <span className="text-slate-300 font-semibold">Vehicle Breakdown Reporting System (VBRS)</span>
-            <span>— College Major Project & FOSS Production Engine</span>
+      {/* ================================================================= */}
+      {/* 5. MINIMALIST ARCHITECTURAL FOOTER                                */}
+      {/* ================================================================= */}
+      <footer className="py-12 bg-carbon border-t border-divider/40 text-stone-dim text-xs font-mono">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+          <div className="space-y-1">
+            <span className="text-porcelain block font-sans font-medium text-sm">
+              Vehicle Breakdown Reporting System (VBRS)
+            </span>
+            <span>Architectural Roadside Emergency Assistance Network</span>
           </div>
 
-          <div className="flex items-center gap-6 text-xs text-slate-400">
-            <span>Windows 11 Local</span>
-            <span>Zero Budget FOSS</span>
-            <a href="http://localhost:4000/api/docs" target="_blank" rel="noreferrer" className="hover:text-sky-400">
-              API Docs
+          <div className="flex items-center gap-6 uppercase tracking-wider text-[11px]">
+            <a href="http://localhost:4000/api/docs" target="_blank" rel="noreferrer" className="hover:text-porcelain transition-colors">
+              Swagger Documentation
             </a>
+            <span className="text-divider">•</span>
+            <Link href="/login" className="hover:text-porcelain transition-colors">
+              Access Terminal
+            </Link>
           </div>
         </div>
       </footer>

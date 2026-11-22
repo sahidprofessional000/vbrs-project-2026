@@ -5,17 +5,14 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/auth-context';
 import { 
-  ShieldAlert, 
-  Lock, 
-  Mail, 
   ArrowRight, 
   AlertCircle, 
   Loader2, 
   Eye, 
-  EyeOff, 
-  Car, 
-  Wrench, 
-  ShieldCheck 
+  EyeOff,
+  Car,
+  Wrench,
+  ShieldCheck
 } from 'lucide-react';
 
 export default function LoginPage() {
@@ -43,7 +40,7 @@ export default function LoginPage() {
         router.push('/customer/vehicles');
       }
     } catch (err: any) {
-      setError(err.message || 'Authentication failed. Please verify your email and password.');
+      setError(err.message || 'Authentication failed. Please verify credentials.');
     } finally {
       setIsSubmitting(false);
     }
@@ -56,125 +53,120 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-slate-950 px-4 py-12 relative overflow-hidden">
-      {/* Background radial glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-sky-600/10 blur-[120px] pointer-events-none rounded-full" />
-
-      {/* Main Container */}
-      <div className="w-full max-w-md relative z-10">
-        {/* Header Logo */}
-        <div className="text-center mb-8">
+    <div className="min-h-screen bg-carbon text-porcelain flex flex-col justify-center items-center px-6 py-16 selection:bg-porcelain selection:text-carbon">
+      <div className="w-full max-w-md">
+        
+        {/* Brand Header */}
+        <div className="mb-10 text-center space-y-3">
           <Link href="/" className="inline-flex items-center gap-2.5 group">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-rose-600 to-amber-600 flex items-center justify-center shadow-lg shadow-rose-950/50 group-hover:scale-105 transition-transform">
-              <ShieldAlert className="w-6 h-6 text-white" />
+            <div className="w-7 h-7 rounded-sm bg-graphite border border-divider flex items-center justify-center text-porcelain font-mono font-medium text-xs">
+              VB
             </div>
-            <div className="text-left">
-              <span className="font-extrabold tracking-tight text-xl text-white block">VBRS</span>
-              <span className="text-[10px] text-slate-400 block -mt-1 font-mono tracking-widest">RESCUE RADAR</span>
-            </div>
+            <span className="font-medium tracking-tight text-sm text-porcelain">VBRS</span>
           </Link>
-          <h1 className="text-2xl font-bold tracking-tight text-white mt-6">Welcome Back</h1>
-          <p className="text-sm text-slate-400 mt-1">Sign in to manage your vehicles and emergency assistance</p>
+
+          <h1 className="text-2xl font-medium tracking-tight text-porcelain">
+            Sign In to Protocol
+          </h1>
+          <p className="text-xs text-stone-muted font-normal">
+            Enter your credentials to access vehicle assistance services
+          </p>
         </div>
 
-        {/* Card Form */}
-        <div className="rounded-2xl bg-slate-900/90 border border-slate-800 p-8 shadow-2xl backdrop-blur-sm">
+        {/* Minimalist Architectural Container */}
+        <div className="border border-divider bg-graphite p-8 shadow-architectural">
           {error && (
-            <div className="mb-6 p-3.5 rounded-xl bg-rose-950/50 border border-rose-800/80 text-rose-300 text-sm flex items-start gap-2.5">
-              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-rose-400" />
+            <div className="mb-6 p-3.5 border border-crimson/50 bg-crimson-subtle text-porcelain text-xs flex items-start gap-2.5">
+              <AlertCircle className="w-4 h-4 text-crimson shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-xs font-medium text-slate-300 uppercase tracking-wider mb-1.5 font-mono">
+              <label className="block text-[11px] font-mono uppercase tracking-wider text-stone-muted mb-2">
                 Email Address
               </label>
-              <div className="relative">
-                <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@example.com"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/50 focus:border-sky-500 transition-all"
-                />
-              </div>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="operator@domain.com"
+                className="w-full px-3.5 py-2.5 bg-carbon border border-divider text-porcelain placeholder-stone-dim text-xs font-mono focus:outline-none focus:border-stone-muted transition-colors rounded-none"
+              />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-300 uppercase tracking-wider mb-1.5 font-mono">
-                Password
-              </label>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••••••"
-                  className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/50 focus:border-sky-500 transition-all"
-                />
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-[11px] font-mono uppercase tracking-wider text-stone-muted">
+                  Password
+                </label>
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
+                  className="text-[11px] font-mono text-stone-dim hover:text-stone-muted transition-colors"
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? 'Hide' : 'Show'}
                 </button>
               </div>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••••••"
+                className="w-full px-3.5 py-2.5 bg-carbon border border-divider text-porcelain placeholder-stone-dim text-xs font-mono focus:outline-none focus:border-stone-muted transition-colors rounded-none"
+              />
             </div>
 
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full mt-2 py-3 px-4 rounded-xl bg-sky-600 hover:bg-sky-500 active:bg-sky-700 text-white font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed group"
+              className="w-full mt-2 py-3 px-4 bg-porcelain hover:bg-porcelain-dim text-carbon font-medium text-xs font-mono uppercase tracking-wider transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Verifying Credentials...</span>
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  <span>Verifying Session...</span>
                 </>
               ) : (
                 <>
-                  <span>Sign In</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <span>Authenticate Session</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </>
               )}
             </button>
           </form>
 
-          {/* Quick Demo Fill Buttons */}
-          <div className="mt-8 pt-6 border-t border-slate-800/80">
-            <span className="block text-xs font-mono text-slate-400 uppercase tracking-wider mb-3 text-center">
-              Quick Sign-in (Seeded Accounts)
+          {/* Seeded Quick-fill Options */}
+          <div className="mt-8 pt-6 border-t border-divider/60">
+            <span className="block text-[10px] font-mono uppercase tracking-widest text-stone-dim mb-3 text-center">
+              Pre-configured Seed Accounts
             </span>
             <div className="grid grid-cols-3 gap-2">
               <button
                 type="button"
                 onClick={() => handleQuickFill('customer.john@vbrs.local')}
-                className="p-2 rounded-lg bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 text-xs text-slate-300 flex flex-col items-center gap-1 transition-colors"
+                className="p-2 border border-divider hover:border-divider-strong bg-carbon text-stone-muted hover:text-porcelain text-[10px] font-mono uppercase tracking-wider transition-colors flex flex-col items-center gap-1.5"
               >
-                <Car className="w-3.5 h-3.5 text-sky-400" />
-                <span>Customer</span>
+                <Car className="w-3.5 h-3.5 text-stone-dim" />
+                <span>Driver</span>
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickFill('mechanic.alex@vbrs.local')}
-                className="p-2 rounded-lg bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 text-xs text-slate-300 flex flex-col items-center gap-1 transition-colors"
+                className="p-2 border border-divider hover:border-divider-strong bg-carbon text-stone-muted hover:text-porcelain text-[10px] font-mono uppercase tracking-wider transition-colors flex flex-col items-center gap-1.5"
               >
-                <Wrench className="w-3.5 h-3.5 text-amber-400" />
-                <span>Mechanic</span>
+                <Wrench className="w-3.5 h-3.5 text-stone-dim" />
+                <span>Technician</span>
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickFill('admin@vbrs.local')}
-                className="p-2 rounded-lg bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 text-xs text-slate-300 flex flex-col items-center gap-1 transition-colors"
+                className="p-2 border border-divider hover:border-divider-strong bg-carbon text-stone-muted hover:text-porcelain text-[10px] font-mono uppercase tracking-wider transition-colors flex flex-col items-center gap-1.5"
               >
-                <ShieldCheck className="w-3.5 h-3.5 text-indigo-400" />
+                <ShieldCheck className="w-3.5 h-3.5 text-stone-dim" />
                 <span>Admin</span>
               </button>
             </div>
@@ -182,10 +174,10 @@ export default function LoginPage() {
         </div>
 
         {/* Footer Link */}
-        <p className="text-center text-sm text-slate-400 mt-6">
-          Don&apos;t have an account yet?{' '}
-          <Link href="/register" className="text-sky-400 hover:text-sky-300 font-medium">
-            Register Here
+        <p className="text-center text-xs text-stone-muted mt-6">
+          New to the network?{' '}
+          <Link href="/register" className="text-porcelain underline hover:text-porcelain-dim underline-offset-4">
+            Register Account
           </Link>
         </p>
       </div>
