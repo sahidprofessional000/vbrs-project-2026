@@ -32,7 +32,7 @@ function StaticFallbackImage() {
   return (
     <div className="relative w-full h-full bg-carbon">
       <img
-        src="https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=2000&q=85"
+        src="/images/hero-fallback.jpg"
         alt="Automotive precision vehicle headlights"
         className="w-full h-full object-cover grayscale-[25%] contrast-[110%] brightness-[90%]"
       />

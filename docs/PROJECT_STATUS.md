@@ -60,6 +60,13 @@ PASS frontend/test/hero-3d.e2e.mjs
     √ Damped Orbit Drag Controls
     √ Real-time Telemetry Badges & Zero Console Errors
 
+PASS frontend/test/images-verify.e2e.mjs
+  Zero-Broken-Images Platform Audit (Playwright Chrome E2E)
+    √ Engine inspection primary image decoded (1200x675)
+    √ Automotive rear profile image decoded (1200x800)
+    √ RobustImage component fallback verified on network drop
+    √ Zero external image dependencies / 100% locally self-hosted (0 404s)
+
 HTTP 200 Route Verification:
   [200 OK] /
   [200 OK] /login
@@ -71,6 +78,10 @@ HTTP 200 Route Verification:
   [200 OK] /report-breakdown
   [200 OK] /models/car.glb
   [200 OK] /draco/draco_decoder.wasm
+  [200 OK] /images/mechanic-engine.jpg
+  [200 OK] /images/mechanic-engine-fallback.jpg
+  [200 OK] /images/vehicle-rear.jpg
+  [200 OK] /images/hero-fallback.jpg
 
-Total Tests: 22 passed, 22 total (100% Green)
+Total Tests: 23 passed, 23 total (100% Green)
 ```

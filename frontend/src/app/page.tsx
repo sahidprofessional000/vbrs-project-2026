@@ -13,6 +13,7 @@ import {
   ArrowUpRight 
 } from 'lucide-react';
 import { VehicleHero3D } from '@/components/hero/vehicle-hero-3d';
+import { RobustImage } from '@/components/shared/robust-image';
 
 export default function EditorialLandingPage() {
   return (
@@ -197,15 +198,17 @@ export default function EditorialLandingPage() {
               <div className="lg:col-span-7">
                 <div className="grid grid-cols-2 gap-5 lg:gap-6">
                   <div className="border border-divider p-2 bg-graphite/60 shadow-architectural">
-                    <img
-                      src="https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=1200&q=80"
+                    <RobustImage
+                      src="/images/mechanic-engine.jpg"
+                      fallbackSrc="/images/mechanic-engine-fallback.jpg"
                       alt="Mechanic inspecting vehicle engine bay"
                       className="w-full aspect-[4/5] object-cover grayscale-[30%] contrast-[105%]"
                     />
                   </div>
                   <div className="border border-divider p-2 bg-graphite/60 shadow-architectural mt-10">
-                    <img
-                      src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80"
+                    <RobustImage
+                      src="/images/vehicle-rear.jpg"
+                      fallbackSrc="/images/mechanic-engine-fallback.jpg"
                       alt="Automotive rear profile in dusk setting"
                       className="w-full aspect-[4/5] object-cover grayscale-[20%] contrast-[110%]"
                     />
