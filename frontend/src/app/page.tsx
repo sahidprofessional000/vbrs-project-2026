@@ -12,7 +12,7 @@ import {
   Clock, 
   ArrowUpRight 
 } from 'lucide-react';
-import { VehicleHero3D } from '@/components/hero/vehicle-hero-3d';
+import { InspectionTerminal } from '@/components/hologram/inspection-terminal';
 import { RobustImage } from '@/components/shared/robust-image';
 
 export default function EditorialLandingPage() {
@@ -85,9 +85,11 @@ export default function EditorialLandingPage() {
                 </div>
               </div>
 
-              {/* 3D Realtime Automotive Hero Showcase (Right: 6 cols - Proportional Expansion) */}
+              {/* Interactive 3D Automotive Hologram (Right: 6 cols - Proportional Expansion) */}
               <div className="lg:col-span-6">
-                <VehicleHero3D />
+                <div id="overview-hologram">
+                  <InspectionTerminal variant="overview" />
+                </div>
               </div>
 
             </div>

@@ -62,8 +62,10 @@
   - Built `/mechanic/profile`: Professional workshop dossier editor with workshop name, address, phone, experience years, service perimeter, technical specializations tag manager, professional certifications tag manager, workshop bio, and sensitive trade license governance (modifying resets status to `PENDING` and triggers an immutable administrative audit log).
   - Role-guarded routing: Customers redirected to `/customer/home`, Admins to `/admin/dashboard`.
   - Created automated Playwright test suite `frontend/test/mechanic-experience.e2e.mjs` (13 / 13 checks passing 100% green).
-- [x] **Step 5: Interactive 3D Automotive Hologram (8 Selectable Subsystems):**
-  - Built `frontend/src/components/hologram/inspection-terminal.tsx`: Complete Three.js, React Three Fiber, and Drei CAD engineering digital twin inspection station embedded directly into `/mechanic/home`.
+- [x] **Step 5: Interactive 3D Automotive Hologram (8 Selectable Subsystems & Multi-Mode Presentation):**
+  - Built `frontend/src/components/hologram/inspection-terminal.tsx`: Complete Three.js, React Three Fiber, and Drei CAD engineering digital twin inspection station supporting two unified presentation modes without code duplication:
+    - **Overview Mode (`variant="overview"`)**: Clean, cinematic hero presentation embedded directly on the main Overview landing page (`/`), replacing the ordinary static car visualization. Features 360-degree orbit rotation, smooth zoom, CAD / X-Ray mode switcher, camera reset button, interactive 3D raycast selection, bottom 8-subsystem quick selector strip, and floating contextual technical HUD card with active component title, category, SAE DTC fault codes, OEM metric, common observed symptoms, and direct link to workshop diagnostics.
+    - **Workshop Mode (`variant="workshop"`)**: Deep engineering inspection terminal embedded in `/mechanic/home` with full 2-column split layout, 4 view modes (Standard CAD, X-Ray Hologram, Exploded View, Isolated Subsystem), comprehensive OEM specifications matrix, observed failure symptoms checklist, SAE diagnostic trouble codes table with severity indicators, field diagnostic triage procedures, and authorized repair package cost estimates.
   - Implemented **8 genuinely selectable functional mechanical subsystem assemblies**:
     1. *Engine Assembly* (V8 block, cylinder heads, red valve covers, 8-runner intake plenum, harmonic balancer, serpentine pulleys)
     2. *Battery Module* (Reinforced 12V AGM/HV enclosure, dual brass/lead terminal posts, high-voltage orange shielded conduits)
@@ -73,10 +75,16 @@
     6. *Suspension Subsystem* (4-corner magnetorheological fluid adaptive dampers, hard chrome piston rods, helical coil springs, top strut hats)
     7. *Cooling System* (Aluminum dual-pass crossflow radiator core with cooling fins, end tanks, dual electric suction fans with shroud)
     8. *Electrical System* (Bosch Motronic ECU with aluminum heatsink fins, multi-pin harness connector, power distribution fuse/relay box with translucent cover, braided wiring loom)
-  - Interactive View Modes: **Standard CAD**, **X-Ray Hologram** (translucent body panels), **Exploded View** (radial subsystem displacement), and **Isolated Subsystem**.
-  - Contextual Engineering Panel: Displays component specifications, observed failure symptoms, SAE Diagnostic Trouble Codes (e.g., `P0300`, `P0562`, `P0700`, `C0035`, `C0750`, `C1030`, `P0117`, `U0100`), field diagnostic triage procedures, and authorized repair service quotes.
   - Zero-budget asset licensing documented in `frontend/public/models/SUBSYSTEMS_LICENSE.md`.
-  - Automated Playwright E2E verification in `frontend/test/hologram-3d.e2e.mjs` passing 100%, generating high-resolution verification screenshots (`screenshot-3d-hologram.png` and `screenshot-3d-exploded.png`).
+  - Created `/mechanic/overview` route redirecting directly to `/`.
+  - Automated Playwright E2E verification suites:
+    - `frontend/test/hologram-placement.e2e.mjs`: 100% green across Overview and Workshop placement, 8 subsystem selections, HUD telemetry, CAD/X-Ray toggles, camera resets, and `/mechanic/overview` redirect.
+    - `frontend/test/hologram-3d.e2e.mjs`: 100% green across Workshop CAD modes, exploded view, isolated view, and telemetry.
+  - High-resolution verification screenshots captured:
+    - `public/academic/screenshot-overview-3d.png` (Overview Hero with 3D Hologram)
+    - `public/academic/screenshot-workshop-3d.png` (Workshop Full CAD Terminal)
+    - `public/academic/screenshot-3d-hologram.png` (Translucent X-Ray Mode)
+    - `public/academic/screenshot-3d-exploded.png` (Exploded Subsystem View)
 - [ ] **Step 6: Role Separation Navigation & Public Landing Gateways.**
 - [ ] **Step 7: Full Regression & Verification.**
 

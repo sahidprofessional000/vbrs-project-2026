@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import {
   SubsystemId,
   DisplayMode,
@@ -26,7 +27,9 @@ import {
   ChevronRight,
   Maximize2,
   Sparkles,
-  Info
+  Info,
+  ArrowRight,
+  ExternalLink
 } from 'lucide-react';
 
 // Dynamic import for 3D Hologram Scene to prevent SSR errors
@@ -35,7 +38,7 @@ const HologramScene = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="w-full h-full min-h-[460px] bg-carbon border border-divider flex flex-col items-center justify-center gap-3 text-stone-muted">
+      <div className="w-full h-full min-h-[440px] bg-carbon border border-divider flex flex-col items-center justify-center gap-3 text-stone-muted">
         <div className="w-8 h-8 rounded-full border-2 border-stone-dim border-t-porcelain animate-spin" />
         <span className="text-xs font-mono uppercase tracking-widest">
           Calibrating 3D Digital Twin Matrix...
@@ -45,8 +48,18 @@ const HologramScene = dynamic(
   }
 );
 
-export function InspectionTerminal() {
-  const [selectedId, setSelectedId] = useState<SubsystemId | null>('engine');
+export interface InspectionTerminalProps {
+  variant?: 'workshop' | 'overview';
+  initialSubsystem?: SubsystemId;
+  className?: string;
+}
+
+export function InspectionTerminal({
+  variant = 'workshop',
+  initialSubsystem = 'engine',
+  className = '',
+}: InspectionTerminalProps) {
+  const [selectedId, setSelectedId] = useState<SubsystemId | null>(initialSubsystem);
   const [displayMode, setDisplayMode] = useState<DisplayMode>('standard');
   const [resetCounter, setResetCounter] = useState(0);
   const [isWebGLEnabled, setIsWebGLEnabled] = useState(true);
@@ -96,12 +109,221 @@ export function InspectionTerminal() {
     electrical: '8. Electrical Harness',
   };
 
+  // Compact labels for Overview Mode HUD
+  const overviewSubsystemLabels: Record<SubsystemId, string> = {
+    engine: '1. Engine',
+    battery: '2. Battery',
+    transmission: '3. Transmission',
+    brakes: '4. Brakes',
+    wheels: '5. Wheels',
+    suspension: '6. Suspension',
+    cooling: '7. Cooling',
+    electrical: '8. Electrical',
+  };
+
+  // =========================================================================
+  // PRESENTATION MODE 1: OVERVIEW HERO MODE (COMPACT & CINEMATIC)
+  // =========================================================================
+  if (variant === 'overview') {
+    return (
+      <div className={`w-full border border-divider/80 bg-graphite/40 rounded-sm overflow-hidden flex flex-col shadow-architectural relative ${className}`}>
+        
+        {/* Top Control Overlay: Digital Twin Telemetry & Viewport Controls */}
+        <div className="p-3 sm:p-4 border-b border-divider/60 bg-carbon/90 backdrop-blur-md flex items-center justify-between gap-3 z-10">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+            <div className="min-w-0">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-mono font-medium text-porcelain uppercase tracking-wider truncate">
+                  3D Holographic Twin
+                </span>
+                <span className="hidden sm:inline-block px-1.5 py-0.5 rounded-sm bg-cyan-950/60 border border-cyan-800/50 text-cyan-400 text-[9px] font-mono uppercase tracking-widest">
+                  F458 Platform
+                </span>
+              </div>
+              <div className="text-[10px] font-mono text-stone-muted truncate">
+                {activeDefinition ? (
+                  <span className="text-porcelain font-semibold">Target: {activeDefinition.name}</span>
+                ) : (
+                  'Select component below or click 3D vehicle'
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Viewport Action Controls: CAD / X-Ray Toggle + Camera Reset */}
+          <div className="flex items-center gap-1.5 shrink-0">
+            <div className="inline-flex rounded-sm p-0.5 bg-elevated border border-divider text-[10px] font-mono">
+              <button
+                type="button"
+                onClick={() => setDisplayMode('standard')}
+                className={`px-2.5 py-1 rounded-sm uppercase tracking-wider transition-all ${
+                  displayMode === 'standard'
+                    ? 'bg-carbon text-porcelain font-medium shadow-sm'
+                    : 'text-stone-muted hover:text-porcelain'
+                }`}
+                title="Standard High-Contrast CAD Finish"
+              >
+                CAD
+              </button>
+              <button
+                type="button"
+                onClick={() => setDisplayMode('xray')}
+                className={`px-2.5 py-1 rounded-sm uppercase tracking-wider transition-all ${
+                  displayMode === 'xray'
+                    ? 'bg-carbon text-cyan-400 font-medium shadow-sm'
+                    : 'text-stone-muted hover:text-porcelain'
+                }`}
+                title="Translucent X-Ray Hologram"
+              >
+                X-Ray
+              </button>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleReset}
+              className="p-1.5 rounded-sm bg-elevated hover:bg-carbon border border-divider text-stone-muted hover:text-porcelain transition-colors"
+              title="Reset Camera View & Selection"
+              aria-label="Reset Camera View"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+
+        {/* 3D Viewport Area */}
+        <div className="relative w-full h-[420px] sm:h-[460px] lg:h-[520px] bg-carbon overflow-hidden">
+          {isWebGLEnabled ? (
+            <HologramScene
+              selectedSubsystem={selectedId}
+              onSelectSubsystem={(id) => setSelectedId(id)}
+              displayMode={displayMode}
+              resetTrigger={resetCounter}
+            />
+          ) : (
+            <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center text-stone-muted space-y-2">
+              <AlertTriangle className="w-6 h-6 text-ochre mx-auto" />
+              <h4 className="text-xs font-mono text-porcelain uppercase">WebGL Acceleration Offline</h4>
+              <p className="text-[11px] max-w-xs text-stone-dim">
+                Explore mechanical subsystems using the interactive selector strip below.
+              </p>
+            </div>
+          )}
+
+          {/* Viewport Floating Coordinates Overlay (Top-Left) */}
+          <div className="absolute top-3 left-3 pointer-events-none text-[9px] font-mono text-stone-dim space-y-0.5 bg-carbon/80 backdrop-blur-sm p-1.5 rounded-sm border border-divider/40">
+            <div>SCALE: 1:1 TRUE CAD</div>
+            <div>RAYCAST: ACTIVE</div>
+            <div className="text-stone-muted">ROTATION: 360° ORBIT</div>
+          </div>
+
+          {/* Viewport Floating Interaction Hint (Top-Right) */}
+          <div className="absolute top-3 right-3 pointer-events-none text-[9px] font-mono text-stone-dim bg-carbon/75 backdrop-blur-sm px-2 py-0.5 rounded-sm border border-divider/30 hidden sm:block">
+            Drag to Orbit • Scroll to Zoom
+          </div>
+
+          {/* Contextual Technical Overlay Card (Bottom Overlay) */}
+          {activeDefinition && (
+            <div className="absolute bottom-3 left-3 right-3 sm:right-auto sm:max-w-md p-3.5 bg-carbon/92 backdrop-blur-md border border-divider/80 rounded-sm shadow-architectural z-10 animate-fadeIn space-y-2">
+              <div className="flex items-center justify-between gap-2 border-b border-divider/50 pb-1.5">
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                  <span className="text-[10px] font-mono uppercase text-stone-dim tracking-wider">
+                    {activeDefinition.category}
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  {activeDefinition.diagnosticFaultCodes[0] && (
+                    <span className="px-1.5 py-0.5 rounded-sm bg-elevated border border-divider text-[9px] font-mono text-stone-muted">
+                      DTC {activeDefinition.diagnosticFaultCodes[0].code}
+                    </span>
+                  )}
+                  <span className="text-[9px] font-mono text-forest font-semibold">
+                    Subsystem #{subsystemList.indexOf(activeDefinition.id) + 1}
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <h4 className="text-xs sm:text-sm font-medium text-porcelain tracking-tight">
+                  {activeDefinition.name}
+                </h4>
+                <p className="text-[11px] text-stone-muted leading-relaxed line-clamp-2 mt-1">
+                  {activeDefinition.technicalOverview}
+                </p>
+              </div>
+
+              {/* Quick Specifications & Symptoms Grid */}
+              <div className="grid grid-cols-2 gap-2 pt-1 border-t border-divider/40 text-[10px] font-mono">
+                <div>
+                  <span className="text-stone-dim block">PRIMARY METRIC</span>
+                  <span className="text-porcelain truncate block">
+                    {Object.values(activeDefinition.specifications)[0] || 'Nominal OEM Spec'}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-stone-dim block">COMMON SYMPTOM</span>
+                  <span className="text-ochre truncate block">
+                    {activeDefinition.commonSymptoms[0] || 'Diagnostic inspection'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Action Link to Workshop */}
+              <div className="pt-1 flex items-center justify-between">
+                <span className="text-[9px] font-mono text-stone-dim">
+                  Est. Service: ${activeDefinition.relatedRepairServices[0]?.estimatedLaborCost ? activeDefinition.relatedRepairServices[0].estimatedLaborCost + (activeDefinition.relatedRepairServices[0].estimatedPartsCost || 0) : 'Custom'}
+                </span>
+                <Link
+                  href="/mechanic/home#inspection-terminal"
+                  className="inline-flex items-center gap-1 text-[10px] font-mono uppercase text-porcelain hover:text-cyan-400 transition-colors tracking-wider"
+                >
+                  <span>Full Diagnostics</span>
+                  <ArrowRight className="w-3 h-3" />
+                </Link>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Bottom Subsystem Quick Selector Strip */}
+        <div className="p-2 sm:p-2.5 bg-graphite border-t border-divider/60 overflow-x-auto scrollbar-none z-10">
+          <div className="flex items-center gap-1.5 min-w-max">
+            <span className="text-[9px] font-mono uppercase text-stone-dim px-1 hidden sm:inline">
+              Subsystems:
+            </span>
+            {subsystemList.map((id) => {
+              const isActive = selectedId === id;
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => setSelectedId(id)}
+                  className={`px-2.5 py-1 rounded-sm text-[11px] font-mono uppercase tracking-wider transition-all flex items-center gap-1.5 ${
+                    isActive
+                      ? 'bg-porcelain text-carbon font-semibold shadow-sm'
+                      : 'bg-carbon text-stone-muted hover:text-porcelain border border-divider hover:border-divider-strong'
+                  }`}
+                >
+                  <span>{overviewSubsystemLabels[id]}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+      </div>
+    );
+  }
+
+  // =========================================================================
+  // PRESENTATION MODE 2: WORKSHOP FULL INSPECTION TERMINAL (DEFAULT)
+  // =========================================================================
   return (
-    <div className="w-full border border-divider/80 bg-graphite rounded-sm overflow-hidden flex flex-col shadow-architectural">
+    <div className={`w-full border border-divider/80 bg-graphite rounded-sm overflow-hidden flex flex-col shadow-architectural ${className}`}>
       
-      {/* ================================================================= */}
-      {/* 1. TERMINAL HEADER & VIEW MODE CONTROLS                           */}
-      {/* ================================================================= */}
+      {/* 1. TERMINAL HEADER & VIEW MODE CONTROLS */}
       <div className="p-4 sm:p-5 border-b border-divider/60 bg-carbon flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         
         {/* Terminal Title Lockup */}
@@ -193,9 +415,7 @@ export function InspectionTerminal() {
 
       </div>
 
-      {/* ================================================================= */}
-      {/* 2. SPLIT LAYOUT: 3D CANVAS & CONTEXTUAL ENGINEERING PANEL         */}
-      {/* ================================================================= */}
+      {/* 2. SPLIT LAYOUT: 3D CANVAS & CONTEXTUAL ENGINEERING PANEL */}
       <div className="grid lg:grid-cols-12 min-h-[580px]">
         
         {/* Left Column: 3D Viewport (7 cols) */}
@@ -249,7 +469,6 @@ export function InspectionTerminal() {
                 Subsystems:
               </span>
               {subsystemList.map((id) => {
-                const item = SUBSYSTEM_DEFINITIONS[id];
                 const isActive = selectedId === id;
 
                 return (
