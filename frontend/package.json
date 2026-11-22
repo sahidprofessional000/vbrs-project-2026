@@ -10,7 +10,8 @@
     "test:3d": "node test/hero-3d.e2e.mjs",
     "test:images": "node test/images-verify.e2e.mjs",
     "test:integration": "node test/m2-integration.e2e.mjs",
-    "test:breakdowns": "node test/breakdown-reporting.e2e.mjs"
+    "test:breakdowns": "node test/breakdown-reporting.e2e.mjs",
+    "test:edge-cases": "node test/m3-edge-cases.e2e.mjs"
   },
   "dependencies": {
     "@react-three/drei": "9.122.0",
