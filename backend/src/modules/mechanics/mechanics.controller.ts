@@ -56,6 +56,16 @@ export class MechanicsController {
     return this.mechanicsService.updateProfile(userId, dto);
   }
 
+  @Get('mechanic/earnings')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.MECHANIC)
+  @ApiBearerAuth('bearer-jwt')
+  @ApiOperation({ summary: 'Calculate career and recent earnings breakdown from completed jobs' })
+  @ApiResponse({ status: 200, description: 'Earnings and revenue summary' })
+  async getEarnings(@CurrentUser('id') userId: string) {
+    return this.mechanicsService.getEarnings(userId);
+  }
+
   @Patch('mechanic/availability')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.MECHANIC)

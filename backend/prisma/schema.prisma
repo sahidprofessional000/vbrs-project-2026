@@ -103,6 +103,7 @@ model User {
   auditLogs            AuditLog[]
   refreshTokens        RefreshToken[]
   statusHistoryEntries ServiceStatusHistory[]
+  savedAddresses       SavedAddress[]
 
   @@index([email])
   @@index([role])
@@ -146,6 +147,7 @@ model MechanicProfile {
   userId             String             @unique
   user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   workshopName       String?
+  workshopAddress    String?
   tradeLicenseNumber String?
   experienceYears    Int                @default(0)
   verificationStatus VerificationStatus @default(PENDING)
@@ -156,6 +158,9 @@ model MechanicProfile {
   totalReviews       Int                @default(0)
   totalJobsCompleted Int                @default(0)
   documentUrl        String?
+  certifications     String[]           @default([])
+  specializations    String[]           @default([])
+  bio                String?
   createdAt          DateTime           @default(now())
   updatedAt          DateTime           @updatedAt
 
@@ -357,3 +362,19 @@ model AuditLog {
   @@index([entityName])
   @@index([timestamp])
 }
+
+model SavedAddress {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  label     String
+  address   String
+  latitude  Float?
+  longitude Float?
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+

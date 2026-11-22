@@ -11,6 +11,7 @@ import { EventsModule } from './modules/events/events.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { DiagnosticsModule } from './modules/diagnostics/diagnostics.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
+import { CustomerModule } from './modules/customer/customer.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ReviewsModule } from './modules/reviews/reviews.module';
     EventsModule,
     HealthModule,
     AuthModule,
+    CustomerModule,
     VehiclesModule,
     BreakdownsModule,
     MechanicsModule,

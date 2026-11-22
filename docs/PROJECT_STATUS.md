@@ -35,6 +35,32 @@
 | **M6** | Admin Center, Moderation & Analytics | Admin dashboard, mechanic verification desk, dispute manager, SQL analytics, audit log viewer | 🟢 **COMPLETED & AUDITED** | 128 Backend Tests + 9 Frontend E2E suites pass; Audit in `docs/MILESTONE_6_VERIFICATION.md` |
 | **M7** | Rule-Based Diagnosis & Review System | Expert failure diagnosis engine, customer review submission, mechanic reputation scoring | 🟢 **COMPLETED & AUDITED** | 142 Backend Tests + 10 Frontend E2E suites pass; Audit in `docs/MILESTONE_7_VERIFICATION.md` |
 | **M8** | Testing, Security Hardening & Documentation | Full regression, security hardening (OWASP headers & penetration tests), responsive multi-device audit, academic report & presentation | 🟢 **COMPLETED & AUDITED** | 159 Backend Tests + 11 Frontend E2E suites pass; Audit in `docs/MILESTONE_8_VERIFICATION.md` |
+| **EXP-UPGRADE** | Customer & Mechanic Experiences + 3D Hologram | Dedicated Customer (`/customer/home`, `/customer/profile`) & Mechanic (`/mechanic/home`, `/mechanic/profile`) portals, Saved Addresses, Earnings API, 3D Automotive Hologram with 8 Selectable Subsystems | 🟡 **IN PROGRESS (Steps 1, 2 & 3 Complete)** | Safe migration deployed, 171 backend tests + customer experience Playwright E2E passing (100% green) |
+
+---
+
+## Major Product Experience Upgrade Tracker
+
+- [x] **Step 1: Database Inspection, Safe Migration & Data Preservation:**
+  - Backed up live PostgreSQL database to `scripts/backups/vbrs_db_backup_pre_m8_upgrade.sql` (1.36 MB).
+  - Extended existing `MechanicProfile` with `workshopAddress`, `certifications`, `specializations`, and `bio`.
+  - Created `SavedAddress` table with user foreign key cascade.
+  - Zero records lost, 100% relationship integrity verified across all 237 users, 37 vehicles, 78 mechanics, 178 breakdowns, 178 service requests, and 922 audit logs.
+- [x] **Step 2: Backend APIs & Role Authorization:**
+  - Created `CustomerModule` with `GET /api/customer/overview`, `GET /api/customer/saved-addresses`, `POST /api/customer/saved-addresses`, `DELETE /api/customer/saved-addresses/:id`.
+  - Implemented `GET /api/service-requests/history` with role-filtered customer and mechanic history queries.
+  - Implemented `GET /api/mechanic/earnings` computing career revenue, labor, parts, diagnostics, and recent payout records.
+  - Enhanced `PUT /api/mechanic/profile` with automatic security re-verification (`PENDING`) and audit logging when `tradeLicenseNumber` is modified.
+  - Created automated test suite `backend/test/experience-upgrade.e2e-spec.ts` (12 / 12 tests passing 100%).
+- [x] **Step 3: Dedicated Customer Experience (`/customer/home` & `/customer/profile`):**
+  - Built `/customer/home`: Personalized greeting, authenticated customer details, registered vehicle garage overview, primary emergency breakdown reporting action, nearby mechanic discovery radar, active live telemetry banner, recent breakdown history, and saved address dispatch shortcuts.
+  - Built `/customer/profile`: Form for updating legal name, primary phone, and avatar URL via `PUT /api/auth/profile`; full CRUD for saved dispatch address bookmarks with GPS autofill and default designation; garage overview and sign out.
+  - Role-guarded routing: Mechanics redirected to `/mechanic/home`, Admins redirected to `/admin/dashboard`, unauthenticated redirected to `/login?redirect=...`.
+  - Created automated Playwright test suite `frontend/test/customer-experience.e2e.mjs` (14 / 14 checks passing 100% green).
+- [ ] **Step 4: Dedicated Mechanic Experience (`/mechanic/home` & `/mechanic/profile`).**
+- [ ] **Step 5: Interactive 3D Automotive Hologram (8 Selectable Subsystems).**
+- [ ] **Step 6: Role Separation Navigation & Public Landing Gateways.**
+- [ ] **Step 7: Full Regression & Verification.**
 
 ---
 
@@ -52,7 +78,8 @@ PASS test/service-lifecycle.e2e-spec.ts (22 passed)
 PASS test/admin-governance.e2e-spec.ts (24 passed)
 PASS test/diagnostics-reviews.e2e-spec.ts (21 passed)
 PASS test/security-hardening.e2e-spec.ts (17 passed)
-Total Backend Tests: 159 passed (156 E2E + 3 Unit), 159 total (100% Green)
+PASS test/experience-upgrade.e2e-spec.ts (12 passed)
+Total Backend Tests: 171 passed (168 E2E + 3 Unit), 171 total (100% Green)
 
 PASS frontend/test/run-all-e2e.mjs
   Full Playwright E2E Regression Suite (11 / 11 Suites Passed - 100% Green):

@@ -46,6 +46,18 @@ export class ServiceRequestsController {
     return this.serviceRequestsService.getActive(userId, role);
   }
 
+  @Get('history')
+  @ApiOperation({
+    summary: 'Retrieve historical completed and cancelled service requests with cost itemization and reviews',
+  })
+  @ApiResponse({ status: 200, description: 'List of past service requests' })
+  async getHistory(
+    @CurrentUser('id') userId: string,
+    @CurrentUser('role') role: Role,
+  ) {
+    return this.serviceRequestsService.getHistory(userId, role);
+  }
+
   @Get(':id/tracking')
   @ApiOperation({
     summary: 'Get live tracking data, telemetry, and milestone timeline for an authorized service request',

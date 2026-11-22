@@ -642,4 +642,74 @@ export class ServiceRequestsService {
       return this.getTracking(active.id, userId, role);
     }
   }
+
+  /**
+   * Retrieves historical completed and cancelled service requests with cost itemization and reviews
+   */
+  async getHistory(userId: string, role: Role) {
+    if (role === Role.MECHANIC) {
+      const profile = await this.prisma.mechanicProfile.findUnique({
+        where: { userId },
+      });
+
+      if (!profile) return [];
+
+      return this.prisma.serviceRequest.findMany({
+        where: {
+          mechanicId: profile.id,
+          currentStatus: {
+            in: [ServiceRequestStatus.COMPLETED, ServiceRequestStatus.CANCELLED],
+          },
+        },
+        include: {
+          breakdownReport: {
+            include: {
+              vehicle: true,
+              images: true,
+              customer: {
+                select: {
+                  id: true,
+                  fullName: true,
+                  phone: true,
+                  avatarUrl: true,
+                },
+              },
+            },
+          },
+          review: true,
+        },
+        orderBy: { updatedAt: 'desc' },
+      });
+    } else {
+      return this.prisma.serviceRequest.findMany({
+        where: {
+          customerId: userId,
+          currentStatus: {
+            in: [ServiceRequestStatus.COMPLETED, ServiceRequestStatus.CANCELLED],
+          },
+        },
+        include: {
+          breakdownReport: {
+            include: {
+              vehicle: true,
+              images: true,
+            },
+          },
+          mechanic: {
+            include: {
+              user: {
+                select: {
+                  fullName: true,
+                  phone: true,
+                  avatarUrl: true,
+                },
+              },
+            },
+          },
+          review: true,
+        },
+        orderBy: { updatedAt: 'desc' },
+      });
+    }
+  }
 }

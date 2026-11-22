@@ -20,8 +20,8 @@ export function Navbar() {
   const getPortalLink = () => {
     if (!user) return '/';
     if (user.role === 'ADMIN') return '/admin/dashboard';
-    if (user.role === 'MECHANIC') return '/mechanic/portal';
-    return '/customer/vehicles';
+    if (user.role === 'MECHANIC') return '/mechanic/home';
+    return '/customer/home';
   };
 
   return (
@@ -57,6 +57,17 @@ export function Navbar() {
             {user?.role === 'CUSTOMER' && (
               <>
                 <Link
+                  href="/customer/home"
+                  className={`transition-colors py-1 ${
+                    pathname === '/customer/home'
+                      ? 'text-porcelain border-b border-porcelain'
+                      : 'text-stone-muted hover:text-porcelain'
+                  }`}
+                >
+                  Home
+                </Link>
+
+                <Link
                   href="/customer/vehicles"
                   className={`transition-colors py-1 ${
                     pathname === '/customer/vehicles'
@@ -64,12 +75,23 @@ export function Navbar() {
                       : 'text-stone-muted hover:text-porcelain'
                   }`}
                 >
-                  My Garage
+                  Garage
+                </Link>
+
+                <Link
+                  href="/customer/profile"
+                  className={`transition-colors py-1 ${
+                    pathname === '/customer/profile'
+                      ? 'text-porcelain border-b border-porcelain'
+                      : 'text-stone-muted hover:text-porcelain'
+                  }`}
+                >
+                  Profile
                 </Link>
 
                 <Link
                   href="/report-breakdown"
-                  className="text-crimson hover:text-crimson-hover transition-colors py-1 flex items-center gap-1"
+                  className="text-crimson hover:text-crimson-hover transition-colors py-1 flex items-center gap-1 font-medium"
                 >
                   <span>Request Rescue</span>
                 </Link>
@@ -77,16 +99,40 @@ export function Navbar() {
             )}
 
             {user?.role === 'MECHANIC' && (
-              <Link
-                href="/mechanic/portal"
-                className={`transition-colors py-1 ${
-                  pathname === '/mechanic/portal'
-                    ? 'text-porcelain border-b border-porcelain'
-                    : 'text-stone-muted hover:text-porcelain'
-                }`}
-              >
-                Dispatch Terminal
-              </Link>
+              <>
+                <Link
+                  href="/mechanic/home"
+                  className={`transition-colors py-1 ${
+                    pathname === '/mechanic/home'
+                      ? 'text-porcelain border-b border-porcelain'
+                      : 'text-stone-muted hover:text-porcelain'
+                  }`}
+                >
+                  Workshop
+                </Link>
+
+                <Link
+                  href="/mechanic/portal"
+                  className={`transition-colors py-1 ${
+                    pathname === '/mechanic/portal'
+                      ? 'text-porcelain border-b border-porcelain'
+                      : 'text-stone-muted hover:text-porcelain'
+                  }`}
+                >
+                  Dispatch Radar
+                </Link>
+
+                <Link
+                  href="/mechanic/profile"
+                  className={`transition-colors py-1 ${
+                    pathname === '/mechanic/profile'
+                      ? 'text-porcelain border-b border-porcelain'
+                      : 'text-stone-muted hover:text-porcelain'
+                  }`}
+                >
+                  Profile
+                </Link>
+              </>
             )}
 
             {user?.role === 'ADMIN' && (

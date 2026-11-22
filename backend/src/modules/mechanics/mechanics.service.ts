@@ -58,7 +58,8 @@ export class MechanicsService {
   }
 
   /**
-   * Updates mechanic profile parameters (workshop name, service radius, experience)
+   * Updates mechanic profile parameters (workshop name, service radius, experience, certifications)
+   * Enforces security rule: altering tradeLicenseNumber resets verificationStatus to PENDING and logs audit trail
    */
   async updateProfile(userId: string, dto: UpdateMechanicProfileDto) {
     const profile = await this.prisma.mechanicProfile.findUnique({
@@ -69,12 +70,46 @@ export class MechanicsService {
       throw new NotFoundException('Mechanic profile was not found');
     }
 
+    let verificationStatus = profile.verificationStatus;
+    let verificationNotes = profile.verificationNotes;
+
+    // Security workflow: If trade license is updated, reset verification and audit log
+    if (
+      dto.tradeLicenseNumber !== undefined &&
+      dto.tradeLicenseNumber.trim() !== (profile.tradeLicenseNumber || '')
+    ) {
+      verificationStatus = VerificationStatus.PENDING;
+      verificationNotes = `Trade license modified to "${dto.tradeLicenseNumber.trim()}". Pending administrative credential audit.`;
+
+      await this.prisma.auditLog.create({
+        data: {
+          userId,
+          action: 'MECHANIC_LICENSE_UPDATED_PENDING_AUDIT',
+          entityName: 'MechanicProfile',
+          entityId: profile.id,
+          details: {
+            previousLicense: profile.tradeLicenseNumber,
+            newLicense: dto.tradeLicenseNumber.trim(),
+            previousStatus: profile.verificationStatus,
+            newStatus: VerificationStatus.PENDING,
+          },
+        },
+      });
+    }
+
     return this.prisma.mechanicProfile.update({
       where: { id: profile.id },
       data: {
         workshopName: dto.workshopName?.trim() || profile.workshopName,
+        workshopAddress: dto.workshopAddress !== undefined ? dto.workshopAddress?.trim() : profile.workshopAddress,
         operatingRadiusKm: dto.operatingRadiusKm ?? profile.operatingRadiusKm,
         experienceYears: dto.experienceYears ?? profile.experienceYears,
+        tradeLicenseNumber: dto.tradeLicenseNumber !== undefined ? dto.tradeLicenseNumber.trim() : profile.tradeLicenseNumber,
+        verificationStatus,
+        verificationNotes,
+        certifications: dto.certifications ?? profile.certifications,
+        specializations: dto.specializations ?? profile.specializations,
+        bio: dto.bio !== undefined ? dto.bio?.trim() : profile.bio,
       },
       include: {
         currentLocation: true,
@@ -87,6 +122,75 @@ export class MechanicsService {
         },
       },
     });
+  }
+
+  /**
+   * Calculates career and recent earnings breakdown from completed jobs
+   */
+  async getEarnings(userId: string) {
+    const profile = await this.prisma.mechanicProfile.findUnique({
+      where: { userId },
+    });
+
+    if (!profile) {
+      throw new NotFoundException('Mechanic profile was not found');
+    }
+
+    const completed = await this.prisma.serviceRequest.findMany({
+      where: {
+        mechanicId: profile.id,
+        currentStatus: ServiceRequestStatus.COMPLETED,
+      },
+      include: {
+        breakdownReport: {
+          include: {
+            vehicle: true,
+          },
+        },
+        review: true,
+      },
+      orderBy: { completedAt: 'desc' },
+    });
+
+    let totalRevenue = 0;
+    let totalLabor = 0;
+    let totalParts = 0;
+    let totalDiagnostic = 0;
+
+    for (const req of completed) {
+      const computedTotal = (req.laborCost ?? 0) + (req.partsCost ?? 0) + (req.diagnosticQuote ?? 0);
+      const earned = req.agreedQuote ?? (computedTotal > 0 ? computedTotal : 0);
+      totalRevenue += earned;
+      totalLabor += req.laborCost ?? 0;
+      totalParts += req.partsCost ?? 0;
+      totalDiagnostic += req.diagnosticQuote ?? 0;
+    }
+
+    return {
+      totalRevenue: Number(totalRevenue.toFixed(2)),
+      totalLabor: Number(totalLabor.toFixed(2)),
+      totalParts: Number(totalParts.toFixed(2)),
+      totalDiagnostic: Number(totalDiagnostic.toFixed(2)),
+      completedJobsCount: completed.length,
+      averageJobValue: completed.length > 0 ? Number((totalRevenue / completed.length).toFixed(2)) : 0,
+      recentPayoutRecords: completed.slice(0, 15).map((req) => {
+        const computedTotal = (req.laborCost ?? 0) + (req.partsCost ?? 0) + (req.diagnosticQuote ?? 0);
+        const earned = req.agreedQuote ?? (computedTotal > 0 ? computedTotal : 0);
+        return {
+          serviceRequestId: req.id,
+          completedAt: req.completedAt,
+          vehicle: req.breakdownReport?.vehicle
+            ? `${req.breakdownReport.vehicle.year} ${req.breakdownReport.vehicle.make} ${req.breakdownReport.vehicle.model}`
+            : 'Standard Vehicle',
+          category: req.breakdownReport?.category,
+          laborCost: req.laborCost ?? 0,
+          partsCost: req.partsCost ?? 0,
+          diagnosticQuote: req.diagnosticQuote ?? 0,
+          totalEarned: earned,
+          rating: req.review?.rating ?? null,
+        };
+      }),
+    };
   }
 
   /**

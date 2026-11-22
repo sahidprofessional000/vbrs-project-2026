@@ -50,10 +50,23 @@ export interface Vehicle {
   isDefault: boolean;
 }
 
+export interface SavedAddress {
+  id: string;
+  userId: string;
+  label: string;
+  address: string;
+  latitude?: number | null;
+  longitude?: number | null;
+  isDefault: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface MechanicProfile {
   id: string;
   userId: string;
   workshopName?: string;
+  workshopAddress?: string;
   tradeLicenseNumber?: string;
   experienceYears: number;
   verificationStatus: 'PENDING' | 'APPROVED' | 'REJECTED';
@@ -62,6 +75,9 @@ export interface MechanicProfile {
   ratingAverage: number;
   totalReviews: number;
   totalJobsCompleted: number;
+  certifications?: string[];
+  specializations?: string[];
+  bio?: string;
   latitude?: number;
   longitude?: number;
   distanceKm?: number;
