@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 680" width="100%" height="100%" style="background:#ffffff; font-family:'Segoe UI', Arial, sans-serif;">
+  <rect x="20" y="15" width="960" height="45" rx="6" fill="#0f2b48" />
+  <text x="500" y="44" text-anchor="middle" fill="#ffffff" font-size="18" font-weight="bold">VBRS LIFECYCLE SEQUENCE DIAGRAM (CUSTOMER - API - MECHANIC)</text>
+
+  <!-- Lifeline Headers -->
+  <rect x="50" y="80" width="140" height="35" rx="5" fill="#0284c7" />
+  <text x="120" y="103" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">:Customer</text>
+
+  <rect x="250" y="80" width="140" height="35" rx="5" fill="#3b82f6" />
+  <text x="320" y="103" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">:Next.js Client</text>
+
+  <rect x="450" y="80" width="140" height="35" rx="5" fill="#701a75" />
+  <text x="520" y="103" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">:NestJS Backend</text>
+
+  <rect x="650" y="80" width="140" height="35" rx="5" fill="#065f46" />
+  <text x="720" y="103" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">:PostgreSQL DB</text>
+
+  <rect x="830" y="80" width="140" height="35" rx="5" fill="#dc2626" />
+  <text x="900" y="103" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">:Mechanic Client</text>
+
+  <!-- Lifeline Dashed Lines -->
+  <line x1="120" y1="115" x2="120" y2="650" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,4" />
+  <line x1="320" y1="115" x2="320" y2="650" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,4" />
+  <line x1="520" y1="115" x2="520" y2="650" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,4" />
+  <line x1="720" y1="115" x2="720" y2="650" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,4" />
+  <line x1="900" y1="115" x2="900" y2="650" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,4" />
+
+  <!-- 1. Submit Breakdown -->
+  <line x1="120" y1="150" x2="315" y2="150" stroke="#0284c7" stroke-width="2" />
+  <polygon points="320,150 310,146 310,154" fill="#0284c7" />
+  <text x="220" y="142" text-anchor="middle" fill="#0f172a" font-size="11">1. Click "Submit Breakdown"</text>
+
+  <!-- 2. POST /api/breakdown -->
+  <line x1="320" y1="180" x2="515" y2="180" stroke="#3b82f6" stroke-width="2" />
+  <polygon points="520,180 510,176 510,184" fill="#3b82f6" />
+  <text x="420" y="172" text-anchor="middle" fill="#0f172a" font-size="11">2. POST /api/breakdowns (GPS, issue)</text>
+
+  <!-- 3. DB Insert Breakdown -->
+  <line x1="520" y1="210" x2="715" y2="210" stroke="#701a75" stroke-width="2" />
+  <polygon points="720,210 710,206 710,214" fill="#701a75" />
+  <text x="620" y="202" text-anchor="middle" fill="#0f172a" font-size="11">3. prisma.breakdownReport.create()</text>
+
+  <!-- 4. Query Available Mechanics -->
+  <line x1="520" y1="240" x2="715" y2="240" stroke="#701a75" stroke-width="2" />
+  <polygon points="720,240 710,236 710,244" fill="#701a75" />
+  <text x="620" y="232" text-anchor="middle" fill="#0f172a" font-size="11">4. Find mechanics where isAvailable=true</text>
+
+  <!-- 5. Return Candidates -->
+  <line x1="720" y1="270" x2="525" y2="270" stroke="#065f46" stroke-width="2" stroke-dasharray="3,3" />
+  <polygon points="520,270 530,266 530,274" fill="#065f46" />
+  <text x="620" y="262" text-anchor="middle" fill="#065f46" font-size="11">5. Return MechanicProfiles</text>
+
+  <!-- 6. Socket Emit to Mechanic -->
+  <line x1="520" y1="310" x2="895" y2="310" stroke="#dc2626" stroke-width="2" />
+  <polygon points="900,310 890,306 890,314" fill="#dc2626" />
+  <text x="710" y="302" text-anchor="middle" fill="#dc2626" font-size="11">6. socket.emit('new_breakdown_alert')</text>
+
+  <!-- 7. Mechanic Accepts -->
+  <line x1="900" y1="360" x2="525" y2="360" stroke="#dc2626" stroke-width="2" />
+  <polygon points="520,360 530,356 530,364" fill="#dc2626" />
+  <text x="710" y="352" text-anchor="middle" fill="#dc2626" font-size="11">7. POST /api/service-requests/:id/accept</text>
+
+  <!-- 8. DB Update Status -->
+  <line x1="520" y1="400" x2="715" y2="400" stroke="#701a75" stroke-width="2" />
+  <polygon points="720,400 710,396 710,404" fill="#701a75" />
+  <text x="620" y="392" text-anchor="middle" fill="#0f172a" font-size="11">8. update(status='ACCEPTED', etaMinutes)</text>
+
+  <!-- 9. Socket Broadcast to Customer -->
+  <line x1="520" y1="440" x2="325" y2="440" stroke="#2563eb" stroke-width="2" />
+  <polygon points="320,440 330,436 330,444" fill="#2563eb" />
+  <text x="420" y="432" text-anchor="middle" fill="#2563eb" font-size="11">9. socket.emit('mechanic_assigned')</text>
+
+  <!-- 10. Customer Map Update -->
+  <line x1="320" y1="470" x2="125" y2="470" stroke="#0284c7" stroke-width="2" />
+  <polygon points="120,470 130,466 130,474" fill="#0284c7" />
+  <text x="220" y="462" text-anchor="middle" fill="#0f172a" font-size="11">10. Leaflet Map renders live ETA &amp; Beacon</text>
+
+  <!-- 11. Mechanic Completes Job -->
+  <line x1="900" y1="520" x2="525" y2="520" stroke="#dc2626" stroke-width="2" />
+  <polygon points="520,520 530,516 530,524" fill="#dc2626" />
+  <text x="710" y="512" text-anchor="middle" fill="#dc2626" font-size="11">11. POST /api/service-requests/:id/complete</text>
+
+  <!-- 12. Final Rating -->
+  <line x1="120" y1="580" x2="515" y2="580" stroke="#0284c7" stroke-width="2" />
+  <polygon points="520,580 510,576 510,584" fill="#0284c7" />
+  <text x="320" y="572" text-anchor="middle" fill="#0f172a" font-size="11">12. POST /api/reviews (rating: 5, comments)</text>
+
+  <!-- 13. Audit Log Persist -->
+  <line x1="520" y1="620" x2="715" y2="620" stroke="#701a75" stroke-width="2" />
+  <polygon points="720,620 710,616 710,624" fill="#701a75" />
+  <text x="620" y="612" text-anchor="middle" fill="#0f172a" font-size="11">13. prisma.auditLog.create()</text>
+</svg>

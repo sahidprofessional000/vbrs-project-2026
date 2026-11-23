@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 680" width="100%" height="100%" style="background:#ffffff; font-family:'Segoe UI', Arial, sans-serif;">
+  <rect x="20" y="15" width="960" height="45" rx="6" fill="#0f2b48" />
+  <text x="500" y="44" text-anchor="middle" fill="#ffffff" font-size="18" font-weight="bold">VBRS SOFTWARE ENGINEERING CLASS DIAGRAM (NESTJS ARCHITECTURE)</text>
+
+  <!-- Class: UsersController -->
+  <rect x="40" y="80" width="260" height="150" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2" />
+  <rect x="40" y="80" width="260" height="28" rx="6" fill="#2563eb" />
+  <text x="170" y="100" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">&lt;&lt;Controller&gt;&gt; UsersController</text>
+  <text x="50" y="125" fill="#475569" font-size="11">- usersService: UsersService</text>
+  <line x1="40" y1="135" x2="300" y2="135" stroke="#cbd5e1" stroke-width="1" />
+  <text x="50" y="155" fill="#0f172a" font-size="11">+ register(dto: CreateUserDto)</text>
+  <text x="50" y="175" fill="#0f172a" font-size="11">+ login(dto: LoginDto): AuthResponse</text>
+  <text x="50" y="195" fill="#0f172a" font-size="11">+ getProfile(req): UserEntity</text>
+  <text x="50" y="215" fill="#0f172a" font-size="11">+ refreshTokens(req): TokenPair</text>
+
+  <!-- Class: BreakdownController -->
+  <rect x="360" y="80" width="270" height="150" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2" />
+  <rect x="360" y="80" width="270" height="28" rx="6" fill="#2563eb" />
+  <text x="495" y="100" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">&lt;&lt;Controller&gt;&gt; BreakdownController</text>
+  <text x="370" y="125" fill="#475569" font-size="11">- breakdownService: BreakdownService</text>
+  <line x1="360" y1="135" x2="630" y2="135" stroke="#cbd5e1" stroke-width="1" />
+  <text x="370" y="155" fill="#0f172a" font-size="11">+ createReport(user, dto): Report</text>
+  <text x="370" y="175" fill="#0f172a" font-size="11">+ getNearbyMechanics(lat, lng, rad)</text>
+  <text x="370" y="195" fill="#0f172a" font-size="11">+ uploadProofPhoto(file): UploadResult</text>
+  <text x="370" y="215" fill="#0f172a" font-size="11">+ getReportById(id): ReportDetail</text>
+
+  <!-- Class: AdminController -->
+  <rect x="690" y="80" width="270" height="150" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2" />
+  <rect x="690" y="80" width="270" height="28" rx="6" fill="#2563eb" />
+  <text x="825" y="100" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">&lt;&lt;Controller&gt;&gt; AdminController</text>
+  <text x="700" y="125" fill="#475569" font-size="11">- adminService: AdminService</text>
+  <line x1="690" y1="135" x2="960" y2="135" stroke="#cbd5e1" stroke-width="1" />
+  <text x="700" y="155" fill="#0f172a" font-size="11">+ getFleetMetrics(): MetricsDto</text>
+  <text x="700" y="175" fill="#0f172a" font-size="11">+ verifyTechnician(id, approved)</text>
+  <text x="700" y="195" fill="#0f172a" font-size="11">+ getDisputes(): DisputeRecord[]</text>
+  <text x="700" y="215" fill="#0f172a" font-size="11">+ getAuditLogs(filter): AuditLog[]</text>
+
+  <!-- Dependencies (Downwards) -->
+  <line x1="170" y1="230" x2="170" y2="290" stroke="#0f2b48" stroke-width="1.5" stroke-dasharray="3,3" />
+  <polygon points="170,295 166,285 174,285" fill="#0f2b48" />
+
+  <line x1="495" y1="230" x2="495" y2="290" stroke="#0f2b48" stroke-width="1.5" stroke-dasharray="3,3" />
+  <polygon points="495,295 491,285 499,285" fill="#0f2b48" />
+
+  <line x1="825" y1="230" x2="825" y2="290" stroke="#0f2b48" stroke-width="1.5" stroke-dasharray="3,3" />
+  <polygon points="825,295 821,285 829,285" fill="#0f2b48" />
+
+  <!-- Class: UsersService -->
+  <rect x="40" y="300" width="260" height="150" rx="6" fill="#ffffff" stroke="#701a75" stroke-width="2" />
+  <rect x="40" y="300" width="260" height="28" rx="6" fill="#701a75" />
+  <text x="170" y="320" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">&lt;&lt;Service&gt;&gt; UsersService</text>
+  <text x="50" y="345" fill="#475569" font-size="11">- prisma: PrismaService</text>
+  <text x="50" y="360" fill="#475569" font-size="11">- jwtService: JwtService</text>
+  <line x1="40" y1="368" x2="300" y2="368" stroke="#cbd5e1" stroke-width="1" />
+  <text x="50" y="388" fill="#0f172a" font-size="11">+ validateCredentials(email, pass)</text>
+  <text x="50" y="406" fill="#0f172a" font-size="11">+ hashPassword(raw): string</text>
+  <text x="50" y="424" fill="#0f172a" font-size="11">+ generateTokens(user): TokenSet</text>
+  <text x="50" y="442" fill="#0f172a" font-size="11">+ updateRefreshToken(id, token)</text>
+
+  <!-- Class: DispatchService -->
+  <rect x="360" y="300" width="270" height="150" rx="6" fill="#ffffff" stroke="#701a75" stroke-width="2" />
+  <rect x="360" y="300" width="270" height="28" rx="6" fill="#701a75" />
+  <text x="495" y="320" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">&lt;&lt;Service&gt;&gt; DispatchService</text>
+  <text x="370" y="345" fill="#475569" font-size="11">- prisma: PrismaService</text>
+  <text x="370" y="360" fill="#475569" font-size="11">- eventsGateway: EventsGateway</text>
+  <line x1="360" y1="368" x2="630" y2="368" stroke="#cbd5e1" stroke-width="1" />
+  <text x="370" y="388" fill="#0f172a" font-size="11">+ computeHaversine(c1, c2): number</text>
+  <text x="370" y="406" fill="#0f172a" font-size="11">+ matchAvailableMechanics(lat, lng)</text>
+  <text x="370" y="424" fill="#0f172a" font-size="11">+ acceptDispatch(mechanicId, reqId)</text>
+  <text x="370" y="442" fill="#0f172a" font-size="11">+ completeService(reqId, finalPrice)</text>
+
+  <!-- Class: AdminService -->
+  <rect x="690" y="300" width="270" height="150" rx="6" fill="#ffffff" stroke="#701a75" stroke-width="2" />
+  <rect x="690" y="300" width="270" height="28" rx="6" fill="#701a75" />
+  <text x="825" y="320" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">&lt;&lt;Service&gt;&gt; AdminService</text>
+  <text x="700" y="345" fill="#475569" font-size="11">- prisma: PrismaService</text>
+  <line x1="690" y1="368" x2="960" y2="368" stroke="#cbd5e1" stroke-width="1" />
+  <text x="700" y="388" fill="#0f172a" font-size="11">+ calculateRealDatabaseMetrics()</text>
+  <text x="700" y="406" fill="#0f172a" font-size="11">+ updateVerificationStatus(id, stat)</text>
+  <text x="700" y="424" fill="#0f172a" font-size="11">+ logSecurityAudit(action, actor, ip)</text>
+  <text x="700" y="442" fill="#0f172a" font-size="11">+ resolveDisputeTicket(id, outcome)</text>
+
+  <!-- PrismaService Connector -->
+  <line x1="170" y1="450" x2="495" y2="520" stroke="#065f46" stroke-width="1.5" />
+  <line x1="495" y1="450" x2="495" y2="520" stroke="#065f46" stroke-width="2" />
+  <line x1="825" y1="450" x2="495" y2="520" stroke="#065f46" stroke-width="1.5" />
+
+  <!-- Class: PrismaService (Base Data Access) -->
+  <rect x="360" y="520" width="270" height="130" rx="6" fill="#ffffff" stroke="#065f46" stroke-width="2" />
+  <rect x="360" y="520" width="270" height="28" rx="6" fill="#065f46" />
+  <text x="495" y="540" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">&lt;&lt;Data Provider&gt;&gt; PrismaService</text>
+  <text x="370" y="565" fill="#475569" font-size="11">- client: PrismaClient (PostgreSQL 16)</text>
+  <line x1="360" y1="575" x2="630" y2="575" stroke="#cbd5e1" stroke-width="1" />
+  <text x="370" y="595" fill="#0f172a" font-size="11">+ onModuleInit(): Promise&lt;void&gt;</text>
+  <text x="370" y="615" fill="#0f172a" font-size="11">+ onModuleDestroy(): Promise&lt;void&gt;</text>
+  <text x="370" y="635" fill="#0f172a" font-size="11">+ enableShutdownHooks(app)</text>
+</svg>
